@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def date = new Date()
+def formattedDate = date.format('yyMMdd')
+def code = formattedDate.toInteger() * 100
+
 android {
     namespace 'com.cheesejuice.fancymansion'
     compileSdk 33
@@ -11,8 +15,8 @@ android {
         applicationId "com.cheesejuice.fancymansion"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode code
+        versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
