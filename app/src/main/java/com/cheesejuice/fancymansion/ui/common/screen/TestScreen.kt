@@ -1,124 +1,219 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.cheesejuice.fancymansion.R
+import com.cheesejuice.fancymansion.ui.common.component.ButtonDefault
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
-import com.cheesejuice.fancymansion.ui.theme.TypeTypography
-import com.cheesejuice.fancymansion.ui.theme.value.color.ColorSystem.ColorSet
-import com.cheesejuice.fancymansion.ui.theme.value.string.StringSystem.Strings
 
 @Composable
 fun TestScreen(){
     FancyMansionTheme {
         Column {
-            StringSystemTest()
+            Column(modifier = Modifier.fillMaxSize()) {
+                ButtonDefault(
+                    iconStart = R.drawable.ic_launcher_foreground,
+                    text = "버튼 텍스트",
+                    iconEnd = R.drawable.ic_launcher_foreground
+                )
+            }
+            ShapeTest()
         }
     }
 }
 
 @Composable
-fun StringSystemTest(){
+fun ShapeTest(){
     Column {
-        ClickHolder(text = Strings.app_name)
-        ClickHolder(text = Strings.test_name)
+        Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
+        Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Headline Small", style = MaterialTheme.typography.headlineSmall)
+    }
+}
+
+@Composable
+fun TypographyTest(){
+    Column {
+        Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
+        Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Headline Small", style = MaterialTheme.typography.headlineSmall)
+
+        Divider(
+            Modifier
+                .height(1.dp)
+                .fillMaxWidth())
+
+        Text(text = "Title Large", style = MaterialTheme.typography.titleLarge)
+        Text(text = "Title Medium", style = MaterialTheme.typography.titleMedium)
+        Text(text = "Title Small", style = MaterialTheme.typography.titleSmall)
+
+        Divider(
+            Modifier
+                .height(1.dp)
+                .fillMaxWidth())
+
+        Text(text = "Body Large", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Body Medium", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
+
+        Divider(
+            Modifier
+                .height(1.dp)
+                .fillMaxWidth())
+
+        Text(text = "Label Large", style = MaterialTheme.typography.labelLarge)
+        Text(text = "Label Medium", style = MaterialTheme.typography.labelMedium)
+        Text(text = "Label Small", style = MaterialTheme.typography.labelSmall)
+
+        Divider(
+            Modifier
+                .height(1.dp)
+                .fillMaxWidth())
     }
 }
 
 @Composable
 fun ColorSystemTest(){
-    Column {
-        ClickHolder(background = ColorSet.Main100, textColor = ColorSet.Gray900)
-        ClickHolder(background = ColorSet.Main200, textColor = ColorSet.Gray800)
-        ClickHolder(background = ColorSet.Main300, textColor = ColorSet.Gray700)
-        ClickHolder(background = ColorSet.Main400, textColor = ColorSet.Gray600)
-        ClickHolder(background = ColorSet.Main500, textColor = ColorSet.Gray500)
-        ClickHolder(background = ColorSet.Main600, textColor = ColorSet.Gray400)
-        ClickHolder(background = ColorSet.Main700, textColor = ColorSet.Gray300)
-        ClickHolder(background = ColorSet.Main800, textColor = ColorSet.Gray200)
-        ClickHolder(background = ColorSet.Main800, textColor = ColorSet.Gray100)
+    Column (Modifier.scrollable(
+        orientation = Orientation.Vertical,
+        state = rememberScrollState()
+    )){
+        ClickHolder(
+            text = "background",
+            background = MaterialTheme.colorScheme.background,
+            textColor = MaterialTheme.colorScheme.onBackground
+        )
 
-        Divider(
-            Modifier
-                .height(2.dp)
-                .fillMaxWidth())
+        Spacer(Modifier.height(20.dp))
+        ClickHolder(
+            text = "surface",
+            background = MaterialTheme.colorScheme.surface,
+            textColor = MaterialTheme.colorScheme.onSurface
+        )
+        ClickHolder(
+            text = "surfaceVariant",
+            background = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        ClickHolder(
+            text = "inverseSurface",
+            background = MaterialTheme.colorScheme.inverseSurface,
+            textColor = MaterialTheme.colorScheme.inverseOnSurface
+        )
+        ClickHolder(
+            text = "surfaceTint",
+            background = MaterialTheme.colorScheme.surfaceTint,
+            textColor = MaterialTheme.colorScheme.onSurface
+        )
 
-        ClickHolder(background = ColorSet.Surface, textColor = ColorSet.OnSurface)
+        Spacer(Modifier.height(20.dp))
 
-        Divider(
-            Modifier
-                .height(2.dp)
-                .fillMaxWidth())
+        ClickHolder(
+            text = "outline",
+            background = MaterialTheme.colorScheme.background,
+            textColor = MaterialTheme.colorScheme.outline
+        )
 
-        ClickHolder(background = ColorSet.IconDarkEnabled, textColor = ColorSet.IconLightEnabled)
-        ClickHolder(background = ColorSet.IconDarkDisabled, textColor = ColorSet.IconLightDisabled)
+        ClickHolder(
+            text = "outlineVariant",
+            background = MaterialTheme.colorScheme.background,
+            textColor = MaterialTheme.colorScheme.outlineVariant
+        )
+
+        Spacer(Modifier.height(20.dp))
+
+        ClickHolder(
+            text = "primary",
+            background = MaterialTheme.colorScheme.primary,
+            textColor = MaterialTheme.colorScheme.onPrimary
+        )
+
+        ClickHolder(
+            text = "primaryContainer",
+            background = MaterialTheme.colorScheme.primaryContainer,
+            textColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+
+        ClickHolder(
+            text = "inversePrimary",
+            background = MaterialTheme.colorScheme.primary,
+            textColor = MaterialTheme.colorScheme.inversePrimary
+        )
+
+        Spacer(Modifier.height(20.dp))
+
+        ClickHolder(
+            text = "secondary",
+            background = MaterialTheme.colorScheme.secondary,
+            textColor = MaterialTheme.colorScheme.onSecondary
+        )
+
+        ClickHolder(
+            text = "secondaryContainer",
+            background = MaterialTheme.colorScheme.secondaryContainer,
+            textColor = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+
+        Spacer(Modifier.height(20.dp))
+
+        ClickHolder(
+            text = "tertiary",
+            background = MaterialTheme.colorScheme.tertiary,
+            textColor = MaterialTheme.colorScheme.onTertiary
+        )
+
+        ClickHolder(
+            text = "tertiaryContainer",
+            background = MaterialTheme.colorScheme.tertiaryContainer,
+            textColor = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+
+        Spacer(Modifier.height(20.dp))
+
+        ClickHolder(
+            text = "error",
+            background = MaterialTheme.colorScheme.error,
+            textColor = MaterialTheme.colorScheme.onError
+        )
+
+        ClickHolder(
+            text = "errorContainer",
+            background = MaterialTheme.colorScheme.errorContainer,
+            textColor = MaterialTheme.colorScheme.onErrorContainer
+        )
     }
 }
 
 @Composable
-fun ColumnScope.ClickHolder(text : String = "색상 테스트", background : Color = ColorSet.Main100, textColor : Color = ColorSet.Gray900) {
+fun ColumnScope.ClickHolder(text : String, background : Color, textColor : Color) {
     Text(modifier = Modifier
         .weight(1f)
         .fillMaxWidth()
         .background(background)
-        .clickable { }, text = text, style = TypeTypography.h1.style, color = textColor
+        .clickable { }
+        .border(
+            width = 1.dp,
+            color = Color.Black
+        ),
+        text = text,
+        style = MaterialTheme.typography.titleLarge,
+        color = textColor
     )
-}
-
-
-@Composable
-fun TypographyTest(){
-    Column {
-        Text(text = "h1 1단계", style = TypeTypography.h1.style)
-        Text(text = "h2 2단계", style = TypeTypography.h2.style)
-        Text(text = "h3 3단계", style = TypeTypography.h3.style)
-        Text(text = "h4 4단계", style = TypeTypography.h4.style)
-        Text(text = "h5 5단계", style = TypeTypography.h5.style)
-        Text(text = "h6 6단계", style = TypeTypography.h6.style)
-        Text(text = "h7 7단계", style = TypeTypography.h7.style)
-
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
-
-        Text(text = "s1 1단계", style = TypeTypography.s1.style)
-        Text(text = "s2 2단계", style = TypeTypography.s2.style)
-
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
-
-        Text(text = "p1 1단계", style = TypeTypography.p1.style)
-        Text(text = "p2 2단계", style = TypeTypography.p2.style)
-
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
-
-        Text(text = "c1 1단계", style = TypeTypography.c1.style)
-        Text(text = "c2 2단계", style = TypeTypography.c2.style)
-
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
-
-        Text(text = "b1 1단계", style = TypeTypography.b1.style)
-        Text(text = "b2 2단계", style = TypeTypography.b2.style)
-        Text(text = "b3 3단계", style = TypeTypography.b3.style)
-        Text(text = "b4 4단계", style = TypeTypography.b4.style)
-        Text(text = "b5 5단계", style = TypeTypography.b5.style)
-    }
 }

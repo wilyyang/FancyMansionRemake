@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.ui.theme.value.color
+package com.cheesejuice.fancymansion.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

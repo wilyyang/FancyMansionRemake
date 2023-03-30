@@ -1,17 +1,12 @@
 package com.cheesejuice.fancymansion.ui.common.component
 
-import android.os.SystemClock
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,16 +17,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.cheesejuice.fancymansion.ui.common.OnSingleClickListener
+import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.clickSingle
-import com.cheesejuice.fancymansion.ui.theme.TypeTypography
-import com.cheesejuice.fancymansion.ui.theme.value.color.ColorSystem.ColorSet
 
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewButton(){
     Column(modifier = Modifier.fillMaxSize()) {
-        ButtonDefault(text = "버튼 텍스트")
+        ButtonDefault(
+            iconStart = R.drawable.ic_launcher_foreground,
+            text = "버튼 텍스트",
+            iconEnd = R.drawable.ic_launcher_foreground
+        )
     }
 }
 
@@ -40,13 +37,13 @@ fun ButtonDefault(
     modifier : Modifier = Modifier,
     contentPadding : PaddingValues = ButtonDefaults.ContentPadding,
     contentArrangement : Arrangement.Horizontal = Arrangement.Center,
-    backgroundColor : Color = ColorSet.Main500,
+    backgroundColor : Color = MaterialTheme.colorScheme.primary,
 
     text : String? = null,
-    textStyle : TextStyle = TypeTypography.h6.style,
+    textStyle : TextStyle = MaterialTheme.typography.titleLarge,
     textOverflow : TextOverflow = TextOverflow.Clip,
     textMaxLines : Int = Int.MAX_VALUE,
-    textColor : Color = ColorSet.BlackAlways,
+    textColor : Color = MaterialTheme.colorScheme.onPrimary,
 
     iconStart : Int? = null,
     iconEnd : Int? = null,
@@ -59,7 +56,7 @@ fun ButtonDefault(
 ) {
     val (finalBackgroundColor, finalTextColor) = when (isClickable) {
         true -> backgroundColor to textColor
-        false -> ColorSet.Gray300 to ColorSet.Gray500
+        false -> MaterialTheme.colorScheme.inverseSurface to MaterialTheme.colorScheme.inverseOnSurface
     }
 
     Row(

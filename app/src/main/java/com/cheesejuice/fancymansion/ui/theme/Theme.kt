@@ -2,70 +2,72 @@ package com.cheesejuice.fancymansion.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material.ripple.RippleTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
-import androidx.core.os.ConfigurationCompat
-import androidx.core.os.LocaleListCompat
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
-import com.cheesejuice.fancymansion.ui.theme.value.color.ColorSystem
-import com.cheesejuice.fancymansion.ui.theme.value.color.ColorSystem.ColorSet
-import com.cheesejuice.fancymansion.ui.theme.value.string.StringSystem
-import java.util.*
+import com.cheesejuice.fancymansion.R
+
+val spoqaHanSansNeo = FontFamily(
+    Font(R.font.spoqa_hansans_neo_regular, FontWeight.Normal),
+    Font(R.font.spoqa_hansans_neo_medium, FontWeight.Medium),
+    Font(R.font.spoqa_hansans_neo_bold, FontWeight.Bold)
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = black,
+    secondary = white,
+    tertiary = error
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = white,
+    secondary = black,
+    tertiary = error
+)
+
+val Typography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    )
+)
 
 @Composable
-fun FancyMansionTheme(darkTheme : Boolean = isSystemInDarkTheme(), content : @Composable () -> Unit) {
-    // 색상 나이트 모드 여부 적용
-    ColorSystem.setColorByTheme(darkTheme)
+fun FancyMansionTheme(
+    darkTheme : Boolean = isSystemInDarkTheme(),
+    content : @Composable () -> Unit)
+{
+    val colorScheme = when {
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
 
-    // 다국어 적용
-    StringSystem.setStringsByLocale(getLocale())
-
-    // 상태 바
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            (view.context as Activity).window.statusBarColor = ColorSet.Surface.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = !darkTheme
+            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
+            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }
 
     MaterialTheme(
-        colors = ColorSystem.MaterialColors,
+        colorScheme = colorScheme,
+        typography = Typography,
     ){
-        // 리플 테마 적용
-        CompositionLocalProvider(LocalRippleTheme provides BaseRippleTheme) {
-            content()
-        }
+        content()
     }
-}
-
-@Composable
-@ReadOnlyComposable
-fun getLocale(): Locale {
-    val configuration = LocalConfiguration.current
-    return ConfigurationCompat.getLocales(configuration).get(0) ?: LocaleListCompat.getDefault()[0]!!
-}
-
-@Immutable
-private object BaseRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = RippleTheme.defaultRippleColor(
-        contentColor = ColorSet.Gray600,
-        lightTheme = true
-    )
-
-    @Composable
-    override fun rippleAlpha() = RippleTheme.defaultRippleAlpha(
-        contentColor = ColorSet.Gray600,
-        lightTheme = true
-    )
 }
