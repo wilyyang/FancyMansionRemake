@@ -5,49 +5,100 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.ui.common.component.ButtonDefault
+import androidx.compose.ui.window.Dialog
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
 
 @Composable
-fun TestScreen(){
+fun ThemeTestScreen(){
     FancyMansionTheme {
         Column {
-            Column(modifier = Modifier.fillMaxSize()) {
-                ButtonDefault(
-                    iconStart = R.drawable.ic_launcher_foreground,
-                    text = "버튼 텍스트",
-                    iconEnd = R.drawable.ic_launcher_foreground
-                )
+            IconTest()
+        }
+    }
+}
+
+
+@Composable
+fun IconTest(){
+
+}
+
+@Composable
+fun ShapeTest(){
+    Dialog(onDismissRequest = { /*TODO*/ }) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text(text = "대화상자 타이틀", style = MaterialTheme.typography.titleLarge)
+                Column {
+                    Holder()
+                    Holder()
+                }
+
+                Row{
+                    Selector()
+                    Selector()
+                    Selector()
+                }
+
+                Column{
+                    ShapeHolder(text = "extraSmall", shape = MaterialTheme.shapes.extraSmall)
+                    ShapeHolder(text = "small", shape = MaterialTheme.shapes.small)
+                    ShapeHolder(text = "medium", shape = MaterialTheme.shapes.medium)
+                    ShapeHolder(text = "large", shape = MaterialTheme.shapes.large)
+                    ShapeHolder(text = "extraLarge", shape = MaterialTheme.shapes.extraLarge)
+                }
             }
-            ShapeTest()
         }
     }
 }
 
 @Composable
-fun ShapeTest(){
-    Column {
-        Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
-        Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Headline Small", style = MaterialTheme.typography.headlineSmall)
+fun Holder(){
+    Card(modifier = Modifier
+        .padding(vertical = 5.dp)
+        .fillMaxWidth(), shape = MaterialTheme.shapes.medium) {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Text(text = "홀더 타이틀", style = MaterialTheme.typography.titleMedium)
+            Row{
+                Text(text = "내용 타이틀 : ", style = MaterialTheme.typography.titleSmall)
+                Text(text = "내용 기입 스타일", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
     }
 }
 
+@Composable
+fun Selector(){
+    Card(modifier = Modifier.padding(4.dp), shape = MaterialTheme.shapes.small) {
+        Text(modifier = Modifier.padding(4.dp), text = "설렉터", style = MaterialTheme.typography.labelLarge)
+    }
+}
+
+@Composable
+fun ShapeHolder(text : String, shape: Shape){
+    Card(modifier = Modifier.padding(4.dp), shape = shape) {
+        Text(modifier = Modifier.padding(10.dp), text = text, style = MaterialTheme.typography.labelLarge)
+    }
+}
+@Preview(showSystemUi = true)
 @Composable
 fun TypographyTest(){
     Column {
@@ -90,7 +141,7 @@ fun TypographyTest(){
 }
 
 @Composable
-fun ColorSystemTest(){
+fun ColorTest(){
     Column (Modifier.scrollable(
         orientation = Orientation.Vertical,
         state = rememberScrollState()
