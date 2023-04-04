@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -20,12 +21,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -33,10 +38,13 @@ import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
 import com.cheesejuice.fancymansion.ui.common.component.BasicIcon
 import com.cheesejuice.fancymansion.ui.common.component.DropDown
+import com.cheesejuice.fancymansion.ui.common.component.LabelTextField
+import com.cheesejuice.fancymansion.ui.common.component.SimpleTextField
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ThemeTestScreen(){
@@ -116,11 +124,37 @@ fun ComponentTest(){
                 }
             )
 
-            Column {
+            Column(modifier = Modifier.fillMaxSize().padding(10.dp)) {
 
+                Row(modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom){
+                    Text("이름:", style = MaterialTheme.typography.titleMedium)
+
+                    val cancelMessage = remember { mutableStateOf("") }
+                    SimpleTextField(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textStyle = MaterialTheme.typography.titleMedium,
+                        value = cancelMessage.value,
+                        hint = "이름를 입력하세요",
+                        onValueChange = {
+                            cancelMessage.value = it
+                        }
+                    )
+                }
+
+                val numberMessage = remember { mutableStateOf("") }
+                LabelTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = "번호",
+                    value = numberMessage.value,
+                    hint = "예 : 010-1234-5678",
+                    onValueChange = {
+                        numberMessage.value = it
+                    }
+                )
             }
-
-            
         }
         BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = false)
     }

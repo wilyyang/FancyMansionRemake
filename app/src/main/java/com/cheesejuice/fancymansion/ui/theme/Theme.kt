@@ -33,9 +33,9 @@ private val LightColorScheme = lightColorScheme(
     background = n_90,
     onBackground = black,
     surfaceVariant = n_80,
-    onSurfaceVariant = black,
+    onSurfaceVariant = n_50,
     inverseSurface = n_65,
-    inverseOnSurface = n_15,
+    inverseOnSurface = n_50,
 
     error = error_50,
     onError = black,
@@ -66,9 +66,9 @@ private val DarkColorScheme = darkColorScheme(
     background = n_10,
     onBackground = n_90,
     surfaceVariant = n_20,
-    onSurfaceVariant = n_90,
+    onSurfaceVariant = n_50,
     inverseSurface = n_35,
-    inverseOnSurface = n_80,
+    inverseOnSurface = n_50,
 
     error = error_50,
     onError = n_90,
