@@ -6,9 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,10 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
+import com.cheesejuice.fancymansion.ui.theme.green
+import com.cheesejuice.fancymansion.ui.theme.red
+import com.cheesejuice.fancymansion.ui.theme.yellow
 
 @Composable
 fun ThemeTestScreen(){
@@ -30,11 +40,57 @@ fun ThemeTestScreen(){
     }
 }
 
-
+@Preview(showSystemUi = true)
 @Composable
 fun IconTest(){
+    val listId = listOf(
+        Pair(R.drawable.add_photo_48px, null),
+        Pair(R.drawable.crop_48px, null),
+        Pair(R.drawable.help_40px, null),
+        Pair(R.drawable.info_40px, null),
+        Pair(R.drawable.menu_24px, null),
+        Pair(R.drawable.refresh_24px, null),
+        Pair(R.drawable.search_24px, null),
+        Pair(R.drawable.settings_24px, null),
+        Pair(R.drawable.settings_fill_24px, null),
+        Pair(R.drawable.chevron_left_24px, null),
+        Pair(R.drawable.chevron_right_24px, null),
+        Pair(R.drawable.favorite_24px, red),
+        Pair(R.drawable.star_24px, yellow),
+        Pair(R.drawable.bookmark_24px, null),
+        Pair(R.drawable.expand_less_20px, null),
+        Pair(R.drawable.expand_more_20px, null),
+        Pair(R.drawable.more_vertical_20px, null),
+        Pair(R.drawable.add_20px, null),
+        Pair(R.drawable.close_20px, null),
+        Pair(R.drawable.cancel_20px, null),
+        Pair(R.drawable.error_20px, red),
+        Pair(R.drawable.warning_20px, yellow),
+        Pair(R.drawable.pass_20px, green)
+    )
+
+    Surface{
+        LazyVerticalGrid (
+            columns = GridCells.Adaptive(minSize = 128.dp)
+        ){
+            items(listId) { (id, color) ->
+                Simple(id, color)
+            }
+        }
+    }
 
 }
+
+@Composable
+fun Simple(imageId:Int, color:Color? = null){
+    Column(Modifier.wrapContentSize().border(
+        width = 1.dp,
+        color = MaterialTheme.colorScheme.onSurface,
+        shape = MaterialTheme.shapes.extraSmall)) {
+        Icon(painter = painterResource(id = imageId), tint = color?:LocalContentColor.current, contentDescription = null)
+    }
+}
+
 
 @Composable
 fun ShapeTest(){
@@ -98,7 +154,6 @@ fun ShapeHolder(text : String, shape: Shape){
         Text(modifier = Modifier.padding(10.dp), text = text, style = MaterialTheme.typography.labelLarge)
     }
 }
-@Preview(showSystemUi = true)
 @Composable
 fun TypographyTest(){
     Column {
