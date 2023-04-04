@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,
-    onPrimary = black,
+    onPrimary = white,
     primaryContainer = primary_90,
     onPrimaryContainer = black,
     inversePrimary = primary_inverse,
@@ -26,15 +26,17 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = black,
     tertiaryContainer = tertiary_90,
     onTertiaryContainer = black,
-    background = white,
-    onBackground = black,
-    surface = n_90,
+
+    surfaceTint = white,
+    surface = white,
     onSurface = black,
-    surfaceVariant = n_85,
+    background = n_90,
+    onBackground = black,
+    surfaceVariant = n_80,
     onSurfaceVariant = black,
-    surfaceTint = n_90,
-    inverseSurface = n_75,
-    inverseOnSurface = black,
+    inverseSurface = n_65,
+    inverseOnSurface = n_15,
+
     error = error_50,
     onError = black,
     errorContainer = error_90,
@@ -44,8 +46,8 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = primary_60,
-    onPrimary = black,
+    primary = primary_50,
+    onPrimary = n_10,
     primaryContainer = primary_10,
     onPrimaryContainer = black,
     inversePrimary = primary_inverse,
@@ -57,19 +59,21 @@ private val DarkColorScheme = darkColorScheme(
     onTertiary = black,
     tertiaryContainer = tertiary_10,
     onTertiaryContainer = black,
-    background = black,
-    onBackground = white,
-    surface = n_10,
-    onSurface = white,
-    surfaceVariant = n_15,
-    onSurfaceVariant = white,
-    surfaceTint = n_10,
-    inverseSurface = n_25,
-    inverseOnSurface = white,
+
+    surfaceTint = black,
+    surface = black,
+    onSurface = n_90,
+    background = n_10,
+    onBackground = n_90,
+    surfaceVariant = n_20,
+    onSurfaceVariant = n_90,
+    inverseSurface = n_35,
+    inverseOnSurface = n_80,
+
     error = error_50,
-    onError = white,
+    onError = n_90,
     errorContainer = error_10,
-    onErrorContainer = white,
+    onErrorContainer = n_90,
     outline = n_50,
     outlineVariant = n_20
 )

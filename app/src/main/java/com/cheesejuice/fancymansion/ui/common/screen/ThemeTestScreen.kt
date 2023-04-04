@@ -1,5 +1,6 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,6 +19,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -26,6 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.cheesejuice.fancymansion.R
+import com.cheesejuice.fancymansion.ui.common.component.BasicButton
+import com.cheesejuice.fancymansion.ui.common.component.BasicIcon
+import com.cheesejuice.fancymansion.ui.common.component.DropDown
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
@@ -34,13 +41,91 @@ import com.cheesejuice.fancymansion.ui.theme.yellow
 @Composable
 fun ThemeTestScreen(){
     FancyMansionTheme {
-        Column {
-            IconTest()
+        Surface {
+            ComponentTest()
         }
     }
 }
 
 @Preview(showSystemUi = true)
+@Composable
+fun ComponentTest(){
+
+    // 배경
+    Column (Modifier.background(MaterialTheme.colorScheme.background)){
+        Column(modifier = Modifier.weight(1f)) {
+
+            // 탑바 틴트
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(MaterialTheme.colorScheme.surfaceTint),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                BasicIcon( idIcon = R.drawable.chevron_left_24px)
+                Spacer(Modifier.width(10.dp))
+                Text(text = "최 상단", style = MaterialTheme.typography.titleMedium)
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
+                    BasicIcon(idIcon = R.drawable.help_40px)
+                    BasicIcon(idIcon = R.drawable.info_40px)
+                }
+            }
+            Divider(modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp))
+
+            // 탑바
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(MaterialTheme.colorScheme.surface),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                BasicIcon( idIcon = R.drawable.menu_24px)
+                Spacer(Modifier.width(10.dp))
+                Text(text = "타이틀 테스트", style = MaterialTheme.typography.titleMedium)
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
+                    BasicIcon(idIcon = R.drawable.search_24px)
+                    BasicIcon(idIcon = R.drawable.settings_24px)
+                    BasicIcon(idIcon = R.drawable.refresh_24px)
+                }
+            }
+
+            Divider(modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp))
+
+            val list = listOf(
+                Pair("키1", "첫번째 항목"),
+                Pair("키2", "두번째 항목"),
+                Pair("키3", "세번째 항목"),
+                Pair("키4", "네번째 항목"))
+            val selected = rememberSaveable { mutableStateOf(list[0]) }
+
+            DropDown(
+                modifier = Modifier
+                    .padding(top = 1.dp)
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp),
+                list = list,
+                selectedValue = selected.value,
+                onClick = { pair ->
+                    selected.value = pair
+                }
+            )
+
+            Column {
+
+            }
+
+            
+        }
+        BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = false)
+    }
+}
+
 @Composable
 fun IconTest(){
     val listId = listOf(
@@ -52,7 +137,6 @@ fun IconTest(){
         Pair(R.drawable.refresh_24px, null),
         Pair(R.drawable.search_24px, null),
         Pair(R.drawable.settings_24px, null),
-        Pair(R.drawable.settings_fill_24px, null),
         Pair(R.drawable.chevron_left_24px, null),
         Pair(R.drawable.chevron_right_24px, null),
         Pair(R.drawable.favorite_24px, red),
@@ -83,10 +167,14 @@ fun IconTest(){
 
 @Composable
 fun Simple(imageId:Int, color:Color? = null){
-    Column(Modifier.wrapContentSize().border(
-        width = 1.dp,
-        color = MaterialTheme.colorScheme.onSurface,
-        shape = MaterialTheme.shapes.extraSmall)) {
+    Column(
+        Modifier
+            .wrapContentSize()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface,
+                shape = MaterialTheme.shapes.extraSmall
+            )) {
         Icon(painter = painterResource(id = imageId), tint = color?:LocalContentColor.current, contentDescription = null)
     }
 }
