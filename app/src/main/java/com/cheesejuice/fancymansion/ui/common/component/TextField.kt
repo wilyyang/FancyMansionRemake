@@ -1,11 +1,16 @@
 package com.cheesejuice.fancymansion.ui.common.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,12 +30,76 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.fancymansion.R
+import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimpleTextField(
+fun TextBox(
     modifier : Modifier = Modifier,
-    isSingleLine : Boolean = true,
+    @androidx.annotation.IntRange(from = 1)
+    minLine : Int = 1,
+    maxLine : Int = 1,
+
+    value : String,
+    hint : String = "",
+
+    visualTransformation : VisualTransformation = VisualTransformation.None,
+    imeAction : ImeAction = ImeAction.Default,
+    keyboardType : KeyboardType = KeyboardType.Text,
+    keyboardActions : KeyboardActions = KeyboardActions.Default,
+
+    label : String? = null,
+    rememberFocus : MutableState<Boolean> = remember { mutableStateOf(false) },
+    focusRequester : FocusRequester? = null,
+
+    isDivider : Boolean = false,
+    isBorder : Boolean = false,
+    borderShape : Shape = MaterialTheme.shapes.extraSmall,
+    textPadding : Int = 4,
+
+    error : String? = null,
+
+    styleGroup : TextStyleGroup = TextStyleGroup.Medium,
+
+    onValueChange : (String) -> Unit,
+) {
+    TextBox(
+        modifier = modifier,
+        minLine = minLine,
+        maxLine = maxLine,
+
+        value = value,
+        hint = hint,
+
+        visualTransformation = visualTransformation,
+        imeAction = imeAction,
+        keyboardType = keyboardType,
+        keyboardActions = keyboardActions,
+
+        label = label,
+        rememberFocus = rememberFocus,
+        focusRequester = focusRequester,
+
+        isDivider = isDivider,
+        isBorder = isBorder,
+        borderShape = borderShape,
+        textPadding = textPadding,
+
+        error = error,
+
+        labelStyle = styleGroup.labelStyle,
+        textStyle = styleGroup.bodyStyle,
+        errorStyle = styleGroup.labelStyle,
+
+        onValueChange = onValueChange
+    )
+}
+
+@Composable
+fun TextBox(
+    modifier : Modifier = Modifier,
+    @androidx.annotation.IntRange(from = 1)
+    minLine : Int = 1,
+    maxLine : Int = 1,
 
     value : String,
     textStyle : TextStyle = MaterialTheme.typography.bodyMedium,
@@ -41,113 +110,99 @@ fun SimpleTextField(
     keyboardType : KeyboardType = KeyboardType.Text,
     keyboardActions : KeyboardActions = KeyboardActions.Default,
 
-    onValueChange : (String) -> Unit,
-) {
-    BasicTextField(
-        modifier = modifier,
-        singleLine = isSingleLine,
+    label : String? = null,
+    labelStyle : TextStyle = MaterialTheme.typography.labelMedium,
 
-        value = value,
-        textStyle = textStyle,
-
-        visualTransformation = if (keyboardType == KeyboardType.Password) PasswordVisualTransformation() else visualTransformation,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = keyboardType,
-            imeAction = imeAction
-        ),
-        keyboardActions = keyboardActions,
-        decorationBox = {
-                innerTextField ->
-            if(value.isEmpty()){
-                Text(
-                    text = hint,
-                    modifier = Modifier.fillMaxWidth(),
-                    style = textStyle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
-                )
-            }else {
-                innerTextField()
-            }
-        },
-        onValueChange = onValueChange,
-    )
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LabelTextField(
-    modifier : Modifier = Modifier,
-
-    @androidx.annotation.IntRange(from = 1)
-    maxLine : Int = 1,
-
-    value : String,
-    textStyle : TextStyle = MaterialTheme.typography.bodyMedium,
-    hint : String? = null,
-
-    visualTransformation : VisualTransformation = VisualTransformation.None,
-    imeAction : ImeAction = ImeAction.Default,
-    keyboardType : KeyboardType = KeyboardType.Text,
-    keyboardActions : KeyboardActions = KeyboardActions.Default,
-
-    label : String,
-    trailing : @Composable (RowScope.() -> Unit)? = null,
-    focusRequester : FocusRequester? = null,
     rememberFocus : MutableState<Boolean> = remember { mutableStateOf(false) },
+    focusRequester : FocusRequester? = null,
+
+    isDivider : Boolean = false,
+    isBorder : Boolean = false,
+    borderShape : Shape = MaterialTheme.shapes.extraSmall,
+    textPadding : Int = 4,
+
+    error : String? = null,
+    errorStyle : TextStyle = MaterialTheme.typography.labelMedium,
 
     onValueChange : (String) -> Unit,
 ) {
-    val labelStyle : TextStyle = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurface)
+
+    val stateColor = when {
+        error != null -> MaterialTheme.colorScheme.error
+        rememberFocus.value -> MaterialTheme.colorScheme.outline
+        else -> MaterialTheme.colorScheme.outlineVariant
+    }
 
     Column(modifier = modifier) {
-        Text(text = label, style = labelStyle)
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        // 라벨 영역
+        label?.let {
+            Text(text = label, style = labelStyle, color = MaterialTheme.colorScheme.outlineVariant)
+        }
+
+        Row(
+            // 보더 영역
+            modifier = if (isBorder) {
+                Modifier
+                    .border(
+                        width = 1.dp,
+                        color = stateColor,
+                        shape = borderShape
+                    )
+                    .padding(textPadding.dp)
+            } else Modifier,
+            verticalAlignment = Alignment.CenterVertically) {
+
+            // 입력 영역
             BasicTextField(
+                modifier = Modifier.weight(1f)
+                    .onFocusChanged {rememberFocus.value = it.isFocused }
+                    .apply {focusRequester?.let { focusRequester(focusRequester = it) }},
+
+                singleLine = maxLine == 1,
+                minLines = minLine,
+                maxLines = maxLine,
                 value = value,
-                onValueChange = onValueChange,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 4.dp)
-                    .onFocusChanged {
-                        rememberFocus.value = it.isFocused
-                    }
-                    .apply {
-                        focusRequester?.let { focusRequester(focusRequester = it) }
-                    },
-                textStyle = textStyle.copy(color = MaterialTheme.colorScheme.onSurface),
+                textStyle = textStyle,
+
+                visualTransformation = if (keyboardType == KeyboardType.Password) PasswordVisualTransformation() else visualTransformation,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = keyboardType,
                     imeAction = imeAction
                 ),
                 keyboardActions = keyboardActions,
-                singleLine = maxLine == 1,
-                maxLines = maxLine,
-                visualTransformation = if (keyboardType == KeyboardType.Password) PasswordVisualTransformation() else visualTransformation,
                 decorationBox = { innerTextField ->
-                    hint?.also {
-                        if (value.isBlank()) {
-                            Text(text = it, style = textStyle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
-                        }
+
+                    // 힌트 영역
+                    if (value.isEmpty()) {
+                        Text(text = hint,  maxLines = maxLine, style = textStyle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
                     }
                     innerTextField()
                 },
-                cursorBrush = SolidColor(value = MaterialTheme.colorScheme.primary)
+                onValueChange = onValueChange,
             )
+
+            // 취소 버튼 영역
             if (rememberFocus.value) {
-                ButtonIcon(idIcon = R.drawable.close_20px, modifier = Modifier.size(18.dp)) {
-                    onValueChange("")
-                }
-                if (trailing != null) {
-                    Spacer(modifier = Modifier.width(12.dp))
-                }
+                ButtonIcon(
+                    modifier = Modifier.size(18.dp),
+                    idIcon = R.drawable.close_20px,
+                    onClick = {
+                        onValueChange("")
+                    }
+                )
             }
-            trailing?.invoke(this)
         }
-        Spacer(modifier = Modifier.height(4.dp))
-        Divider(
-            color = when {
-                rememberFocus.value -> MaterialTheme.colorScheme.outlineVariant
-                value.isBlank() -> MaterialTheme.colorScheme.outline
-                else -> MaterialTheme.colorScheme.outline
-            }
-        )
+
+        // 디바이더 영역
+        if(isDivider){
+            Spacer(modifier = Modifier.height(4.dp))
+            Divider(color = stateColor)
+        }
+
+        // 에러 영역
+        error?.let {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = it, style = errorStyle, color = MaterialTheme.colorScheme.error)
+        }
     }
 }

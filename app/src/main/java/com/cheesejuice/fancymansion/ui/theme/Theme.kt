@@ -52,7 +52,7 @@ fun FancyMansionTheme(
 {
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography
+        typography = typography
     ){
         content()
     }

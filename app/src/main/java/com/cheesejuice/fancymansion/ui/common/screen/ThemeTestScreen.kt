@@ -1,10 +1,14 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
@@ -14,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -24,11 +29,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
+import com.cheesejuice.fancymansion.ui.common.component.BookHolder
 import com.cheesejuice.fancymansion.ui.common.component.ButtonIcon
 import com.cheesejuice.fancymansion.ui.common.component.DropDown
-import com.cheesejuice.fancymansion.ui.common.component.LabelTextField
-import com.cheesejuice.fancymansion.ui.common.component.SimpleTextField
+import com.cheesejuice.fancymansion.ui.common.component.DropdownType
+import com.cheesejuice.fancymansion.ui.common.component.TextBox
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
+import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
+import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
@@ -36,40 +44,17 @@ import com.cheesejuice.fancymansion.ui.theme.yellow
 @Composable
 fun ThemeTestScreen(){
     FancyMansionTheme {
-        Surface {
-            IconTest()
-        }
+
+        ComponentTest()
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun ComponentTest(){
-
     // 배경
-    Column (Modifier.background(MaterialTheme.colorScheme.background)){
+    Column {
         Column(modifier = Modifier.weight(1f)) {
-
-            // 탑바 틴트
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(MaterialTheme.colorScheme.surfaceTint),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                ButtonIcon( idIcon = R.drawable.chevron_left_24px)
-                Spacer(Modifier.width(10.dp))
-                Text(text = "최 상단", style = MaterialTheme.typography.titleMedium)
-
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
-                    ButtonIcon(idIcon = R.drawable.help_40px)
-                    ButtonIcon(idIcon = R.drawable.info_40px)
-                }
-            }
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp))
-
             // 탑바
             Row(modifier = Modifier
                 .fillMaxWidth()
@@ -79,18 +64,8 @@ fun ComponentTest(){
             ){
                 ButtonIcon( idIcon = R.drawable.menu_24px)
                 Spacer(Modifier.width(10.dp))
-                Text(text = "타이틀 테스트", style = MaterialTheme.typography.titleMedium)
-
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
-                    ButtonIcon(idIcon = R.drawable.search_24px)
-                    ButtonIcon(idIcon = R.drawable.settings_24px)
-                    ButtonIcon(idIcon = R.drawable.refresh_24px)
-                }
+                Text(text = "툴바 테스트", style = MaterialTheme.typography.titleLarge)
             }
-
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp))
 
             val list = listOf(
                 Pair("키1", "첫번째 항목"),
@@ -98,7 +73,6 @@ fun ComponentTest(){
                 Pair("키3", "세번째 항목"),
                 Pair("키4", "네번째 항목"))
             val selected = rememberSaveable { mutableStateOf(list[0]) }
-
             DropDown(
                 modifier = Modifier
                     .padding(top = 1.dp)
@@ -106,43 +80,124 @@ fun ComponentTest(){
                 contentPadding = PaddingValues(16.dp),
                 list = list,
                 selectedValue = selected.value,
-                onClick = { pair ->
-                    selected.value = pair
-                }
+                onClick = { pair -> selected.value = pair }
             )
 
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)) {
+                .padding(horizontal = 10.dp)) {
 
-                Row(modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom){
-                    Text("이름:", style = MaterialTheme.typography.titleMedium)
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                    verticalAlignment = Alignment.Top){
 
-                    val cancelMessage = remember { mutableStateOf("") }
-                    SimpleTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textStyle = MaterialTheme.typography.titleMedium,
-                        value = cancelMessage.value,
-                        hint = "이름를 입력하세요",
+                    val focus = remember { mutableStateOf("") }
+                    val error: MutableState<String?> = remember { mutableStateOf(null) }
+                    TextBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        maxLine = 1,
+                        value = focus.value,
+                        hint = "포커스 이동",
+                        label = "포커스 이동",
                         onValueChange = {
-                            cancelMessage.value = it
-                        }
+                            focus.value = it
+                            error.value = if(it.isBlank()) { "텍스트가 입력되지 않았습니다." } else null
+                        },
+                        isDivider = true,
+                        error = error.value
                     )
                 }
 
-                val numberMessage = remember { mutableStateOf("") }
-                LabelTextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = "번호",
-                    value = numberMessage.value,
-                    hint = "예 : 010-1234-5678",
-                    onValueChange = {
-                        numberMessage.value = it
-                    }
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)){
+
+                    val longText = remember { mutableStateOf("") }
+                    TextBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        minLine = 3,
+                        maxLine = 3,
+                        value = longText.value,
+                        hint = "긴 텍스트를 입력하세요",
+                        label = "긴텍스트",
+                        onValueChange = {
+                            longText.value = it
+                        },
+                        isBorder = true
+                    )
+                }
+
+                Divider(
+                    Modifier
+                        .padding(top = 4.dp)
+                        .fillMaxWidth()
+                        .height(1.dp))
+
+                val dropdownList = listOf(
+                    DropdownType(key = "1", title = "삭제하기", onClick = { data -> Log.e("Crane", "${data.title} 삭제하기")}),
+                    DropdownType(key = "2", title = "추가하기", onClick = { data -> Log.e("Crane", "${data.title} 추가하기")}),
+                    DropdownType(key = "3", title = "수정하기", onClick = { data -> Log.e("Crane", "${data.title} 수정하기")}),
+                    DropdownType(key = "4", title = "삭제하기", onClick = { data -> Log.e("Crane", "${data.title} 삭제하기")}),
+                    DropdownType(key = "5", title = "긴 하루 끝", onClick = { data -> Log.e("Crane", "${data.title} 긴 하루 끝")})
                 )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentPadding = PaddingValues(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
+                    item{
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onSurface,
+                            backgroundColor = colorScheme.surface,
+                            dropdown = dropdownList
+                        )
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onSurfaceVariant,
+                            backgroundColor = colorScheme.surfaceVariant,
+                            dropdown = dropdownList
+                        )
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.inverseOnSurface,
+                            backgroundColor = colorScheme.inverseSurface,
+                            dropdown = dropdownList
+                        )
+
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onPrimaryContainer,
+                            backgroundColor = colorScheme.primaryContainer,
+                            dropdown = dropdownList
+                        )
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onSecondaryContainer,
+                            backgroundColor = colorScheme.secondaryContainer,
+                            dropdown = dropdownList
+                        )
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onTertiaryContainer,
+                            backgroundColor = colorScheme.tertiaryContainer,
+                            dropdown = dropdownList
+                        )
+
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onErrorContainer,
+                            backgroundColor = colorScheme.errorContainer,
+                            dropdown = dropdownList
+                        )
+                    }
+                }
             }
         }
         BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = false)
@@ -198,42 +253,71 @@ fun TypographyTest(){
         Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
         Text(text = "Headline Small", style = MaterialTheme.typography.headlineSmall)
 
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 10.dp)) {
 
-        Column {
-            Text(text = "Label Large", style = MaterialTheme.typography.labelLarge)
-            Row {
-                Text(text = "Title Large : ", style = MaterialTheme.typography.titleLarge)
-                Text(text = "Body Large", style = MaterialTheme.typography.bodyLarge)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text("Title Large : ", style = TextStyleGroup.Large.titleStyle)
+
+                val large = remember { mutableStateOf("") }
+                TextBox(
+                    maxLine = 1,
+                    label = "Label Large",
+                    value = large.value,
+                    hint = "Body Large",
+                    onValueChange = {
+                        large.value = it
+                    },
+                    styleGroup = TextStyleGroup.Large
+                )
             }
-        }
 
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text("Title Medium : ", style = TextStyleGroup.Medium.titleStyle)
 
-        Column {
-            Text(text = "Label Medium", style = MaterialTheme.typography.labelMedium)
-            Row {
-                Text(text = "Title Medium : ", style = MaterialTheme.typography.titleMedium)
-                Text(text = "Body Medium", style = MaterialTheme.typography.bodyMedium)
+                val large = remember { mutableStateOf("") }
+                TextBox(
+                    maxLine = 1,
+                    label = "Label Medium",
+                    value = large.value,
+                    hint = "Body Medium",
+                    onValueChange = {
+                        large.value = it
+                    },
+                    styleGroup = TextStyleGroup.Medium
+                )
             }
-        }
 
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text("Title Small : ", style = TextStyleGroup.Small.titleStyle)
 
-        Column {
-            Text(text = "Label Small", style = MaterialTheme.typography.labelSmall)
-            Row {
-                Text(text = "Title Small : ", style = MaterialTheme.typography.titleSmall)
-                Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
+                val large = remember { mutableStateOf("") }
+                TextBox(
+                    maxLine = 1,
+                    label = "Label Small",
+                    value = large.value,
+                    hint = "Body Small",
+                    onValueChange = {
+                        large.value = it
+                    },
+                    styleGroup = TextStyleGroup.Small
+                )
             }
         }
     }

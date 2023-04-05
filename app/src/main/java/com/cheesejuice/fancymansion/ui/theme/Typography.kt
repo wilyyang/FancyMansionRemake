@@ -14,7 +14,13 @@ val SpoqaFontFamily = FontFamily(
     Font(R.font.spoqa_hansans_neo_bold, FontWeight.Bold)
 )
 
-val Typography = Typography(
+enum class TextStyleGroup (val titleStyle : TextStyle, val bodyStyle : TextStyle, val labelStyle : TextStyle) {
+    Large(typography.titleLarge, typography.bodyLarge, typography.labelLarge),
+    Medium(typography.titleMedium, typography.bodyMedium, typography.labelMedium),
+    Small(typography.titleSmall, typography.bodySmall, typography.labelSmall)
+}
+
+val typography = Typography(
     // Display
     displayLarge = TextStyle(
         fontFamily = SpoqaFontFamily,
