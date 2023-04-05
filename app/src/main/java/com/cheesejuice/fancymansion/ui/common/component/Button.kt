@@ -33,7 +33,7 @@ fun BasicButton(
     backgroundColor : Color = MaterialTheme.colorScheme.primary,
 
     text : String? = null,
-    textStyle : TextStyle = MaterialTheme.typography.titleLarge,
+    textStyle : TextStyle = MaterialTheme.typography.headlineSmall,
     textOverflow : TextOverflow = TextOverflow.Clip,
     textMaxLines : Int = Int.MAX_VALUE,
     textColor : Color = MaterialTheme.colorScheme.onPrimary,
@@ -105,7 +105,7 @@ fun BasicButton(
 }
 
 @Composable
-fun BasicIcon(
+fun ButtonIcon(
     modifier : Modifier = Modifier,
     modifierIcon : Modifier = Modifier.fillMaxSize(),
     idIcon : Int,

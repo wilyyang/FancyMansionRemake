@@ -1,18 +1,12 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.Card
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -25,18 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
-import com.cheesejuice.fancymansion.ui.common.component.BasicIcon
+import com.cheesejuice.fancymansion.ui.common.component.ButtonIcon
 import com.cheesejuice.fancymansion.ui.common.component.DropDown
 import com.cheesejuice.fancymansion.ui.common.component.LabelTextField
 import com.cheesejuice.fancymansion.ui.common.component.SimpleTextField
@@ -44,13 +32,12 @@ import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ThemeTestScreen(){
     FancyMansionTheme {
         Surface {
-            ComponentTest()
+            IconTest()
         }
     }
 }
@@ -70,13 +57,13 @@ fun ComponentTest(){
                 .background(MaterialTheme.colorScheme.surfaceTint),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                BasicIcon( idIcon = R.drawable.chevron_left_24px)
+                ButtonIcon( idIcon = R.drawable.chevron_left_24px)
                 Spacer(Modifier.width(10.dp))
                 Text(text = "최 상단", style = MaterialTheme.typography.titleMedium)
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
-                    BasicIcon(idIcon = R.drawable.help_40px)
-                    BasicIcon(idIcon = R.drawable.info_40px)
+                    ButtonIcon(idIcon = R.drawable.help_40px)
+                    ButtonIcon(idIcon = R.drawable.info_40px)
                 }
             }
             Divider(modifier = Modifier
@@ -90,14 +77,14 @@ fun ComponentTest(){
                 .background(MaterialTheme.colorScheme.surface),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                BasicIcon( idIcon = R.drawable.menu_24px)
+                ButtonIcon( idIcon = R.drawable.menu_24px)
                 Spacer(Modifier.width(10.dp))
                 Text(text = "타이틀 테스트", style = MaterialTheme.typography.titleMedium)
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
-                    BasicIcon(idIcon = R.drawable.search_24px)
-                    BasicIcon(idIcon = R.drawable.settings_24px)
-                    BasicIcon(idIcon = R.drawable.refresh_24px)
+                    ButtonIcon(idIcon = R.drawable.search_24px)
+                    ButtonIcon(idIcon = R.drawable.settings_24px)
+                    ButtonIcon(idIcon = R.drawable.refresh_24px)
                 }
             }
 
@@ -124,7 +111,9 @@ fun ComponentTest(){
                 }
             )
 
-            Column(modifier = Modifier.fillMaxSize().padding(10.dp)) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)) {
 
                 Row(modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Bottom){
@@ -192,90 +181,16 @@ fun IconTest(){
             columns = GridCells.Adaptive(minSize = 128.dp)
         ){
             items(listId) { (id, color) ->
-                Simple(id, color)
-            }
-        }
-    }
-
-}
-
-@Composable
-fun Simple(imageId:Int, color:Color? = null){
-    Column(
-        Modifier
-            .wrapContentSize()
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface,
-                shape = MaterialTheme.shapes.extraSmall
-            )) {
-        Icon(painter = painterResource(id = imageId), tint = color?:LocalContentColor.current, contentDescription = null)
-    }
-}
-
-
-@Composable
-fun ShapeTest(){
-    Dialog(onDismissRequest = { /*TODO*/ }) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            shape = MaterialTheme.shapes.extraLarge
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(text = "대화상자 타이틀", style = MaterialTheme.typography.titleLarge)
-                Column {
-                    Holder()
-                    Holder()
-                }
-
-                Row{
-                    Selector()
-                    Selector()
-                    Selector()
-                }
-
-                Column{
-                    ShapeHolder(text = "extraSmall", shape = MaterialTheme.shapes.extraSmall)
-                    ShapeHolder(text = "small", shape = MaterialTheme.shapes.small)
-                    ShapeHolder(text = "medium", shape = MaterialTheme.shapes.medium)
-                    ShapeHolder(text = "large", shape = MaterialTheme.shapes.large)
-                    ShapeHolder(text = "extraLarge", shape = MaterialTheme.shapes.extraLarge)
-                }
+                Icon(
+                    painter = painterResource(id = id),
+                    contentDescription = null,
+                    tint = color?: LocalContentColor.current
+                )
             }
         }
     }
 }
 
-@Composable
-fun Holder(){
-    Card(modifier = Modifier
-        .padding(vertical = 5.dp)
-        .fillMaxWidth(), shape = MaterialTheme.shapes.medium) {
-        Column(modifier = Modifier.padding(10.dp)) {
-            Text(text = "홀더 타이틀", style = MaterialTheme.typography.titleMedium)
-            Row{
-                Text(text = "내용 타이틀 : ", style = MaterialTheme.typography.titleSmall)
-                Text(text = "내용 기입 스타일", style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-    }
-}
-
-@Composable
-fun Selector(){
-    Card(modifier = Modifier.padding(4.dp), shape = MaterialTheme.shapes.small) {
-        Text(modifier = Modifier.padding(4.dp), text = "설렉터", style = MaterialTheme.typography.labelLarge)
-    }
-}
-
-@Composable
-fun ShapeHolder(text : String, shape: Shape){
-    Card(modifier = Modifier.padding(4.dp), shape = shape) {
-        Text(modifier = Modifier.padding(10.dp), text = text, style = MaterialTheme.typography.labelLarge)
-    }
-}
 @Composable
 fun TypographyTest(){
     Column {
@@ -288,160 +203,149 @@ fun TypographyTest(){
                 .height(1.dp)
                 .fillMaxWidth())
 
-        Text(text = "Title Large", style = MaterialTheme.typography.titleLarge)
-        Text(text = "Title Medium", style = MaterialTheme.typography.titleMedium)
-        Text(text = "Title Small", style = MaterialTheme.typography.titleSmall)
+        Column {
+            Text(text = "Label Large", style = MaterialTheme.typography.labelLarge)
+            Row {
+                Text(text = "Title Large : ", style = MaterialTheme.typography.titleLarge)
+                Text(text = "Body Large", style = MaterialTheme.typography.bodyLarge)
+            }
+        }
 
         Divider(
             Modifier
                 .height(1.dp)
                 .fillMaxWidth())
 
-        Text(text = "Body Large", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Body Medium", style = MaterialTheme.typography.bodyMedium)
-        Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
+        Column {
+            Text(text = "Label Medium", style = MaterialTheme.typography.labelMedium)
+            Row {
+                Text(text = "Title Medium : ", style = MaterialTheme.typography.titleMedium)
+                Text(text = "Body Medium", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
 
         Divider(
             Modifier
                 .height(1.dp)
                 .fillMaxWidth())
 
-        Text(text = "Label Large", style = MaterialTheme.typography.labelLarge)
-        Text(text = "Label Medium", style = MaterialTheme.typography.labelMedium)
-        Text(text = "Label Small", style = MaterialTheme.typography.labelSmall)
-
-        Divider(
-            Modifier
-                .height(1.dp)
-                .fillMaxWidth())
+        Column {
+            Text(text = "Label Small", style = MaterialTheme.typography.labelSmall)
+            Row {
+                Text(text = "Title Small : ", style = MaterialTheme.typography.titleSmall)
+                Text(text = "Body Small", style = MaterialTheme.typography.bodySmall)
+            }
+        }
     }
 }
 
 @Composable
 fun ColorTest(){
-    Column (Modifier.scrollable(
-        orientation = Orientation.Vertical,
+    Column (Modifier.verticalScroll(
         state = rememberScrollState()
     )){
-        ClickHolder(
+        BasicButton(
             text = "background",
-            background = MaterialTheme.colorScheme.background,
+            backgroundColor = MaterialTheme.colorScheme.background,
             textColor = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(Modifier.height(20.dp))
-        ClickHolder(
+        BasicButton(
             text = "surface",
-            background = MaterialTheme.colorScheme.surface,
+            backgroundColor = MaterialTheme.colorScheme.surface,
             textColor = MaterialTheme.colorScheme.onSurface
         )
-        ClickHolder(
+        BasicButton(
             text = "surfaceVariant",
-            background = MaterialTheme.colorScheme.surfaceVariant,
+            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        ClickHolder(
+        BasicButton(
             text = "inverseSurface",
-            background = MaterialTheme.colorScheme.inverseSurface,
+            backgroundColor = MaterialTheme.colorScheme.inverseSurface,
             textColor = MaterialTheme.colorScheme.inverseOnSurface
         )
-        ClickHolder(
+        BasicButton(
             text = "surfaceTint",
-            background = MaterialTheme.colorScheme.surfaceTint,
+            backgroundColor = MaterialTheme.colorScheme.surfaceTint,
             textColor = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(Modifier.height(20.dp))
 
-        ClickHolder(
+        BasicButton(
             text = "outline",
-            background = MaterialTheme.colorScheme.background,
+            backgroundColor = MaterialTheme.colorScheme.background,
             textColor = MaterialTheme.colorScheme.outline
         )
 
-        ClickHolder(
+        BasicButton(
             text = "outlineVariant",
-            background = MaterialTheme.colorScheme.background,
+            backgroundColor = MaterialTheme.colorScheme.background,
             textColor = MaterialTheme.colorScheme.outlineVariant
         )
 
         Spacer(Modifier.height(20.dp))
 
-        ClickHolder(
+        BasicButton(
             text = "primary",
-            background = MaterialTheme.colorScheme.primary,
+            backgroundColor = MaterialTheme.colorScheme.primary,
             textColor = MaterialTheme.colorScheme.onPrimary
         )
 
-        ClickHolder(
+        BasicButton(
             text = "primaryContainer",
-            background = MaterialTheme.colorScheme.primaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
             textColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
 
-        ClickHolder(
+        BasicButton(
             text = "inversePrimary",
-            background = MaterialTheme.colorScheme.primary,
+            backgroundColor = MaterialTheme.colorScheme.primary,
             textColor = MaterialTheme.colorScheme.inversePrimary
         )
 
         Spacer(Modifier.height(20.dp))
 
-        ClickHolder(
+        BasicButton(
             text = "secondary",
-            background = MaterialTheme.colorScheme.secondary,
+            backgroundColor = MaterialTheme.colorScheme.secondary,
             textColor = MaterialTheme.colorScheme.onSecondary
         )
 
-        ClickHolder(
+        BasicButton(
             text = "secondaryContainer",
-            background = MaterialTheme.colorScheme.secondaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
             textColor = MaterialTheme.colorScheme.onSecondaryContainer
         )
 
         Spacer(Modifier.height(20.dp))
 
-        ClickHolder(
+        BasicButton(
             text = "tertiary",
-            background = MaterialTheme.colorScheme.tertiary,
+            backgroundColor = MaterialTheme.colorScheme.tertiary,
             textColor = MaterialTheme.colorScheme.onTertiary
         )
 
-        ClickHolder(
+        BasicButton(
             text = "tertiaryContainer",
-            background = MaterialTheme.colorScheme.tertiaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
             textColor = MaterialTheme.colorScheme.onTertiaryContainer
         )
 
         Spacer(Modifier.height(20.dp))
 
-        ClickHolder(
+        BasicButton(
             text = "error",
-            background = MaterialTheme.colorScheme.error,
+            backgroundColor = MaterialTheme.colorScheme.error,
             textColor = MaterialTheme.colorScheme.onError
         )
 
-        ClickHolder(
+        BasicButton(
             text = "errorContainer",
-            background = MaterialTheme.colorScheme.errorContainer,
+            backgroundColor = MaterialTheme.colorScheme.errorContainer,
             textColor = MaterialTheme.colorScheme.onErrorContainer
         )
     }
-}
-
-@Composable
-fun ColumnScope.ClickHolder(text : String, background : Color, textColor : Color) {
-    Text(modifier = Modifier
-        .weight(1f)
-        .fillMaxWidth()
-        .background(background)
-        .clickable { }
-        .border(
-            width = 1.dp,
-            color = Color.Black
-        ),
-        text = text,
-        style = MaterialTheme.typography.titleLarge,
-        color = textColor
-    )
 }

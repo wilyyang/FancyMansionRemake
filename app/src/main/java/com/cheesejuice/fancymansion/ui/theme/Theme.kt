@@ -1,16 +1,8 @@
 package com.cheesejuice.fancymansion.ui.theme
 
-import android.app.Activity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.text.TextStyle
-import androidx.core.view.ViewCompat
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,
@@ -19,11 +11,11 @@ private val LightColorScheme = lightColorScheme(
     onPrimaryContainer = black,
     inversePrimary = primary_inverse,
     secondary = secondary_40,
-    onSecondary = black,
+    onSecondary = white,
     secondaryContainer = secondary_90,
     onSecondaryContainer = black,
     tertiary = tertiary_40,
-    onTertiary = black,
+    onTertiary = white,
     tertiaryContainer = tertiary_90,
     onTertiaryContainer = black,
 
@@ -32,71 +24,32 @@ private val LightColorScheme = lightColorScheme(
     onSurface = black,
     background = n_90,
     onBackground = black,
+
+    // not focus color
     surfaceVariant = n_80,
     onSurfaceVariant = n_50,
+    // disabled color
     inverseSurface = n_65,
-    inverseOnSurface = n_50,
+    inverseOnSurface = n_40,
 
     error = error_50,
-    onError = black,
+    onError = white,
     errorContainer = error_90,
     onErrorContainer = black,
-    outline = n_50,
-    outlineVariant = n_80
+
+
+    outline = black,
+    // not focus color
+    outlineVariant = n_50
 )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = primary_50,
-    onPrimary = n_10,
-    primaryContainer = primary_10,
-    onPrimaryContainer = black,
-    inversePrimary = primary_inverse,
-    secondary = secondary_60,
-    onSecondary = black,
-    secondaryContainer = secondary_10,
-    onSecondaryContainer = black,
-    tertiary = tertiary_60,
-    onTertiary = black,
-    tertiaryContainer = tertiary_10,
-    onTertiaryContainer = black,
-
-    surfaceTint = black,
-    surface = black,
-    onSurface = n_90,
-    background = n_10,
-    onBackground = n_90,
-    surfaceVariant = n_20,
-    onSurfaceVariant = n_50,
-    inverseSurface = n_35,
-    inverseOnSurface = n_50,
-
-    error = error_50,
-    onError = n_90,
-    errorContainer = error_10,
-    onErrorContainer = n_90,
-    outline = n_50,
-    outlineVariant = n_20
-)
+// Default 값은 MaterialTheme 에서 참조하고 Default가 아닌 경우 해당 객체에서 직접 참조
+var colorScheme = LightColorScheme
 
 @Composable
 fun FancyMansionTheme(
-    darkTheme : Boolean = isSystemInDarkTheme(),
     content : @Composable () -> Unit)
 {
-    val colorScheme = when {
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
-        }
-    }
-
-    TextStyle.Default
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography

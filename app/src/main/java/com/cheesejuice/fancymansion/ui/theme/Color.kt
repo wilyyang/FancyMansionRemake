@@ -12,7 +12,6 @@ val primary_30 = Color(0xFF_95256E)
 val primary_20 = Color(0xFF_741D55)
 val primary_10 = Color(0xFF_53153D)
 
-
 val primary_inverse = Color(0xFF_F2A830)
 
 val secondary_90 = Color(0xFF_FEFDF5)

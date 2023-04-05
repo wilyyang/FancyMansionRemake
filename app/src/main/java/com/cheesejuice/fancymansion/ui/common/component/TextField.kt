@@ -132,7 +132,7 @@ fun LabelTextField(
                 cursorBrush = SolidColor(value = MaterialTheme.colorScheme.primary)
             )
             if (rememberFocus.value) {
-                BasicIcon(idIcon = R.drawable.close_20px, modifier = Modifier.size(18.dp)) {
+                ButtonIcon(idIcon = R.drawable.close_20px, modifier = Modifier.size(18.dp)) {
                     onValueChange("")
                 }
                 if (trailing != null) {
