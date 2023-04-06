@@ -19,7 +19,6 @@ private val LightColorScheme = lightColorScheme(
     tertiaryContainer = tertiary_90,
     onTertiaryContainer = black,
 
-    surfaceTint = white,
     surface = white,
     onSurface = black,
     background = n_90,
@@ -27,10 +26,14 @@ private val LightColorScheme = lightColorScheme(
 
     // not focus color
     surfaceVariant = n_80,
-    onSurfaceVariant = n_50,
     // disabled color
-    inverseSurface = n_65,
-    inverseOnSurface = n_40,
+    surfaceTint = n_65,
+
+    // not focus / disabled text
+    onSurfaceVariant = n_50,
+
+    inverseSurface = black,
+    inverseOnSurface = white,
 
     error = error_50,
     onError = white,

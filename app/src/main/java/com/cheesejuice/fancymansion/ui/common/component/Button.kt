@@ -1,5 +1,6 @@
 package com.cheesejuice.fancymansion.ui.common.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -13,6 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -49,7 +52,7 @@ fun BasicButton(
 ) {
     val (finalBackgroundColor, finalTextColor) = when (isClickable) {
         true -> backgroundColor to textColor
-        false -> MaterialTheme.colorScheme.inverseSurface to MaterialTheme.colorScheme.inverseOnSurface
+        false -> MaterialTheme.colorScheme.surfaceTint to MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     Row(
@@ -105,6 +108,30 @@ fun BasicButton(
 }
 
 @Composable
+fun ButtonIconFixed(
+    modifier : Modifier = Modifier,
+    idIcon : Int,
+    tint : Color = LocalContentColor.current,
+    onClick : () -> Unit = {},
+) {
+    val rememberOnClick by rememberUpdatedState(newValue = OnSingleClickListener(onSingleClick = onClick))
+    IconButton(
+        onClick = { rememberOnClick.invoke() },
+        modifier = modifier
+    ) {
+        Image(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .fillMaxHeight(),
+            painter = painterResource(id = idIcon),
+            contentDescription = null,
+            contentScale = ContentScale.None,
+            colorFilter = ColorFilter.tint(tint)
+        )
+    }
+}
+
+@Composable
 fun ButtonIcon(
     modifier : Modifier = Modifier,
     modifierIcon : Modifier = Modifier.fillMaxSize(),
@@ -142,7 +169,7 @@ fun DropDown(
 ) {
     val (finalBackgroundColor, finalTextColor) = when (isClickable) {
         true -> backgroundColor to textColor
-        false -> MaterialTheme.colorScheme.inverseSurface to MaterialTheme.colorScheme.inverseOnSurface
+        false -> MaterialTheme.colorScheme.surfaceTint to MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     var dropDownWidth by remember { mutableStateOf(0) }

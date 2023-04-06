@@ -1,17 +1,16 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -28,13 +27,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.ui.common.component.BasicButton
-import com.cheesejuice.fancymansion.ui.common.component.BookHolder
-import com.cheesejuice.fancymansion.ui.common.component.ButtonIcon
-import com.cheesejuice.fancymansion.ui.common.component.DropDown
-import com.cheesejuice.fancymansion.ui.common.component.DropdownType
-import com.cheesejuice.fancymansion.ui.common.component.TextBox
-import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
+import com.cheesejuice.fancymansion.ui.common.component.*
+import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenBottomSheet
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.green
@@ -43,30 +37,50 @@ import com.cheesejuice.fancymansion.ui.theme.yellow
 
 @Composable
 fun ThemeTestScreen(){
-    FancyMansionTheme {
-
-        ComponentTest()
-    }
+    BaseStructureTest()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true)
+@Composable
+fun BaseStructureTest() {
+    val menuList = listOf(
+        MenuType(key = "1", title = "삭제하기",   onClick = { data -> Log.e("Crane", "${data.name} 삭제하기")}),
+        MenuType(key = "2", title = "추가하기",   onClick = { data -> Log.e("Crane", "${data.name} 추가하기")}),
+        MenuType(key = "3", title = "수정하기",   onClick = { data -> Log.e("Crane", "${data.name} 수정하기")}),
+        MenuType(key = "4", title = "삭제하기",   onClick = { data -> Log.e("Crane", "${data.name} 삭제하기")}),
+        MenuType(key = "5", title = "긴 하루 끝", onClick = { data -> Log.e("Crane", "${data.name} 긴 하루 끝")})
+    )
+
+    BaseScreenBottomSheet(
+        title = "기본 화면 보여주기",
+        idNavigationIcon = R.drawable.menu_24px,
+        onClickNavigation = null,
+        bottomSheetContent = {
+            Surface(modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer)) {
+                
+            }
+        }
+    ) { _, _ ->
+        ComponentTest()
+    }
+
+    // BaseScreen(
+    //     title = "기본 화면 보여주기",
+    //     idNavigationIcon = R.drawable.menu_24px,
+    //     onClickNavigation = {  }
+    // ) { _, _ ->
+    //     ComponentTest()
+    // }
+}
 @Composable
 fun ComponentTest(){
     // 배경
     Column {
-        Column(modifier = Modifier.weight(1f)) {
-            // 탑바
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(MaterialTheme.colorScheme.surface),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                ButtonIcon( idIcon = R.drawable.menu_24px)
-                Spacer(Modifier.width(10.dp))
-                Text(text = "툴바 테스트", style = MaterialTheme.typography.titleLarge)
-            }
-
+        Column(modifier = Modifier.weight(0.7f)) {
             val list = listOf(
                 Pair("키1", "첫번째 항목"),
                 Pair("키2", "두번째 항목"),
@@ -162,12 +176,6 @@ fun ComponentTest(){
                             modifier = Modifier.padding(vertical = 4.dp),
                             textColor = colorScheme.onSurfaceVariant,
                             backgroundColor = colorScheme.surfaceVariant,
-                            dropdown = dropdownList
-                        )
-                        BookHolder(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            textColor = colorScheme.inverseOnSurface,
-                            backgroundColor = colorScheme.inverseSurface,
                             dropdown = dropdownList
                         )
 
@@ -344,16 +352,6 @@ fun ColorTest(){
             text = "surfaceVariant",
             backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        BasicButton(
-            text = "inverseSurface",
-            backgroundColor = MaterialTheme.colorScheme.inverseSurface,
-            textColor = MaterialTheme.colorScheme.inverseOnSurface
-        )
-        BasicButton(
-            text = "surfaceTint",
-            backgroundColor = MaterialTheme.colorScheme.surfaceTint,
-            textColor = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(Modifier.height(20.dp))

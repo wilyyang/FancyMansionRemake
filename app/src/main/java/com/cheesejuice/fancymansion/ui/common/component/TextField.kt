@@ -183,7 +183,7 @@ fun TextBox(
 
             // 취소 버튼 영역
             if (rememberFocus.value) {
-                ButtonIcon(
+                ButtonIconFixed(
                     modifier = Modifier.size(18.dp),
                     idIcon = R.drawable.close_20px,
                     onClick = {

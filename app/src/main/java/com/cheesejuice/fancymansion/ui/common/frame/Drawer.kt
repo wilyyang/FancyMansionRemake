@@ -1,6 +1,5 @@
 package com.cheesejuice.fancymansion.ui.common.component
 
-import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -16,18 +16,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.cheesejuice.fancymansion.R
 
-@Preview
+data class TestUser(val name: String, val email: String?, val userPhoto: String?)
+
+class MenuType(val key : String, val title : String, val onClick : (item: TestUser) -> Unit)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Drawer() {
+fun MainDrawer(
+    userInfo : TestUser = TestUser(name = "갑동이", email = "ehdrnr1178@gmail.com", userPhoto = null),
+    menuItems : List<MenuType>,
+    onClickSetting: () -> Unit = {},
+    onClickAccount: () -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,10 +48,12 @@ fun Drawer() {
                 .wrapContentHeight(),
             horizontalArrangement = Arrangement.End
         ) {
-            ButtonIcon(
+            ButtonIconFixed(
                 modifier = Modifier.size(48.dp),
                 idIcon = R.drawable.settings_24px
-            )
+            ){
+                onClickSetting()
+            }
         }
 
         // 계정 정보
@@ -54,7 +64,10 @@ fun Drawer() {
         ) {
             val context = LocalContext.current
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = rememberAsyncImagePainter(
+                    model = userInfo.userPhoto ?: R.drawable.person_24px,
+                    placeholder = painterResource(id = R.drawable.ic_launcher_foreground)
+                ),
                 contentDescription = "profile",
                 modifier = Modifier.size(52.dp).clip(CircleShape).clickable {},
                 contentScale = ContentScale.Crop
@@ -65,14 +78,16 @@ fun Drawer() {
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max)
                     .padding(start = 24.dp)
-                    .clickable {}
+                    .clickable {
+                        onClickAccount()
+                    }
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text =  "UNKNOWN",
+                        text = userInfo.name,
                         style = MaterialTheme.typography.headlineSmall,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -86,12 +101,14 @@ fun Drawer() {
                     )
                 }
                 Text(
-                    text = "ehdrnr1178@gmail.com"
+                    text = userInfo.email?: "UNKNOWN",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
                 )
             }
         }
 
-        // 메뉴 들어가는 곳
+        // 메뉴
         LazyVerticalStaggeredGrid(
             modifier = Modifier
                 .weight(1f)
@@ -101,6 +118,22 @@ fun Drawer() {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            items(menuItems) {
+                    menuItem ->
+                BasicButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .shadow(8.dp, shape = MaterialTheme.shapes.small),
+                    contentPadding = PaddingValues(vertical = 24.dp),
+                    text = menuItem.title,
+                    textStyle = MaterialTheme.typography.titleLarge,
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    textColor = MaterialTheme.colorScheme.onSurface,
+                ) {
+                    menuItem.onClick(userInfo)
+                }
+            }
         }
     }
 }
