@@ -1,5 +1,7 @@
 package com.cheesejuice.fancymansion.ui.common.frame
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
@@ -10,8 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.cheesejuice.fancymansion.ui.common.component.MainDrawer
 import com.cheesejuice.fancymansion.ui.common.component.TopBar
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
 import kotlinx.coroutines.CoroutineScope
@@ -107,17 +112,19 @@ fun BaseScreenDrawer(
     bottomSheetPeek : Dp = 0.dp,
     bottomSheetContent : @Composable ColumnScope.() -> Unit,
 
+    drawerState : DrawerState,
+    drawerContent : @Composable (scaffoldState : BottomSheetScaffoldState, scope : CoroutineScope) -> Unit,
     content : @Composable (scaffoldState : BottomSheetScaffoldState, scope : CoroutineScope) -> Unit
 ) {
-
     FancyMansionTheme {
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
-
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet(
-                    content = { }
+                    drawerShape = RectangleShape,
+                    content = {
+                        drawerContent(state, scope)
+                    }
                 )
             },
             content = {

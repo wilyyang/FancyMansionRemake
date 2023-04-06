@@ -9,17 +9,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,11 +24,14 @@ import androidx.compose.ui.unit.dp
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.*
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenBottomSheet
+import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenDrawer
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ThemeTestScreen(){
@@ -51,22 +49,50 @@ fun BaseStructureTest() {
         MenuType(key = "4", title = "삭제하기",   onClick = { data -> Log.e("Crane", "${data.name} 삭제하기")}),
         MenuType(key = "5", title = "긴 하루 끝", onClick = { data -> Log.e("Crane", "${data.name} 긴 하루 끝")})
     )
-
-    BaseScreenBottomSheet(
+    val state : BottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope : CoroutineScope = rememberCoroutineScope()
+    BaseScreenDrawer(
         title = "기본 화면 보여주기",
         idNavigationIcon = R.drawable.menu_24px,
-        onClickNavigation = null,
+        state = state,
+        scope = scope,
+        onClickNavigation = {
+            scope.launch {
+                drawerState.open()
+            }
+        },
         bottomSheetContent = {
             Surface(modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
                 .background(MaterialTheme.colorScheme.primaryContainer)) {
-                
+
             }
+        },
+        drawerState = drawerState,
+        drawerContent = { state, scope ->
+            MainDrawer(menuItems = menuList)
         }
     ) { _, _ ->
         ComponentTest()
     }
+
+    // BaseScreenBottomSheet(
+    //     title = "기본 화면 보여주기",
+    //     idNavigationIcon = R.drawable.menu_24px,
+    //     onClickNavigation = null,
+    //     bottomSheetContent = {
+    //         Surface(modifier = Modifier
+    //             .fillMaxWidth()
+    //             .height(200.dp)
+    //             .background(MaterialTheme.colorScheme.primaryContainer)) {
+    //
+    //         }
+    //     }
+    // ) { _, _ ->
+    //     ComponentTest()
+    // }
 
     // BaseScreen(
     //     title = "기본 화면 보여주기",
