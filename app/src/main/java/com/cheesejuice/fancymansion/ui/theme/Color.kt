@@ -39,6 +39,7 @@ val error_50 = Color(0xFF_DA3B2B)
 val error_10 = Color(0xFF_610A02)
 
 val white = Color(0xFF_FFFFFF)
+val n_95  = Color(0xFF_FDFEFF)
 val n_90  = Color(0xFF_F9FAFC)
 val n_85  = Color(0xFF_F0F2F5)
 val n_80  = Color(0xFF_EDEEF0)

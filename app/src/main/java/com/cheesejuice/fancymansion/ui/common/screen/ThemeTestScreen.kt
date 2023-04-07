@@ -27,6 +27,7 @@ import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenBottomSheet
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenDrawer
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
+import com.cheesejuice.fancymansion.ui.theme.disableAlpha
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
@@ -120,7 +121,8 @@ fun ComponentTest(){
                 contentPadding = PaddingValues(16.dp),
                 list = list,
                 selectedValue = selected.value,
-                onClick = { pair -> selected.value = pair }
+                onClick = { pair -> selected.value = pair },
+                isClickable = true
             )
 
             Column(modifier = Modifier
@@ -136,17 +138,48 @@ fun ComponentTest(){
                     val error: MutableState<String?> = remember { mutableStateOf(null) }
                     TextBox(
                         modifier = Modifier.fillMaxWidth(),
-                        textStyle = MaterialTheme.typography.bodyMedium,
-                        maxLine = 1,
                         value = focus.value,
                         hint = "포커스 이동",
-                        label = "포커스 이동",
                         onValueChange = {
                             focus.value = it
                             error.value = if(it.isBlank()) { "텍스트가 입력되지 않았습니다." } else null
                         },
-                        isDivider = true,
+                        isBorder = true,
                         error = error.value
+                    )
+                }
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                    verticalAlignment = Alignment.Top){
+
+                    TextBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = "안쓰는 텍스트",
+                        hint = "안쓰는 텍스트",
+                        onValueChange = {},
+                        isEnabled = false,
+                        isBorder = true
+                    )
+                }
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                    verticalAlignment = Alignment.Top){
+
+                    val labelText = remember { mutableStateOf("") }
+
+                    TextBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = "라벨",
+                        value = labelText.value,
+                        hint = "안쓰는 텍스트",
+                        onValueChange =  {
+                            labelText.value = it
+                        },
+                        isDivider = true
                     )
                 }
 
@@ -158,8 +191,8 @@ fun ComponentTest(){
                     TextBox(
                         modifier = Modifier.fillMaxWidth(),
                         textStyle = MaterialTheme.typography.bodyMedium,
-                        minLine = 3,
-                        maxLine = 3,
+                        minLine = 2,
+                        maxLine = 2,
                         value = longText.value,
                         hint = "긴 텍스트를 입력하세요",
                         label = "긴텍스트",
@@ -204,6 +237,12 @@ fun ComponentTest(){
                             backgroundColor = colorScheme.surfaceVariant,
                             dropdown = dropdownList
                         )
+                        BookHolder(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            textColor = colorScheme.onSurface.copy(alpha = disableAlpha),
+                            backgroundColor = colorScheme.surface.copy(alpha = disableAlpha),
+                            dropdown = dropdownList
+                        )
 
                         BookHolder(
                             modifier = Modifier.padding(vertical = 4.dp),
@@ -221,13 +260,6 @@ fun ComponentTest(){
                             modifier = Modifier.padding(vertical = 4.dp),
                             textColor = colorScheme.onTertiaryContainer,
                             backgroundColor = colorScheme.tertiaryContainer,
-                            dropdown = dropdownList
-                        )
-
-                        BookHolder(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            textColor = colorScheme.onErrorContainer,
-                            backgroundColor = colorScheme.errorContainer,
                             dropdown = dropdownList
                         )
                     }

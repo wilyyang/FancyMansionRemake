@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.OnSingleClickListener
 import com.cheesejuice.fancymansion.ui.common.clickSingle
+import com.cheesejuice.fancymansion.ui.theme.disableAlpha
 
 @Composable
 fun BasicButton(
@@ -52,7 +53,7 @@ fun BasicButton(
 ) {
     val (finalBackgroundColor, finalTextColor) = when (isClickable) {
         true -> backgroundColor to textColor
-        false -> MaterialTheme.colorScheme.surfaceTint to MaterialTheme.colorScheme.onSurfaceVariant
+        false -> backgroundColor.copy(alpha = disableAlpha) to textColor.copy(alpha = disableAlpha)
     }
 
     Row(
@@ -169,7 +170,7 @@ fun DropDown(
 ) {
     val (finalBackgroundColor, finalTextColor) = when (isClickable) {
         true -> backgroundColor to textColor
-        false -> MaterialTheme.colorScheme.surfaceTint to MaterialTheme.colorScheme.onSurfaceVariant
+        false -> backgroundColor.copy(alpha = disableAlpha) to textColor.copy(alpha = disableAlpha)
     }
 
     var dropDownWidth by remember { mutableStateOf(0) }
@@ -204,7 +205,7 @@ fun DropDown(
         ) {
             list.forEach {
                 DropdownMenuItem(
-                    text = { Text(text = it.second, color = textColor, modifier = Modifier.fillMaxWidth()) },
+                    text = { Text(text = it.second, style = textStyle, color = textColor, modifier = Modifier.fillMaxWidth()) },
                     onClick = {
                         expanded = false
                         onClick.invoke(it)

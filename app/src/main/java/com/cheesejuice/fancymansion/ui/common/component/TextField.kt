@@ -1,5 +1,6 @@
 package com.cheesejuice.fancymansion.ui.common.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
+import com.cheesejuice.fancymansion.ui.theme.disableAlpha
 
 @Composable
 fun TextBox(
@@ -60,6 +63,7 @@ fun TextBox(
 
     styleGroup : TextStyleGroup = TextStyleGroup.Medium,
 
+    isEnabled : Boolean = true,
     onValueChange : (String) -> Unit,
 ) {
     TextBox(
@@ -90,6 +94,7 @@ fun TextBox(
         textStyle = styleGroup.bodyStyle,
         errorStyle = styleGroup.labelStyle,
 
+        isEnabled = isEnabled,
         onValueChange = onValueChange
     )
 }
@@ -124,13 +129,21 @@ fun TextBox(
     error : String? = null,
     errorStyle : TextStyle = MaterialTheme.typography.labelMedium,
 
+    isEnabled : Boolean = true,
     onValueChange : (String) -> Unit,
 ) {
 
-    val stateColor = when {
+    val finalBackgroundColor = when {
+        !isEnabled -> MaterialTheme.colorScheme.surface.copy(alpha = disableAlpha)
+        rememberFocus.value -> MaterialTheme.colorScheme.surface
+        else -> MaterialTheme.colorScheme.surfaceVariant // not focus
+    }
+
+    val contentColor = when {
+        !isEnabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = disableAlpha)
         error != null -> MaterialTheme.colorScheme.error
-        rememberFocus.value -> MaterialTheme.colorScheme.outline
-        else -> MaterialTheme.colorScheme.outlineVariant
+        rememberFocus.value -> MaterialTheme.colorScheme.onSurface
+        else -> MaterialTheme.colorScheme.onSurfaceVariant // not focus
     }
 
     Column(modifier = modifier) {
@@ -141,15 +154,17 @@ fun TextBox(
 
         Row(
             // 보더 영역
-            modifier = if (isBorder) {
-                Modifier
-                    .border(
-                        width = 1.dp,
-                        color = stateColor,
-                        shape = borderShape
-                    )
-                    .padding(textPadding.dp)
-            } else Modifier,
+            modifier = (
+                if (isBorder) {
+                    Modifier
+                        .border(
+                            width = 1.dp,
+                            color = contentColor,
+                            shape = borderShape
+                        )
+                        .background(finalBackgroundColor)
+                        .padding(textPadding.dp)
+                } else Modifier),
             verticalAlignment = Alignment.CenterVertically) {
 
             // 입력 영역
@@ -157,12 +172,13 @@ fun TextBox(
                 modifier = Modifier.weight(1f)
                     .onFocusChanged {rememberFocus.value = it.isFocused }
                     .apply {focusRequester?.let { focusRequester(focusRequester = it) }},
+                enabled = isEnabled,
 
                 singleLine = maxLine == 1,
                 minLines = minLine,
                 maxLines = maxLine,
                 value = value,
-                textStyle = textStyle,
+                textStyle = textStyle.copy(color = contentColor),
 
                 visualTransformation = if (keyboardType == KeyboardType.Password) PasswordVisualTransformation() else visualTransformation,
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -173,7 +189,7 @@ fun TextBox(
                 decorationBox = { innerTextField ->
 
                     // 힌트 영역
-                    if (value.isEmpty()) {
+                    if (isEnabled && value.isEmpty()) {
                         Text(text = hint,  maxLines = maxLine, style = textStyle.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
                     }
                     innerTextField()
@@ -196,7 +212,7 @@ fun TextBox(
         // 디바이더 영역
         if(isDivider){
             Spacer(modifier = Modifier.height(4.dp))
-            Divider(color = stateColor)
+            Divider(color = contentColor)
         }
 
         // 에러 영역
