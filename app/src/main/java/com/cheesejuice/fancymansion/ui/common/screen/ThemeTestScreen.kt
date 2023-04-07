@@ -1,7 +1,6 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -14,17 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.*
-import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenBottomSheet
-import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenDrawer
+import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenTest
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.disableAlpha
@@ -32,79 +30,77 @@ import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
-fun ThemeTestScreen(){
-    BaseStructureTest()
+fun ThemeTestScreen(
+    viewModel: ThemeTestViewModel = hiltViewModel()
+){
+    BaseStructureTest(
+        isSkim = viewModel.isSkim.value,
+        skimScreen = viewModel.skimScreen.value,
+        skimShow = { skimUi -> viewModel.skimShow(skimUi) },
+        skimHide = {viewModel.skimHide()}
+    )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true)
 @Composable
-fun BaseStructureTest() {
-    val menuList = listOf(
-        MenuType(key = "1", title = "삭제하기",   onClick = { data -> Log.e("Crane", "${data.name} 삭제하기")}),
-        MenuType(key = "2", title = "추가하기",   onClick = { data -> Log.e("Crane", "${data.name} 추가하기")}),
-        MenuType(key = "3", title = "수정하기",   onClick = { data -> Log.e("Crane", "${data.name} 수정하기")}),
-        MenuType(key = "4", title = "삭제하기",   onClick = { data -> Log.e("Crane", "${data.name} 삭제하기")}),
-        MenuType(key = "5", title = "긴 하루 끝", onClick = { data -> Log.e("Crane", "${data.name} 긴 하루 끝")})
-    )
-    val state : BottomSheetScaffoldState = rememberBottomSheetScaffoldState()
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val scope : CoroutineScope = rememberCoroutineScope()
-    BaseScreenDrawer(
+fun BaseStructureTest(
+    isSkim : Boolean = false,
+    skimScreen : @Composable () -> Unit = {},
+    skimShow : (@Composable () -> Unit) -> Unit = {},
+    skimHide : () -> Unit = {},
+    scope : CoroutineScope? = null
+) {
+    BaseScreenTest(
         title = "기본 화면 보여주기",
-        idNavigationIcon = R.drawable.menu_24px,
-        state = state,
-        scope = scope,
+        isSkim = isSkim,
+        skimScreen = {
+            skimScreen()
+        },
         onClickNavigation = {
-            scope.launch {
-                drawerState.open()
-            }
-        },
-        bottomSheetContent = {
-            Surface(modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(MaterialTheme.colorScheme.primaryContainer)) {
 
-            }
         },
-        drawerState = drawerState,
-        drawerContent = { state, scope ->
-            MainDrawer(menuItems = menuList)
-        }
-    ) { _, _ ->
-        ComponentTest()
+    ) {
+        ComponentTest(
+            skimShow,
+            skimHide
+        )
     }
 
-    // BaseScreenBottomSheet(
-    //     title = "기본 화면 보여주기",
-    //     idNavigationIcon = R.drawable.menu_24px,
-    //     onClickNavigation = null,
-    //     bottomSheetContent = {
-    //         Surface(modifier = Modifier
-    //             .fillMaxWidth()
-    //             .height(200.dp)
-    //             .background(MaterialTheme.colorScheme.primaryContainer)) {
-    //
-    //         }
-    //     }
-    // ) { _, _ ->
-    //     ComponentTest()
-    // }
 
+    // val drawerState = rememberDrawerState(DrawerValue.Closed)
+    // val scope : CoroutineScope = rememberCoroutineScope()
     // BaseScreen(
     //     title = "기본 화면 보여주기",
-    //     idNavigationIcon = R.drawable.menu_24px,
-    //     onClickNavigation = {  }
-    // ) { _, _ ->
+    //     onClickNavigation = {
+    //         scope.launch {
+    //             drawerState.open()
+    //         }
+    //     },
+    //
+    //     drawerState = drawerState,
+    //     drawerContent = {
+    //         val menuList = listOf(
+    //             MenuType(key = "1", title = "삭제하기",   onClick = {}),
+    //             MenuType(key = "2", title = "추가하기",   onClick = { data ->
+    //                 scope.launch {
+    //                     drawerState.close()
+    //                 }
+    //             }),
+    //             MenuType(key = "3", title = "수정하기", onClick = {}),
+    //         )
+    //         MainDrawer(menuItems = menuList)
+    //     }
+    // ) {
     //     ComponentTest()
     // }
 }
 @Composable
-fun ComponentTest(){
+fun ComponentTest(
+    skimShow : (@Composable () -> Unit) -> Unit = {},
+    skimHide : () -> Unit = {}
+){
     // 배경
     Column {
         Column(modifier = Modifier.weight(0.7f)) {
@@ -266,7 +262,13 @@ fun ComponentTest(){
                 }
             }
         }
-        BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = false)
+        BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = true) {
+            skimShow {
+                BasicButton(modifier = Modifier.fillMaxWidth(), text = "숨기기 버튼", isClickable = true) {
+                    skimHide()
+                }
+            }
+        }
     }
 }
 

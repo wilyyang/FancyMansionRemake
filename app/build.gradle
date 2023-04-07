@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 def date = new Date()
@@ -44,6 +47,9 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion "1.4.2"
     }
+    kapt {
+        correctErrorTypes true
+    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -71,4 +77,9 @@ dependencies {
     // coil
     implementation "io.coil-kt:coil-compose:2.2.2"
     implementation "io.coil-kt:coil-gif:2.2.2"
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 }
