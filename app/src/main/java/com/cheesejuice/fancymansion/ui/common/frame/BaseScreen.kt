@@ -1,10 +1,12 @@
 package com.cheesejuice.fancymansion.ui.common.frame
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,116 +14,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.TopBar
 import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
-
-@Composable
-fun BaseScreenTest(
-    modifier : Modifier = Modifier,
-    containerColor : Color? = null,
-
-    // top bar
-    title : String? = null,
-    idNavigationIcon : Int? = null,
-    onClickNavigation : (() -> Unit)? = null,
-    actions : @Composable (RowScope.() -> Unit)? = null,
-
-    isSkim : Boolean = false,
-    skimScreen : @Composable () -> Unit = {},
-
-    content : @Composable (paddingValues : PaddingValues) -> Unit
-) {
-    FancyMansionTheme {
-        Box(
-            modifier.fillMaxSize()
-        ) {
-            BaseContent(
-                modifier = modifier,
-                containerColor = containerColor,
-
-                title = title,
-                idNavigationIcon = idNavigationIcon,
-                onClickNavigation = onClickNavigation,
-                actions = actions,
-
-                content = content
-            )
-            if (isSkim) {
-                Surface(
-                    modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.scrim
-                ) {}
-
-                Box {
-                    skimScreen()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun BaseScreenTest(
-    modifier : Modifier = Modifier,
-    containerColor : Color? = null,
-
-    // top bar
-    title : String? = null,
-    idNavigationIcon : Int = R.drawable.menu_24px,
-    onClickNavigation : (() -> Unit)? = null,
-    actions : @Composable (RowScope.() -> Unit)? = null,
-
-    // drawer
-    drawerState : DrawerState,
-    drawerContent : @Composable () -> Unit,
-
-    isSkim : Boolean = false,
-    skimScreen : @Composable () -> Unit = {},
-
-    content : @Composable (paddingValues : PaddingValues) -> Unit
-) {
-    FancyMansionTheme {
-        ModalNavigationDrawer(
-            // drawer
-            drawerState = drawerState,
-            drawerContent = {
-                ModalDrawerSheet(
-                    drawerShape = RectangleShape,
-                    content = {
-                        drawerContent()
-                    }
-                )
-            },
-
-            content = {
-                Box(
-                    modifier.fillMaxSize()
-                ) {
-                    BaseContent(
-                        modifier = modifier,
-                        containerColor = containerColor,
-
-                        title = title,
-                        idNavigationIcon = idNavigationIcon,
-                        onClickNavigation = onClickNavigation,
-                        actions = actions,
-
-                        content = content
-                    )
-
-                    if (isSkim) {
-                        Surface(
-                            modifier.fillMaxSize(),
-                            color = MaterialTheme.colorScheme.scrim
-                        ) {}
-
-                        Box {
-                            skimScreen()
-                        }
-                    }
-                }
-            }
-        )
-    }
-}
 
 @Composable
 fun BaseScreen(

@@ -1,6 +1,7 @@
 package com.cheesejuice.fancymansion.ui.common.screen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -13,16 +14,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.component.*
-import com.cheesejuice.fancymansion.ui.common.frame.BaseScreenTest
+import com.cheesejuice.fancymansion.ui.common.dialog.Loading
+import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.disableAlpha
@@ -30,76 +35,104 @@ import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
 import com.cheesejuice.fancymansion.ui.theme.yellow
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ThemeTestScreen(
     viewModel: ThemeTestViewModel = hiltViewModel()
 ){
-    BaseStructureTest(
-        isSkim = viewModel.isSkim.value,
-        skimScreen = viewModel.skimScreen.value,
-        skimShow = { skimUi -> viewModel.skimShow(skimUi) },
-        skimHide = {viewModel.skimHide()}
-    )
+    BaseStructureTest()
 }
+
+data class ErrorData(val isError : Boolean, val title : String? = null, val message : String? = null, val onConfirm:()-> Unit = {})
 
 @Preview(showSystemUi = true)
 @Composable
-fun BaseStructureTest(
-    isSkim : Boolean = false,
-    skimScreen : @Composable () -> Unit = {},
-    skimShow : (@Composable () -> Unit) -> Unit = {},
-    skimHide : () -> Unit = {},
-    scope : CoroutineScope? = null
-) {
-    BaseScreenTest(
-        title = "기본 화면 보여주기",
-        isSkim = isSkim,
-        skimScreen = {
-            skimScreen()
-        },
-        onClickNavigation = {
+fun BaseStructureTest() {
+    val isLoading = remember { mutableStateOf(false) }
+    val isError = remember { mutableStateOf(ErrorData(false)) }
 
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope : CoroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    BaseScreen(
+        title = "기본 화면 보여주기",
+        onClickNavigation = {
+            scope.launch {
+                drawerState.open()
+            }
         },
+
+        drawerState = drawerState,
+        drawerContent = {
+            val menuList = listOf(
+                MenuType(key = "1", title = "토스트 에러",   onClick = {
+                    Toast.makeText(context, "토스트 에러", Toast.LENGTH_SHORT).show()
+                }),
+                MenuType(key = "2", title = "드로어 닫기",   onClick = { data ->
+                    scope.launch {
+                        drawerState.close()
+                    }
+                }),
+                MenuType(key = "3", title = "대화상자 에러", onClick = {
+                    isError.value = ErrorData(true, "대화상자 에러", " 대화 상자 에러가 발생했습니다.")
+
+                }),
+            )
+            MainDrawer(menuItems = menuList)
+        }
     ) {
+        if(isLoading.value){
+            Loading(
+                message = "잠시 기다려 주세요!",
+                onDismiss = {
+                    isLoading.value = false
+                }
+            )
+        }
+
+        if(isError.value.isError){
+            isError.value.let {
+                AlertDialog(
+                    onDismissRequest = {},
+                    title = {
+                        Text(text = it.title!!)
+                    },
+                    text = {
+                        Text(text = it.message!!)
+                    },
+                    shape = MaterialTheme.shapes.small,
+                    confirmButton = {
+                        TextButton(
+                            onClick = it.onConfirm
+                        ){
+                            Text("확인")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                isError.value = ErrorData(false)
+                            }
+                        ){
+                            Text("취소", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                )
+            }
+
+        }
+
         ComponentTest(
-            skimShow,
-            skimHide
+            onClickBottom = {
+                isLoading.value = true
+            }
         )
     }
-
-
-    // val drawerState = rememberDrawerState(DrawerValue.Closed)
-    // val scope : CoroutineScope = rememberCoroutineScope()
-    // BaseScreen(
-    //     title = "기본 화면 보여주기",
-    //     onClickNavigation = {
-    //         scope.launch {
-    //             drawerState.open()
-    //         }
-    //     },
-    //
-    //     drawerState = drawerState,
-    //     drawerContent = {
-    //         val menuList = listOf(
-    //             MenuType(key = "1", title = "삭제하기",   onClick = {}),
-    //             MenuType(key = "2", title = "추가하기",   onClick = { data ->
-    //                 scope.launch {
-    //                     drawerState.close()
-    //                 }
-    //             }),
-    //             MenuType(key = "3", title = "수정하기", onClick = {}),
-    //         )
-    //         MainDrawer(menuItems = menuList)
-    //     }
-    // ) {
-    //     ComponentTest()
-    // }
 }
 @Composable
 fun ComponentTest(
-    skimShow : (@Composable () -> Unit) -> Unit = {},
-    skimHide : () -> Unit = {}
+    onClickBottom : () -> Unit = {}
 ){
     // 배경
     Column {
@@ -263,11 +296,7 @@ fun ComponentTest(
             }
         }
         BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = true) {
-            skimShow {
-                BasicButton(modifier = Modifier.fillMaxWidth(), text = "숨기기 버튼", isClickable = true) {
-                    skimHide()
-                }
-            }
+            onClickBottom()
         }
     }
 }

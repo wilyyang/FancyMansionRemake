@@ -24,40 +24,40 @@ val typography = Typography(
     // Display
     displayLarge = TextStyle(
         fontFamily = SpoqaFontFamily,
-        lineHeight = 52.sp,
-        fontSize = 45.sp,
-        fontWeight = FontWeight.Normal
-    ),
-    displayMedium = TextStyle(
-        fontFamily = SpoqaFontFamily,
         lineHeight = 44.sp,
         fontSize = 36.sp,
         fontWeight = FontWeight.Normal
     ),
-    displaySmall = TextStyle(
+    displayMedium = TextStyle(
         fontFamily = SpoqaFontFamily,
         lineHeight = 40.sp,
         fontSize = 32.sp,
+        fontWeight = FontWeight.Normal
+    ),
+    displaySmall = TextStyle(
+        fontFamily = SpoqaFontFamily,
+        lineHeight = 36.sp,
+        fontSize = 28.sp,
         fontWeight = FontWeight.Normal
     ),
 
     // Headline
     headlineLarge = TextStyle(
         fontFamily = SpoqaFontFamily,
-        lineHeight = 36.sp,
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Normal
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = SpoqaFontFamily,
         lineHeight = 32.sp,
         fontSize = 24.sp,
         fontWeight = FontWeight.Normal
     ),
-    headlineSmall = TextStyle(
+    headlineMedium = TextStyle(
         fontFamily = SpoqaFontFamily,
         lineHeight = 28.sp,
         fontSize = 22.sp,
+        fontWeight = FontWeight.Normal
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = SpoqaFontFamily,
+        lineHeight = 24.sp,
+        fontSize = 18.sp,
         fontWeight = FontWeight.Normal
     ),
 

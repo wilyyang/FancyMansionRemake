@@ -5,7 +5,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 val disableAlpha = 0.38f
-val scrimAlpha = 0.58f
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,
@@ -50,9 +49,7 @@ private val LightColorScheme = lightColorScheme(
     error = error_50,
     onError = white,
     errorContainer = error_90,
-    onErrorContainer = black,
-
-    scrim = black.copy(alpha = scrimAlpha)
+    onErrorContainer = black
 )
 
 // Default 값은 MaterialTheme 에서 참조하고 Default가 아닌 경우 해당 객체에서 직접 참조
