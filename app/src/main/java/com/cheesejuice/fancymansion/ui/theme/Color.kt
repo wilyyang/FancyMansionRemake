@@ -2,12 +2,12 @@ package com.cheesejuice.fancymansion.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primary_90 = Color(0xFF_F6EAF2)
+val primary_90 = Color(0xFF_F6EAF2) // Color(0xFF_FFF2C4)
 val primary_80 = Color(0xFF_E4BFD7)
 val primary_70 = Color(0xFF_D394BD)
 val primary_60 = Color(0xFF_C169A2)
 val primary_50 = Color(0xFF_AF3E87)
-val primary_40 = Color(0xFF_A6297A)
+val primary_40 = Color(0xFF_A6297A) // Color(0xFF_FFAF13)
 val primary_30 = Color(0xFF_95256E)
 val primary_20 = Color(0xFF_741D55)
 val primary_10 = Color(0xFF_53153D)

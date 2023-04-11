@@ -12,21 +12,21 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesejuice.fancymansion.R
+import com.cheesejuice.fancymansion.ui.common.UiState
 import com.cheesejuice.fancymansion.ui.common.component.*
-import com.cheesejuice.fancymansion.ui.common.dialog.Loading
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
@@ -38,23 +38,40 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun ThemeTestScreen(
+fun SetupScreen(
     viewModel: ThemeTestViewModel = hiltViewModel()
 ){
-    BaseStructureTest()
+    val uiState by viewModel.uiState.collectAsState()
+    ThemeTestScreen(
+        uiState = uiState,
+        menu1Click = {
+            viewModel.showErrorToast(
+                title = "토스트",
+                message = "토스트 에러입니다."
+            )
+        },
+        menu3Click = {viewModel.showErrorDialog(
+            title = "대화상자 에러",
+            message = "대화 상자 에러가 발생 했습니다."
+        )},
+        bottomClick = {
+            viewModel.showTestLoading(message = "잠시만 기다려 주세용!")
+        },
+    )
 }
 
-data class ErrorData(val isError : Boolean, val title : String? = null, val message : String? = null, val onConfirm:()-> Unit = {})
-
-@Preview(showSystemUi = true)
+@Preview
 @Composable
-fun BaseStructureTest() {
-    val isLoading = remember { mutableStateOf(false) }
-    val isError = remember { mutableStateOf(ErrorData(false)) }
-
+fun ThemeTestScreen(
+    uiState: UiState = UiState.Loaded(null),
+    menu1Click : ()->Unit = {},
+    menu2Click : ()->Unit = {},
+    menu3Click : ()->Unit = {},
+    bottomClick : ()->Unit = {},
+){
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope : CoroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
+
     BaseScreen(
         title = "기본 화면 보여주기",
         onClickNavigation = {
@@ -67,7 +84,7 @@ fun BaseStructureTest() {
         drawerContent = {
             val menuList = listOf(
                 MenuType(key = "1", title = "토스트 에러",   onClick = {
-                    Toast.makeText(context, "토스트 에러", Toast.LENGTH_SHORT).show()
+                    menu1Click()
                 }),
                 MenuType(key = "2", title = "드로어 닫기",   onClick = { data ->
                     scope.launch {
@@ -75,63 +92,23 @@ fun BaseStructureTest() {
                     }
                 }),
                 MenuType(key = "3", title = "대화상자 에러", onClick = {
-                    isError.value = ErrorData(true, "대화상자 에러", " 대화 상자 에러가 발생했습니다.")
-
+                    menu3Click()
                 }),
             )
             MainDrawer(menuItems = menuList)
-        }
+        },
+        uiState = uiState,
     ) {
-        if(isLoading.value){
-            Loading(
-                message = "잠시 기다려 주세요!",
-                onDismiss = {
-                    isLoading.value = false
-                }
-            )
-        }
-
-        if(isError.value.isError){
-            isError.value.let {
-                AlertDialog(
-                    onDismissRequest = {},
-                    title = {
-                        Text(text = it.title!!)
-                    },
-                    text = {
-                        Text(text = it.message!!)
-                    },
-                    shape = MaterialTheme.shapes.small,
-                    confirmButton = {
-                        TextButton(
-                            onClick = it.onConfirm
-                        ){
-                            Text("확인")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
-                            onClick = {
-                                isError.value = ErrorData(false)
-                            }
-                        ){
-                            Text("취소", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                )
-            }
-
-        }
-
-        ComponentTest(
+        TestComponentContent(
             onClickBottom = {
-                isLoading.value = true
+                bottomClick()
             }
         )
     }
 }
+
 @Composable
-fun ComponentTest(
+fun TestComponentContent(
     onClickBottom : () -> Unit = {}
 ){
     // 배경

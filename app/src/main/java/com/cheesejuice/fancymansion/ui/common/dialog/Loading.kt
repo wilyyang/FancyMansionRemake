@@ -1,40 +1,24 @@
 package com.cheesejuice.fancymansion.ui.common.dialog
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.keyframes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.cheesejuice.fancymansion.ui.theme.primary_60
-import com.cheesejuice.fancymansion.ui.theme.secondary_60
-import com.cheesejuice.fancymansion.ui.theme.tertiary_60
-import kotlinx.coroutines.delay
+import com.cheesejuice.fancymansion.ui.theme.*
 
 @Composable
 fun Loading(
-    message : String? = null,
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
+    loadingMessage : String? = null
 ) {
     Dialog(
         onDismissRequest = onDismiss
@@ -42,72 +26,60 @@ fun Loading(
         Column (
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            LoadingAnimation()
-            message?.let {
-                Spacer(modifier = Modifier.height(40.dp))
-                Text(text = message, color = MaterialTheme.colorScheme.surface, style = MaterialTheme.typography.headlineSmall)
+            CircularLoadingAnimation()
+            loadingMessage?.let {
+                Spacer(Modifier.height(20.dp))
+                Text(text = loadingMessage,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.surface)
             }
         }
     }
 }
 
+class CircleAnim(val easing : CubicBezierEasing, val radius : Float, val color : Color = white)
+
 @Composable
-internal fun LoadingAnimation(
-    modifier: Modifier = Modifier,
-    circleSize: Dp = 35.dp,
-    spaceBetween: Dp = 15.dp,
-    travelDistance: Dp = 20.dp
-) {
-    val circles = listOf(
-        remember { Animatable(initialValue = 0f) },
-        remember { Animatable(initialValue = 0f) },
-        remember { Animatable(initialValue = 0f) }
+fun CircularLoadingAnimation() {
+    val durationMillis = 1400
+    val circleAnims = listOf(
+        CircleAnim(easing = CubicBezierEasing(0.44f, 0.0f, 0.9f, 1.0f), radius = 3f, color = n_70),
+        CircleAnim(easing = CubicBezierEasing(0.36f, 0.0f, 0.8f, 1.0f), radius = 5f, color = n_75),
+        CircleAnim(easing = CubicBezierEasing(0.28f, 0.0f, 0.7f, 1.0f), radius = 7f, color = n_80),
+        CircleAnim(easing = CubicBezierEasing(0.2f,  0.0f, 0.6f, 1.0f), radius = 10f, color = n_85),
+        CircleAnim(easing = CubicBezierEasing(0.12f, 0.0f, 0.5f, 1.0f), radius = 13f, color = n_90),
+        CircleAnim(easing = CubicBezierEasing(0.04f, 0.0f, 0.4f, 1.0f), radius = 16f, color = n_95),
     )
 
-    val circleColors = listOf(
-        secondary_60,
-        primary_60,
-        tertiary_60,
-    )
-
-    circles.forEachIndexed { index, animatable ->
-        LaunchedEffect(key1 = animatable) {
-            delay(index * 100L)
-            animatable.animateTo(
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = keyframes {
-                        durationMillis = 1200
-                        0.0f at 0 with LinearOutSlowInEasing
-                        1.0f at 300 with LinearOutSlowInEasing
-                        0.0f at 600 with LinearOutSlowInEasing
-                        0.0f at 1200 with LinearOutSlowInEasing
-                    },
-                    repeatMode = RepeatMode.Restart
-                )
+    val animationAngles = circleAnims.map {
+        val infiniteTransition = rememberInfiniteTransition()
+        infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = durationMillis,
+                    easing = it.easing
+                ),
+                repeatMode = RepeatMode.Restart
             )
-        }
+        )
     }
 
-    val circleValues = circles.map { it.value }
-    val distance = with(LocalDensity.current) { travelDistance.toPx() }
-
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(spaceBetween)
-    ) {
-        circleValues.forEachIndexed { idx, value ->
-            Box(
-                modifier = Modifier
-                    .size(circleSize)
-                    .graphicsLayer {
-                        translationY = -value * distance
-                    }
-                    .background(
-                        color = circleColors[idx],
-                        shape = CircleShape
+    Spacer(modifier = Modifier
+        .size(40.dp)
+        .drawBehind {
+            circleAnims.forEachIndexed { index, circleAnim ->
+                val rotationCenter = Offset(size.width / 2, size.height / 2)
+                val circleCenter = Offset(size.width / 2, 0f)
+                rotate(animationAngles[index].value, pivot = rotationCenter) {
+                    drawCircle(
+                        color = circleAnim.color,
+                        center = circleCenter,
+                        radius = circleAnim.radius
                     )
-            )
+                }
+            }
         }
-    }
+    )
 }
