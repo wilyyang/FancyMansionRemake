@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.ui.common.screen
+package com.cheesejuice.fancymansion.ui.common.screen.test
 
 import android.content.Context
 import com.cheesejuice.fancymansion.ui.common.BaseViewModel

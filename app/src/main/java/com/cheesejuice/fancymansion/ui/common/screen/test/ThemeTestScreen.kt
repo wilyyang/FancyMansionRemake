@@ -1,7 +1,6 @@
-package com.cheesejuice.fancymansion.ui.common.screen
+package com.cheesejuice.fancymansion.ui.common.screen.test
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -28,6 +27,7 @@ import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.UiState
 import com.cheesejuice.fancymansion.ui.common.component.*
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
+import com.cheesejuice.fancymansion.ui.nav.TestScreen
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.disableAlpha
@@ -38,11 +38,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun SetupScreen(
-    viewModel: ThemeTestViewModel = hiltViewModel()
-){
+fun TestScreen.ScreenSetup(
+    viewModel : ThemeTestViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
-    ThemeTestScreen(
+    TestScreen.FrameScreen(
         uiState = uiState,
         menu1Click = {
             viewModel.showErrorToast(
@@ -50,10 +50,12 @@ fun SetupScreen(
                 message = "토스트 에러입니다."
             )
         },
-        menu3Click = {viewModel.showErrorDialog(
-            title = "대화상자 에러",
-            message = "대화 상자 에러가 발생 했습니다."
-        )},
+        menu3Click = {
+            viewModel.showErrorDialog(
+                title = "대화상자 에러",
+                message = "대화 상자 에러가 발생 했습니다."
+            )
+        },
         bottomClick = {
             viewModel.showTestLoading(message = "잠시만 기다려 주세용!")
         },
@@ -62,7 +64,7 @@ fun SetupScreen(
 
 @Preview
 @Composable
-fun ThemeTestScreen(
+fun TestScreen.FrameScreen(
     uiState: UiState = UiState.Loaded(null),
     menu1Click : ()->Unit = {},
     menu2Click : ()->Unit = {},
@@ -99,7 +101,7 @@ fun ThemeTestScreen(
         },
         uiState = uiState,
     ) {
-        TestComponentContent(
+        Content(
             onClickBottom = {
                 bottomClick()
             }
@@ -108,7 +110,7 @@ fun ThemeTestScreen(
 }
 
 @Composable
-fun TestComponentContent(
+fun TestScreen.Content(
     onClickBottom : () -> Unit = {}
 ){
     // 배경
@@ -279,7 +281,7 @@ fun TestComponentContent(
 }
 
 @Composable
-fun IconTest(){
+fun TestScreen.IconTestContent(){
     val listId = listOf(
         Pair(R.drawable.add_photo_48px, null),
         Pair(R.drawable.crop_48px, null),
@@ -321,7 +323,7 @@ fun IconTest(){
 }
 
 @Composable
-fun TypographyTest(){
+fun TestScreen.TypographyTestContent(){
     Column {
         Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
         Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
@@ -398,7 +400,7 @@ fun TypographyTest(){
 }
 
 @Composable
-fun ColorTest(){
+fun TestScreen.ColorTestContent(){
     Column (Modifier.verticalScroll(
         state = rememberScrollState()
     )){
