@@ -33,16 +33,17 @@ import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.disableAlpha
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
+import com.cheesejuice.fancymansion.ui.theme.typography
 import com.cheesejuice.fancymansion.ui.theme.yellow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun TestScreen.ScreenSetup(
-    viewModel : ThemeTestViewModel = hiltViewModel()
+fun TestScreenSetup(
+    viewModel : TestViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    TestScreen.FrameScreen(
+    TestScreenFrame(
         uiState = uiState,
         menu1Click = {
             viewModel.showErrorToast(
@@ -62,9 +63,19 @@ fun TestScreen.ScreenSetup(
     )
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
-fun TestScreen.FrameScreen(
+fun TestScreenPreview(){
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = typography
+    ){
+        TestScreenFrame()
+    }
+}
+
+@Composable
+fun TestScreenFrame(
     uiState: UiState = UiState.Loaded(null),
     menu1Click : ()->Unit = {},
     menu2Click : ()->Unit = {},
@@ -101,7 +112,7 @@ fun TestScreen.FrameScreen(
         },
         uiState = uiState,
     ) {
-        Content(
+        TestScreenContent(
             onClickBottom = {
                 bottomClick()
             }
@@ -110,7 +121,7 @@ fun TestScreen.FrameScreen(
 }
 
 @Composable
-fun TestScreen.Content(
+fun TestScreenContent(
     onClickBottom : () -> Unit = {}
 ){
     // 배경
@@ -281,7 +292,7 @@ fun TestScreen.Content(
 }
 
 @Composable
-fun TestScreen.IconTestContent(){
+fun TestScreenIconTest(){
     val listId = listOf(
         Pair(R.drawable.add_photo_48px, null),
         Pair(R.drawable.crop_48px, null),
@@ -323,7 +334,7 @@ fun TestScreen.IconTestContent(){
 }
 
 @Composable
-fun TestScreen.TypographyTestContent(){
+fun TestScreenTypographyTest(){
     Column {
         Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
         Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
@@ -400,7 +411,7 @@ fun TestScreen.TypographyTestContent(){
 }
 
 @Composable
-fun TestScreen.ColorTestContent(){
+fun TestScreenColorTest(){
     Column (Modifier.verticalScroll(
         state = rememberScrollState()
     )){

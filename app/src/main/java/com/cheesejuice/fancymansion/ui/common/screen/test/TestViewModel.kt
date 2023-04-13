@@ -7,9 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ThemeTestViewModel @Inject constructor(
-    @ApplicationContext val context: Context
-) : BaseViewModel(){
+class TestViewModel @Inject constructor() : BaseViewModel(){
     fun showTestLoading(message : String? = null) {
         showLoading(
             message = message,
