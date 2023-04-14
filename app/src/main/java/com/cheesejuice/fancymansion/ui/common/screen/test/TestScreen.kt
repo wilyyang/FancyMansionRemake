@@ -1,6 +1,7 @@
 package com.cheesejuice.fancymansion.ui.common.screen.test
 
 import android.util.Log
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,7 +72,7 @@ fun TestScreenPreview(){
         colorScheme = colorScheme,
         typography = typography
     ){
-        TestScreenFrame()
+        TestScreenBasicButton()
     }
 }
 
@@ -222,11 +224,7 @@ fun TestScreenContent(
                     )
                 }
 
-                Divider(
-                    Modifier
-                        .padding(top = 4.dp)
-                        .fillMaxWidth()
-                        .height(1.dp))
+                Divider(Modifier.padding(top = 4.dp).height(1.dp))
 
                 val dropdownList = listOf(
                     DropdownType(key = "1", title = "삭제하기", onClick = { data -> Log.e("Crane", "${data.title} 삭제하기")}),
@@ -287,6 +285,59 @@ fun TestScreenContent(
         }
         BasicButton(modifier = Modifier.fillMaxWidth(), text = "기본 버튼 테스트", isClickable = true) {
             onClickBottom()
+        }
+    }
+}
+@Composable
+fun TestScreenBasicButton(){
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = typography
+    ){
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            BasicButton(text = "테스트 버튼")
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium),
+                text = "테스트 버튼")
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                text = "테스트 버튼")
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                text = "테스트 버튼",
+                contentPadding = PaddingValues(10.dp)
+            )
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                text = "테스트 버튼",
+                contentArrangement = Arrangement.Start
+            )
         }
     }
 }

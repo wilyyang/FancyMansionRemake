@@ -5,6 +5,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 val disableAlpha = 0.38f
+val borderAlpha = 0.38f
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,

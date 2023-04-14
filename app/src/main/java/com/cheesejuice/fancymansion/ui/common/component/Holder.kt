@@ -73,15 +73,10 @@ fun BookHolder(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = data.state,
-                        color = onStateColor,
-                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp),
-                        modifier = Modifier
-                            .padding(end = 4.dp)
-                            .clip(MaterialTheme.shapes.extraSmall)
-                            .background(color = stateColor)
-                            .padding(vertical = 3.dp, horizontal = 6.dp)
+                    Label(
+                        label = data.state,
+                        labelColor = onStateColor,
+                        backgroundColor = stateColor
                     )
                 }
 

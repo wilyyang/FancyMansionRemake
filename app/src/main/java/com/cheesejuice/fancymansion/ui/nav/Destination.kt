@@ -15,3 +15,7 @@ object LoginScreen : NavDestination {
 object HomeScreen : NavDestination {
     override val route = "home"
 }
+
+object ReadPageScreen : NavDestination {
+    override val route = "read_page"
+}
