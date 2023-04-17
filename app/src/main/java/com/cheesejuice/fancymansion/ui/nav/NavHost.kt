@@ -17,7 +17,7 @@ fun FancyMansionNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ReadPageScreen.route,
+        startDestination = LoginScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = TestScreen.route){

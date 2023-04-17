@@ -1,5 +1,8 @@
 package com.cheesejuice.fancymansion.ui.content.user.login
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +22,6 @@ import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.UiState
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
-import com.cheesejuice.fancymansion.ui.nav.HomeScreen
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.typography
 
@@ -28,11 +30,16 @@ fun LoginScreenSetup(
     navController : NavController,
     viewModel : LoginViewModel = hiltViewModel()
 ) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult())
+    { result : ActivityResult ->
+        viewModel.resultForGoogleSignInDialog(result)
+    }
+
     val uiState by viewModel.uiState.collectAsState()
     LoginScreenFrame(
         uiState = uiState,
-        onClickGoogleAuthList = {
-            navController.navigate(HomeScreen.route)
+        onClickGoogleSigning = {
+            launcher.launch(viewModel.getSignIntent())
         }
     )
 }
@@ -52,7 +59,7 @@ fun LoginScreenPreview(){
 fun LoginScreenFrame(
     uiState: UiState = UiState.Loaded(null),
     isGoogleValid : Boolean = true,
-    onClickGoogleAuthList : () -> Unit = {},
+    onClickGoogleSigning : () -> Unit = {},
     onClickStartLocal : () -> Unit = {}
 ){
     BaseScreen(
@@ -60,7 +67,7 @@ fun LoginScreenFrame(
     ) {
         LoginScreenContent(
             isGoogleValid = isGoogleValid,
-            onClickGoogleAuthList = onClickGoogleAuthList,
+            onClickGoogleSigning = onClickGoogleSigning,
             onClickStartLocal = onClickStartLocal
         )
     }
@@ -69,7 +76,7 @@ fun LoginScreenFrame(
 @Composable
 fun LoginScreenContent(
     isGoogleValid : Boolean = true,
-    onClickGoogleAuthList : () -> Unit = {},
+    onClickGoogleSigning : () -> Unit = {},
     onClickStartLocal : () -> Unit = {}
 ) {
     BaseScreen {
@@ -100,7 +107,7 @@ fun LoginScreenContent(
                     .clip(MaterialTheme.shapes.small),
                 contentPadding = PaddingValues(vertical = 16.dp)
             ) {
-                onClickGoogleAuthList()
+                onClickGoogleSigning()
             }
 
             Spacer(modifier = Modifier.height(8.dp))
