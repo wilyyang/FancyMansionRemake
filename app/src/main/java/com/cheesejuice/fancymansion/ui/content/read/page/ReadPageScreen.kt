@@ -1,12 +1,6 @@
 package com.cheesejuice.fancymansion.ui.content.read.page
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
@@ -42,7 +36,9 @@ fun ReadPageScreenSetup(
     viewModel : ReadPageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val choiceList = listOf(Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"))
+    val choiceList = listOf(Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"),
+        Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"),
+        Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"))
     ReadPageScreenFrame(
         uiState = uiState,
         pageImage = File(""),
@@ -103,15 +99,15 @@ fun ReadPageScreenFrame(
                         .height(280.dp),
                     imageFile = pageImage
                 )
-                Divider(Modifier.height(1.dp))
+                Divider(color = MaterialTheme.colorScheme.outlineVariant)
             }
-            Spacer(Modifier.height(20.dp))
             LazyColumn(
                 modifier = Modifier
-                    .weight(1f)
                     .padding(horizontal = 20.dp)
+                    .weight(1f)
             ) {
-                item{
+                item {
+                    Spacer(Modifier.height(20.dp))
                     Column(modifier = Modifier.padding(vertical = 20.dp)) {
                         if(pageType == PageType.END){
                             Label(
@@ -131,14 +127,15 @@ fun ReadPageScreenFrame(
                     items(it) { choice ->
                         BasicButton(
                             modifier = Modifier
+                                .padding(vertical = 8.dp)
                                 .fillMaxWidth()
-                                .clip(MaterialTheme.shapes.medium)
-                                .padding(vertical = 8.dp),
+                                .clip(shape = MaterialTheme.shapes.small),
                             backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                             text = choice.title,
                             textStyle = choiceTextStyle,
                             textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             onClick = { moveToNextPage(choice) },
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
                             contentArrangement = Arrangement.Start
                         )
                     }
