@@ -4,7 +4,6 @@ import com.cheesejuice.fancymansion.R
 
 class SampleBook {
     companion object {
-        // 00 / 00 / 00 / 00 / 00 = slide / choice / showCondition / enterId / enterCondition
         fun getConfigSample(bookId: Long): String = """
         { 
             "bookId":$bookId,
