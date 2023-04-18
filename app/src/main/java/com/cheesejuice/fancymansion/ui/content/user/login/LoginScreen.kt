@@ -30,16 +30,16 @@ fun LoginScreenSetup(
     navController : NavController,
     viewModel : LoginViewModel = hiltViewModel()
 ) {
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult())
+    val googleDialogLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result : ActivityResult ->
-        viewModel.resultForGoogleSignInDialog(result)
+        viewModel.resultForGoogleSignDialog(result)
     }
 
     val uiState by viewModel.uiState.collectAsState()
     LoginScreenFrame(
         uiState = uiState,
         onClickGoogleSigning = {
-            launcher.launch(viewModel.getSignIntent())
+            googleDialogLauncher.launch(viewModel.getGoogleSignIntent())
         }
     )
 }
