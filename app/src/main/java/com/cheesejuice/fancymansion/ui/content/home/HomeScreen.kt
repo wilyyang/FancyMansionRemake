@@ -4,6 +4,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,6 +18,7 @@ import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.typography
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,7 +27,8 @@ fun HomeScreenSetup(
     viewModel : HomeViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState
+
     HomeScreenFrame(
         scope = scope,
         uiState = uiState

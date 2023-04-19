@@ -19,6 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.cheesejuice.fancymansion.PageType
 import com.cheesejuice.fancymansion.R
+import com.cheesejuice.fancymansion.data.model.ChoiceItem
+import com.cheesejuice.fancymansion.data.source.local.storage.Sample
 import com.cheesejuice.fancymansion.ui.common.UiState
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
 import com.cheesejuice.fancymansion.ui.common.component.BookImage
@@ -28,60 +30,68 @@ import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.typography
 import java.io.File
 
-data class Choice(val id : Long = -1L, val title : String = "")
-
 @Composable
 fun ReadPageScreenSetup(
     navController : NavController,
     viewModel : ReadPageViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val choiceList = listOf(Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"),
-        Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"),
-        Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"))
+    val uiState by viewModel.uiState
+    val page by viewModel.page.collectAsState()
+    val pageLogic by viewModel.pageLogic.collectAsState()
+
     ReadPageScreenFrame(
         uiState = uiState,
-        pageImage = File(""),
-        pageType = PageType.END,
-        title = "타이틀 테스트",
-        contentText = "콘텐츠 내용 테스트 콘텐츠 내용 테스트 콘텐츠 내용 테스트 콘텐츠 내용 테스트 콘텐츠 내용 테스트",
-        question = "질문 테스트 질문 테스트 ?",
-        choiceList = choiceList
+        pageImage = File(page.pageImage),
+        pageType = PageType.type(pageLogic.type),
+        title = page.pageTitle,
+        contentText = page.description,
+        question = page.question,
+        choiceList = pageLogic.choiceItems.toList(),
+
+        testResourceId = Sample.getSampleImageId(page.pageImage),
+
+        onClickChoiceItem = viewModel::clickChoiceItem
     )
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun ReadPageScreenPreview(){
-    val choiceList = listOf(Choice(title = "선택지1"), Choice(title = "선택지2"), Choice(title = "선택지3"))
-
+    val pageIdx = 0
+    val page = Sample.book.pages[pageIdx]
+    val pageLogic = Sample.book.logic.logics[pageIdx]
     MaterialTheme(
         colorScheme = colorScheme,
         typography = typography
     ){
         ReadPageScreenFrame(
-            pageImage = File(""),
-            pageType = PageType.END,
-            title = "타이틀 테스트",
-            contentText = "콘텐츠 내용 테스트 콘텐츠 내용 테스트 콘텐츠 내용 테스트 콘텐츠 내용 테스트 콘텐츠 내용 테스트",
-            question = "질문 테스트 질문 테스트 ?",
-            choiceList = choiceList
+            uiState = UiState.Loaded(),
+            pageImage = File(page.pageImage),
+            pageType = PageType.type(pageLogic.type),
+            title = page.pageTitle,
+            contentText = page.description,
+            question = page.question,
+            choiceList = pageLogic.choiceItems.toList(),
+
+            testResourceId = Sample.getSampleImageId(page.pageImage)
         )
     }
 }
 
 @Composable
 fun ReadPageScreenFrame(
-    uiState: UiState = UiState.Loaded(null),
+    uiState: UiState,
 
     pageImage : File? = null,
-    pageType : PageType = PageType.NORMAL,
-    title : String = "",
-    contentText : String = "",
-    question : String = "",
-    choiceList : List<Choice>? = null,
+    pageType : PageType,
+    title : String,
+    contentText : String,
+    question : String,
+    choiceList : List<ChoiceItem>,
 
-    moveToNextPage : (Choice) -> Unit = {},
+    testResourceId : Int? = null,
+
+    onClickChoiceItem : (ChoiceItem) -> Unit = {},
 ){
     val titleStyle : TextStyle = MaterialTheme.typography.headlineSmall
     val contentTextStyle : TextStyle = MaterialTheme.typography.bodyMedium
@@ -97,7 +107,8 @@ fun ReadPageScreenFrame(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(280.dp),
-                    imageFile = pageImage
+                    imageFile = pageImage,
+                    testResourceId = testResourceId
                 )
                 Divider(color = MaterialTheme.colorScheme.outlineVariant)
             }
@@ -123,24 +134,35 @@ fun ReadPageScreenFrame(
                     Spacer(Modifier.height(20.dp))
                 }
 
-                choiceList?.let {
-                    items(it) { choice ->
-                        BasicButton(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp)
-                                .fillMaxWidth()
-                                .clip(shape = MaterialTheme.shapes.small),
-                            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                            text = choice.title,
-                            textStyle = choiceTextStyle,
-                            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            onClick = { moveToNextPage(choice) },
-                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
-                            contentArrangement = Arrangement.Start
-                        )
-                    }
+                items(choiceList) { choice ->
+                    ChoiceButton(
+                        choice = choice,
+                        textStyle = choiceTextStyle,
+                        onClickChoiceItem = onClickChoiceItem
+                    )
                 }
             }
         }
     }
+}
+
+@Composable
+fun ChoiceButton(
+    choice : ChoiceItem,
+    textStyle : TextStyle,
+    onClickChoiceItem : (ChoiceItem) -> Unit
+){
+    BasicButton(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth()
+            .clip(shape = MaterialTheme.shapes.small),
+        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+        text = choice.title,
+        textStyle = textStyle,
+        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        onClick = { onClickChoiceItem(choice) },
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
+        contentArrangement = Arrangement.Start
+    )
 }

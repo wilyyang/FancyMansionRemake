@@ -1,8 +1,8 @@
 package com.cheesejuice.fancymansion.ui.common
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 enum class ErrorType{
     Toast, Dialog, Skip
@@ -11,15 +11,13 @@ data class ErrorData(val errorType : ErrorType, val title : String, val message 
 sealed class UiState {
     object Empty : UiState()
     class Error(val errorData: ErrorData, val onConfirm:()-> Unit = {}, val onDismiss:()-> Unit = {}) : UiState()
-    class Loading(val message: String?, val onDismiss:()-> Unit = {}) : UiState()
+    class Loading(val message: String? = null, val onDismiss:()-> Unit = {}) : UiState()
     class Loaded(val message: String? = null) : UiState()
-
-    // class Permission(val message: String?) : UiState()
 }
 
 abstract class BaseViewModel : ViewModel(){
-    protected val _uiState = MutableStateFlow<UiState>(UiState.Empty)
-    val uiState: StateFlow<UiState> = _uiState
+    protected val _uiState = mutableStateOf<UiState>(UiState.Empty)
+    val uiState: State<UiState> = _uiState
 
     fun showLoading(message : String? = null, onDismiss:()-> Unit = {}) {
         if(_uiState.value !is UiState.Loading){
@@ -53,19 +51,5 @@ abstract class BaseViewModel : ViewModel(){
         if(_uiState.value !is UiState.Loaded){
             _uiState.value = UiState.Loaded(null)
         }
-    }
-
-    fun showErrorToast(
-        title : String,
-        message : String)
-    {
-        _uiState.value = UiState.Error(
-            ErrorData(
-                errorType = ErrorType.Toast,
-                title = title,
-                message = message,
-            ),
-            onDismiss = { dismissDialog() }
-        )
     }
 }

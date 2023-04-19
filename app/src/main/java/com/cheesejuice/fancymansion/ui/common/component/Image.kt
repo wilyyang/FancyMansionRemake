@@ -18,12 +18,16 @@ import java.io.File
 @Composable
 fun BookImage(
     modifier : Modifier = Modifier,
-    imageFile : File
+    imageFile : File,
+    testResourceId : Int? = null
 ) {
     Image(
         modifier = modifier,
         contentDescription = null,
-        painter = if (imageFile.exists()) {
+        painter =
+        if (!imageFile.exists() && testResourceId == null) {
+            painterResource(id = R.drawable.ic_launcher_background)
+        } else {
             val context = LocalContext.current
             val imageLoader = ImageLoader.Builder(context)
                 .components {
@@ -33,15 +37,16 @@ fun BookImage(
                         add(GifDecoder.Factory())
                     }
                 }.build()
-
             rememberAsyncImagePainter(
-                model = ImageRequest.Builder(context).data(data = imageFile)
-                    .apply(block = { size(Size.ORIGINAL) })
-                    .build(),
+                model = ImageRequest.Builder(context).data(
+                    data = if (imageFile.exists()) {
+                        imageFile
+                    } else {
+                        testResourceId
+                    }
+                ).apply(block = { size(Size.ORIGINAL) }).build(),
                 imageLoader = imageLoader
             )
-        } else {
-            painterResource(id = R.drawable.ic_launcher_background)
         }
     )
 }

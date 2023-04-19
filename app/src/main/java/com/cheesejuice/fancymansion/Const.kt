@@ -1,7 +1,11 @@
 package com.cheesejuice.fancymansion
 
 enum class PageType{
-    START, NORMAL, END
+    START, NORMAL, END;
+
+    companion object {
+        fun type(index : Int) : PageType = values()[index]
+    }
 }
 
 enum class ReadMode{

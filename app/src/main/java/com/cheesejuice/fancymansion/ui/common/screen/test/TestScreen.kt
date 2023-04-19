@@ -44,14 +44,10 @@ import kotlinx.coroutines.launch
 fun TestScreenSetup(
     viewModel : TestViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState
     TestScreenFrame(
         uiState = uiState,
         menu1Click = {
-            viewModel.showErrorToast(
-                title = "토스트",
-                message = "토스트 에러입니다."
-            )
         },
         menu3Click = {
             viewModel.showErrorDialog(

@@ -1,6 +1,5 @@
 package com.cheesejuice.fancymansion.ui.common.frame
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.DrawerState
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ui.common.ErrorType
 import com.cheesejuice.fancymansion.ui.common.UiState
@@ -118,15 +116,6 @@ fun CommonStateProcess(uiState : UiState) = when (uiState) {
                     onConfirm = uiState.onConfirm,
                     onDismiss = uiState.onDismiss
                 )
-            }
-
-            ErrorType.Toast -> {
-                Toast.makeText(
-                    LocalContext.current,
-                    "${uiState.errorData.title} : ${uiState.errorData.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                uiState.onDismiss()
             }
 
             else -> {}
