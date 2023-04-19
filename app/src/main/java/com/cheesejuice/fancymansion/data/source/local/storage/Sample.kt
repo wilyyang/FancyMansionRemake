@@ -1,7 +1,9 @@
 package com.cheesejuice.fancymansion.data.source.local.storage
 
+import com.cheesejuice.fancymansion.Comparison
+import com.cheesejuice.fancymansion.PageType
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.READ_MODE_EDIT
+import com.cheesejuice.fancymansion.Relation
 import com.cheesejuice.fancymansion.data.model.*
 
 object Sample {
@@ -11,12 +13,7 @@ object Sample {
         bookId = bookId,
 
         version = 101001,
-        publishCode = "",
         updateTime = 234256544566,
-
-        userId = "",
-        user = "",
-        email = "",
 
         writer = "팀 치즈쥬스",
         illustrator = "Ekaterina Rogova",
@@ -26,16 +23,12 @@ object Sample {
         coverImage = "image_1.gif",
         tagList = mutableListOf("귀여운", "고양이"),
 
-        readMode = READ_MODE_EDIT,
-        defaultEndPageId = 100000000,
-
-        downloads = 0,
-        good = 0
+        defaultEndPageId = 100000000
     )
 
     private val logics = mutableListOf(
         PageLogic(
-            pageId = 200000000, pageTitle = "대체 어딨는거야!", type = 2,
+            pageId = 200000000, pageTitle = "대체 어딨는거야!", type = PageType.START.ordinal,
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 201000000,
@@ -43,18 +36,15 @@ object Sample {
                     showConditions = mutableListOf(
                         Condition(
                             conditionId = 201010000,
-                            targetPageId1 = 400000000,
-                            targetPageId2 = -1,
+                            targetId1 = 400000000,
                             targetCount = 1,
-                            comparison = "not",
-                            nextRelation = "or"
+                            comparison = Comparison.NOT.name
                         )
                     ),
                     routes = mutableListOf(
                         Route(
                             routeId = 201000100,
-                            routePageId = 300000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 300000000
                         )
                     )
                 ),
@@ -62,7 +52,6 @@ object Sample {
                 ChoiceItem(
                     choiceId = 202000000,
                     title = "얼룩 고양이 웬디에게로",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 202000100,
@@ -70,11 +59,9 @@ object Sample {
                             routeConditions = mutableListOf(
                                 Condition(
                                     conditionId = 202000101,
-                                    targetPageId1 = 600000000,
-                                    targetPageId2 = -1,
+                                    targetId1 = 600000000,
                                     targetCount = 0,
-                                    comparison = "over",
-                                    nextRelation = "or"
+                                    comparison = Comparison.OVER.name
                                 )
                             )
                         ),
@@ -84,32 +71,28 @@ object Sample {
                             routeConditions = mutableListOf(
                                 Condition(
                                     conditionId = 202000201,
-                                    targetPageId1 = 400000000,
-                                    targetPageId2 = -1,
+                                    targetId1 = 400000000,
                                     targetCount = 0,
-                                    comparison = "over",
-                                    nextRelation = "or"
+                                    comparison = Comparison.OVER.name
                                 )
                             )
                         ),
                         Route(
                             routeId = 202000300,
-                            routePageId = 500000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 500000000
                         )
                     )
                 )
             )
         ),
 
-        PageLogic(pageId = 100000000, pageTitle = "더 이상 존 크리스탈을 찾을 수 없습니다...", type = 3, choiceItems = mutableListOf()),
+        PageLogic(pageId = 100000000, pageTitle = "더 이상 존 크리스탈을 찾을 수 없습니다...", type = PageType.END.ordinal),
         PageLogic(
-            pageId = 300000000, pageTitle = "하얀 고양이 모야!", type = 1,
+            pageId = 300000000, pageTitle = "하얀 고양이 모야!", 
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 301000000,
                     title = "모야의 머리에서 어항을 빼버린다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 301000100,
@@ -117,25 +100,21 @@ object Sample {
                             routeConditions = mutableListOf(
                                 Condition(
                                     conditionId = 301000101,
-                                    targetPageId1 = 302000000,
-                                    targetPageId2 = -1,
+                                    targetId1 = 302000000,
                                     targetCount = 3,
-                                    comparison = "equal",
-                                    nextRelation = "or"
+                                    comparison = Comparison.EQUAL.name
                                 )
                             )
                         ),
                         Route(
                             routeId = 301000200,
-                            routePageId = 100000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 100000000
                         )
                     )
                 ),
                 ChoiceItem(
                     choiceId = 302000000,
                     title = "모야와 함께 물고기를 바라본다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 302000100,
@@ -143,30 +122,25 @@ object Sample {
                             routeConditions = mutableListOf(
                                 Condition(
                                     conditionId = 302000101,
-                                    targetPageId1 = 302000000,
-                                    targetPageId2 = -1,
+                                    targetId1 = 302000000,
                                     targetCount = 5,
-                                    comparison = "over",
-                                    nextRelation = "or"
+                                    comparison = Comparison.OVER.name
                                 )
                             )
                         ),
                         Route(
                             routeId = 302000200,
-                            routePageId = 300000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 300000000
                         )
                     )
                 ),
                 ChoiceItem(
                     choiceId = 303000000,
                     title = "다시 존을 잃어버린 자리로 돌아간다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 303000300,
-                            routePageId = 200000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 200000000
                         )
                     )
                 )
@@ -174,63 +148,55 @@ object Sample {
         ),
 
         PageLogic(
-            pageId = 400000000, pageTitle = "모야가 가져다준 물고기!", type = 1,
+            pageId = 400000000, pageTitle = "모야가 가져다준 물고기!", 
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 401000000,
                     title = "다시 존을 잃어버린 자리로 돌아간다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 401000100,
-                            routePageId = 200000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 200000000
                         )
                     )
                 )
             )
         ),
         PageLogic(
-            pageId = 500000000, pageTitle = "응꼬를 핥으려는 고양이 웬디!", type = 1,
+            pageId = 500000000, pageTitle = "응꼬를 핥으려는 고양이 웬디!", 
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 501000000,
                     title = "박스를 가져다 준다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 501000100,
-                            routePageId = 600000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 600000000
                         )
                     )
                 ),
                 ChoiceItem(
                     choiceId = 502000000,
                     title = "다시 존을 잃어버린 자리로 돌아간다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 502000100,
-                            routePageId = 200000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 200000000
                         )
                     )
                 )
             )
         ),
         PageLogic(
-            pageId = 600000000, pageTitle = "빙글빙글 상자속에서 돌고도는 너와 나", type = 1,
+            pageId = 600000000, pageTitle = "빙글빙글 상자속에서 돌고도는 너와 나", 
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 601000000,
                     title = "빙글빙글 웬디와 함께 돈다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 601000100,
-                            routePageId = 600000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 600000000
                         )
                     )
                 ),
@@ -240,92 +206,78 @@ object Sample {
                     showConditions = mutableListOf(
                         Condition(
                             conditionId = 602010000,
-                            targetPageId1 = 602000000,
-                            targetPageId2 = -1,
+                            targetId1 = 602000000,
                             targetCount = 1,
-                            comparison = "under",
-                            nextRelation = "and"
+                            comparison = Comparison.UNDER.name,
+                            nextRelation = Relation.AND.name
                         ),
                         Condition(
                             conditionId = 602020000,
-                            targetPageId1 = 400000000,
-                            targetPageId2 = -1,
+                            targetId1 = 400000000,
                             targetCount = 0,
-                            comparison = "over",
-                            nextRelation = "or"
+                            comparison = Comparison.OVER.name
                         )
                     ),
                     routes = mutableListOf(
                         Route(
                             routeId = 602000100,
-                            routePageId = 800000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 800000000
                         )
                     )
                 ),
                 ChoiceItem(
                     choiceId = 603000000,
                     title = "다시 존을 잃어버린 자리로 돌아간다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 603000100,
-                            routePageId = 200000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 200000000
                         )
                     )
                 )
             )
         ),
         PageLogic(
-            pageId = 700000000, pageTitle = "응꼬를 핥으려는 고양이 웬디!", type = 1,
+            pageId = 700000000, pageTitle = "응꼬를 핥으려는 고양이 웬디!", 
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 701000000,
                     title = "다시 존을 잃어버린 자리로 돌아간다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 701000100,
-                            routePageId = 200000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 200000000
                         )
                     )
                 )
             )
         ),
         PageLogic(
-            pageId = 800000000, pageTitle = "그 녀석은 용서할 수 없는 녀석이야..", type = 1,
+            pageId = 800000000, pageTitle = "그 녀석은 용서할 수 없는 녀석이야..", 
             choiceItems = mutableListOf(
                 ChoiceItem(
                     choiceId = 801000000,
                     title = "빙글빙글 돌아준다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 801000100,
-                            routePageId = 600000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 600000000
                         )
                     )
                 ),
                 ChoiceItem(
                     choiceId = 802000000,
                     title = "빙글빙글 안돌아준다",
-                    showConditions = mutableListOf(),
                     routes = mutableListOf(
                         Route(
                             routeId = 802000100,
-                            routePageId = 900000000,
-                            routeConditions = mutableListOf()
+                            routePageId = 900000000
                         )
                     )
                 )
             )
         ),
-        PageLogic(pageId = 900000000, pageTitle = "아니 이 녀석 집에 있었잖아?", type = 3, choiceItems = mutableListOf()),
-        PageLogic(pageId = 1000000000, pageTitle = "이미지 파일 못찾음 예시로", type = 1, choiceItems = mutableListOf()),
-        PageLogic(pageId = 1100000000, pageTitle = "이미지 없는 슬라이드", type = 1, choiceItems = mutableListOf())
+        PageLogic(pageId = 900000000, pageTitle = "아니 이 녀석 집에 있었잖아?", type = PageType.END.ordinal)
     )
 
     private val logic = Logic(
@@ -395,20 +347,6 @@ object Sample {
             pageTitle = "아니 이 녀석 집에 있었잖아?",
             pageImage = "image_4.gif",
             description = "이럴수가! 그렇게 찾았던 존이 언제 돌아와 집에서 자고 있었을까요?\n후.. 걱정도 많이 했지만 귀여우니까 봐준다.\n존 크리스탈.. 넌 내꺼야!..",
-            question = ""
-        ),
-        Page(
-            pageId = 1000000000,
-            pageTitle = "이미지 파일 못찾음 예시로",
-            pageImage = "not_found.jpg",
-            description = "",
-            question = ""
-        ),
-        Page(
-            pageId = 1100000000,
-            pageTitle = "이미지 없는 슬라이드",
-            pageImage = "",
-            description = "",
             question = ""
         )
     )

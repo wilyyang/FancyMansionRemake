@@ -1,11 +1,6 @@
 package com.cheesejuice.fancymansion.data.model
 
-import com.cheesejuice.fancymansion.Comparison
-import com.cheesejuice.fancymansion.DEFAULT_END_PAGE_ID
-import com.cheesejuice.fancymansion.ID_NOT_FOUND
-import com.cheesejuice.fancymansion.PageType
-import com.cheesejuice.fancymansion.READ_MODE_EDIT
-import com.cheesejuice.fancymansion.Relation
+import com.cheesejuice.fancymansion.*
 import kotlinx.serialization.Serializable
 
 /**
@@ -81,7 +76,7 @@ data class Config(
     var coverImage : String = "",
     var tagList : MutableList<String> = mutableListOf(),
 
-    var readMode : String = READ_MODE_EDIT,
+    var readMode : String = ReadMode.EDIT.name,
     var defaultEndPageId : Long = DEFAULT_END_PAGE_ID,
 
     var downloads : Int = 0,
@@ -123,16 +118,16 @@ data class ChoiceItem(
 @Serializable
 data class Route(
     var routeId : Long,
-    var routePageId : Long = ID_NOT_FOUND,
+    var routePageId : Long = NOT_ASSIGN_PAGE,
     var routeConditions : MutableList<Condition> = mutableListOf()
 )
 
 @Serializable
 data class Condition(
     var conditionId : Long,
-    var targetPageId1 : Long = ID_NOT_FOUND,
-    var targetPageId2 : Long = ID_NOT_FOUND,
-    var targetCount : Int = 0,
+    var targetId1 : Long = NOT_ASSIGN_ID,
+    var targetId2 : Long = NOT_ASSIGN_ID,
+    var targetCount : Int = NOT_ASSIGN_COUNT,
     var comparison : String = Comparison.EQUAL.name,
     var nextRelation : String = Relation.OR.name
 )
