@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.data.source.local.storage
+package com.cheesejuice.fancymansion.data.source.local
 
 import com.cheesejuice.fancymansion.Comparison
 import com.cheesejuice.fancymansion.PageType

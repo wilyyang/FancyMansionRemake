@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import com.cheesejuice.fancymansion.PageType
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.data.model.ChoiceItem
-import com.cheesejuice.fancymansion.data.source.local.storage.Sample
+import com.cheesejuice.fancymansion.data.source.local.Sample
 import com.cheesejuice.fancymansion.ui.common.UiState
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
 import com.cheesejuice.fancymansion.ui.common.component.BookImage
