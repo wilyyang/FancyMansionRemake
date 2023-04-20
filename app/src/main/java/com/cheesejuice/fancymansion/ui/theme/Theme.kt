@@ -8,7 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
 val disableAlpha = 0.38f
-val borderAlpha = 0.38f
+val dividerAlpha = 0.38f
+val onTextAlpha = 0.76f
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,

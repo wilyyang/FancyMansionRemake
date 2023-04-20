@@ -287,18 +287,18 @@ object Sample {
 
     private val pages = mutableListOf(
         Page(
-            pageId = 100000000,
-            pageTitle = "더 이상 존 크리스탈을 찾을 수 없습니다...",
-            pageImage = "game_end.jpg",
-            description = "대체 무슨 일을 해버린거죠?\n존 크리스탈은 이제 찾을 수 없습니다..\n처음부터 다시 시작하세요...\n",
-            question = ""
-        ),
-        Page(
             pageId = 200000000,
             pageTitle = "대체 어딨는거야!",
             pageImage = "image_1.gif",
             description = "대체 어딨는거야... 나의 고양이 존 크리스탈...\n사라져버린 존을 누군가 데려간걸까요?\n평소 존과 친했던 고양이 모야와 웬디에게로 가봅시다.",
             question = "어떤 고양이를 찾아갈까요?"
+        ),
+        Page(
+            pageId = 100000000,
+            pageTitle = "더 이상 존 크리스탈을 찾을 수 없습니다...",
+            pageImage = "game_end.jpg",
+            description = "대체 무슨 일을 해버린거죠?\n존 크리스탈은 이제 찾을 수 없습니다..\n처음부터 다시 시작하세요...\n",
+            question = ""
         ),
         Page(
             pageId = 300000000,

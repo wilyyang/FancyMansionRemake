@@ -27,6 +27,8 @@ import com.cheesejuice.fancymansion.ui.common.component.BookImage
 import com.cheesejuice.fancymansion.ui.common.component.Label
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
+import com.cheesejuice.fancymansion.ui.theme.dividerAlpha
+import com.cheesejuice.fancymansion.ui.theme.onTextAlpha
 import com.cheesejuice.fancymansion.ui.theme.typography
 import java.io.File
 
@@ -110,7 +112,7 @@ fun ReadPageScreenFrame(
                     imageFile = pageImage,
                     testResourceId = testResourceId
                 )
-                Divider(color = MaterialTheme.colorScheme.outlineVariant)
+                Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha))
             }
             LazyColumn(
                 modifier = Modifier
@@ -160,9 +162,9 @@ fun ChoiceButton(
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
         text = choice.title,
         textStyle = textStyle,
-        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        textColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = onTextAlpha),
         onClick = { onClickChoiceItem(choice) },
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
+        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 15.dp),
         contentArrangement = Arrangement.Start
     )
 }
