@@ -9,9 +9,7 @@ import com.cheesejuice.fancymansion.data.source.local.Sample
 import com.cheesejuice.fancymansion.ui.common.BaseViewModel
 import com.cheesejuice.fancymansion.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -47,11 +45,11 @@ class ReadPageViewModel @Inject constructor(
     init {
         _uiState.value = UiState.Loading()
 
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                readBookRepository.insertReadData(bookId)
+        viewModelScope.launch(Dispatchers.IO) {
+            readBookRepository.insertReadData(bookId)
+            withContext(Dispatchers.Main) {
+                _uiState.value = UiState.Loaded()
             }
-
         }
     }
 

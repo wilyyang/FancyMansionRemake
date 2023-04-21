@@ -1,7 +1,6 @@
 package com.cheesejuice.fancymansion.data.model
 
 import com.cheesejuice.fancymansion.*
-import kotlinx.serialization.Serializable
 
 /**
  * # [Book]
@@ -49,14 +48,12 @@ import kotlinx.serialization.Serializable
  *     00(#route condition) }
  * ```
  */
-@Serializable
 data class Book(
     val config : Config,
     var pages : MutableList<Page>,
     var logic : Logic
 )
 
-@Serializable
 data class Config(
     var bookId : Long = 0L,
 
@@ -84,7 +81,6 @@ data class Config(
     var report : Int = 0
 )
 
-@Serializable
 data class Page(
     var pageId : Long,
     var pageTitle : String,
@@ -93,13 +89,11 @@ data class Page(
     var question : String
 )
 
-@Serializable
 data class Logic(
     val bookId : Long,
     var logics : MutableList<PageLogic> = mutableListOf()
 )
 
-@Serializable
 data class PageLogic(
     var pageId : Long,
     var pageTitle : String,
@@ -107,7 +101,6 @@ data class PageLogic(
     var choiceItems : MutableList<ChoiceItem> = mutableListOf()
 )
 
-@Serializable
 data class ChoiceItem(
     var choiceId : Long,
     var title : String,
@@ -115,14 +108,12 @@ data class ChoiceItem(
     var routes : MutableList<Route> = mutableListOf()
 )
 
-@Serializable
 data class Route(
     var routeId : Long,
     var routePageId : Long = NOT_ASSIGN_PAGE,
     var routeConditions : MutableList<Condition> = mutableListOf()
 )
 
-@Serializable
 data class Condition(
     var conditionId : Long,
     var targetId1 : Long = NOT_ASSIGN_ID,

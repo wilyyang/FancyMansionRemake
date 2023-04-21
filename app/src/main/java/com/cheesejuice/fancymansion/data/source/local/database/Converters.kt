@@ -2,14 +2,12 @@ package com.cheesejuice.fancymansion.data.source.local.database
 
 import androidx.room.TypeConverter
 import com.cheesejuice.fancymansion.data.source.local.database.model.ReadCount
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import com.google.gson.Gson
 
 class Converters {
     @TypeConverter
-    fun listReadCountToJson(value: List<ReadCount>) = Json.encodeToString(value)
+    fun listReadCountToJson(value: List<ReadCount>) = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToListReadCount(value: String) = Json.decodeFromString<List<ReadCount>>(value)
+    fun listReadCountFromJson(json: String) = Gson().fromJson(json, Array<ReadCount>::class.java).toList()
 }
