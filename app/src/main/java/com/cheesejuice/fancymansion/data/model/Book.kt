@@ -1,6 +1,7 @@
 package com.cheesejuice.fancymansion.data.model
 
 import com.cheesejuice.fancymansion.*
+import java.io.File
 
 /**
  * # [Book]
@@ -8,7 +9,7 @@ import com.cheesejuice.fancymansion.*
  * ```
  * 책 관련 정보 { 출시, 계정, 작가, 커버, 평가 }
  * ```
- * ## 2. Page List { [Page] }
+ * ## 2. Page List { [PageContent] }
  * ```
  * 내용을 구성하는 페이지 목록
  * ```
@@ -50,12 +51,12 @@ import com.cheesejuice.fancymansion.*
  */
 data class Book(
     val config : Config,
-    var pages : MutableList<Page>,
+    var pageContents : MutableList<PageContent>,
     var logic : Logic
 )
 
 data class Config(
-    var bookId : Long = 0L,
+    var bookId : String = "",
 
     var version : Long = 0L,
     var publishCode : String = "",
@@ -74,6 +75,7 @@ data class Config(
     var tagList : MutableList<String> = mutableListOf(),
 
     var readMode : String = ReadMode.EDIT.name,
+    var defaultStartPageId : Long = DEFAULT_START_PAGE_ID,
     var defaultEndPageId : Long = DEFAULT_END_PAGE_ID,
 
     var downloads : Int = 0,
@@ -82,6 +84,12 @@ data class Config(
 )
 
 data class Page(
+    var content : PageContent,
+    var logic : PageLogic,
+    var image : File? = null
+)
+
+data class PageContent(
     var pageId : Long,
     var pageTitle : String,
     var pageImage : String = "",
@@ -90,7 +98,7 @@ data class Page(
 )
 
 data class Logic(
-    val bookId : Long,
+    val bookId : String,
     var logics : MutableList<PageLogic> = mutableListOf()
 )
 

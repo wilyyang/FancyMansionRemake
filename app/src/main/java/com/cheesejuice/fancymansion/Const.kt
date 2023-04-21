@@ -19,7 +19,10 @@ const val NOT_ASSIGN_PAGE = -1L
 const val NOT_ASSIGN_COUNT = -1
 
 const val ID_NOT_FOUND = -1L
+const val DEFAULT_START_PAGE_ID = 100000000L
 const val DEFAULT_END_PAGE_ID = -1L
+
+const val SAMPLE_BOOK_ID = "12345"
 
 enum class Comparison(
     val enName : String,

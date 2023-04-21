@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ReadData(
-    @PrimaryKey val bookId : Long,
-    val savePage : Long? = null,
+    @PrimaryKey val bookId : String,
+    val savePage : Long,
     val listCount : List<ReadCount> = listOf()
 )
 

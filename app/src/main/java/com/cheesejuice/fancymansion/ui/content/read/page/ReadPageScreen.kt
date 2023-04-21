@@ -39,28 +39,31 @@ fun ReadPageScreenSetup(
 ) {
     val uiState by viewModel.uiState
     val page by viewModel.page.collectAsState()
-    val pageLogic by viewModel.pageLogic.collectAsState()
 
-    ReadPageScreenFrame(
-        uiState = uiState,
-        pageImage = File(page.pageImage),
-        pageType = PageType.type(pageLogic.type),
-        title = page.pageTitle,
-        contentText = page.description,
-        question = page.question,
-        choiceList = pageLogic.choiceItems.toList(),
+    page?.let {page ->
+        ReadPageScreenFrame(
+            uiState = uiState,
+            pageImage = page.image,
+            pageType = PageType.type(page.logic.type),
+            title = page.content.pageTitle,
+            contentText = page.content.description,
+            question = page.content.question,
+            choiceList = page.logic.choiceItems.toList(),
 
-        testResourceId = Sample.getSampleImageId(page.pageImage),
+            testResourceId = Sample.getSampleImageId(page.content.pageImage),
 
-        onClickChoiceItem = viewModel::clickChoiceItem
-    )
+            onClickChoiceItem = viewModel::clickChoiceItem
+        )
+    }
+
+
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun ReadPageScreenPreview(){
     val pageIdx = 0
-    val page = Sample.book.pages[pageIdx]
+    val page = Sample.book.pageContents[pageIdx]
     val pageLogic = Sample.book.logic.logics[pageIdx]
     MaterialTheme(
         colorScheme = colorScheme,
