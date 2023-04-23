@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.cheesejuice.fancymansion.data.source.local.database.model.ReadCount
-import com.cheesejuice.fancymansion.data.source.local.database.model.ReadData
+import com.cheesejuice.fancymansion.data.model.ReadCount
+import com.cheesejuice.fancymansion.data.model.ReadData
 
 @Database(
     version = 1,

@@ -4,7 +4,7 @@ import com.cheesejuice.fancymansion.data.model.Config
 import com.cheesejuice.fancymansion.data.model.Logic
 import com.cheesejuice.fancymansion.data.model.PageContent
 import com.cheesejuice.fancymansion.data.source.local.database.DatabaseDao
-import com.cheesejuice.fancymansion.data.source.local.database.model.ReadData
+import com.cheesejuice.fancymansion.data.model.ReadData
 import com.cheesejuice.fancymansion.data.source.local.storage.StorageSource
 import kotlinx.coroutines.flow.Flow
 import java.io.File
@@ -37,10 +37,16 @@ class BookRepository @Inject constructor(
     /**
      * ReadData
      */
-    suspend fun insertReadData(readData: ReadData){
-        databaseDao.insertReadData(readData)
+
+    suspend fun isReadDataExist(bookId : String): Boolean {
+        return databaseDao.isReadDataExist(bookId = bookId)
     }
-    fun getReadDataFlow(bookId : String): Flow<ReadData?> {
-        return databaseDao.getReadDataFlow(bookId = bookId)
+
+    suspend fun getSavePageId(bookId : String) : Long {
+        return databaseDao.getSavePageId(bookId)
+    }
+
+    suspend fun insertReadData(readData: ReadData) {
+        databaseDao.insertReadData(readData)
     }
 }

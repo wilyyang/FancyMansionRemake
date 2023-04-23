@@ -3,22 +3,17 @@ package com.cheesejuice.fancymansion.domain
 import com.cheesejuice.fancymansion.data.model.Config
 import com.cheesejuice.fancymansion.data.model.Logic
 import com.cheesejuice.fancymansion.data.model.Page
-import com.cheesejuice.fancymansion.data.model.PageContent
-import com.cheesejuice.fancymansion.data.model.PageLogic
 import com.cheesejuice.fancymansion.data.repository.BookRepository
-import com.cheesejuice.fancymansion.data.source.local.Sample
-import com.cheesejuice.fancymansion.data.source.local.database.model.ReadCount
-import com.cheesejuice.fancymansion.data.source.local.database.model.ReadData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import com.cheesejuice.fancymansion.data.model.ReadCount
+import com.cheesejuice.fancymansion.data.model.ReadData
 import javax.inject.Inject
 
 class ReadBookUseCase @Inject constructor(
     private val bookRepository : BookRepository
 ) {
-    suspend fun getReadDataFlow(config : Config) : Flow<ReadData?> {
-        val readDataFlow = bookRepository.getReadDataFlow(config.bookId)
-        if(readDataFlow.first() == null){
+    suspend fun initReadData(config: Config): Long {
+        val isExist = bookRepository.isReadDataExist(config.bookId)
+        if (!isExist) {
             val readData = ReadData(
                 bookId = config.bookId,
                 savePage = config.defaultStartPageId,
@@ -26,7 +21,7 @@ class ReadBookUseCase @Inject constructor(
             )
             bookRepository.insertReadData(readData)
         }
-        return readDataFlow
+        return bookRepository.getSavePageId(config.bookId)
     }
 
     suspend fun getConfig(bookId : String, userId : String) : Config? {

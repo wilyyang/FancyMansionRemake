@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.data.source.local.database.model
+package com.cheesejuice.fancymansion.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
