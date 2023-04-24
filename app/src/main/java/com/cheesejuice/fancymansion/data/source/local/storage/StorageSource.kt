@@ -8,22 +8,22 @@ import com.cheesejuice.fancymansion.data.source.local.Sample
 import java.io.File
 
 class StorageSource constructor(private val context: Context){
-    suspend fun getConfigFromFile(bookId : String, userId : String) : Config? {
+    suspend fun getConfigFromFile(userId : String, bookId : String) : Config? {
         return Sample.book.config
     }
 
-    suspend fun getLogicFromFile(bookId : String, userId : String) : Logic? {
+    suspend fun getLogicFromFile(userId : String, bookId : String) : Logic? {
         return Sample.book.logic
     }
 
-    suspend fun getPageContentFromFile(bookId : String, userId : String, pageId : Long) : PageContent? {
+    suspend fun getPageContentFromFile(userId : String, bookId : String, pageId : Long) : PageContent? {
         val pageContent = Sample.book.pageContents.find {
             it.pageId == pageId
         }
         return pageContent
     }
 
-    suspend fun getImageFromFile(bookId : String, userId : String, pageId : Long) : File? {
+    suspend fun getImageFromFile(userId : String, bookId : String, pageId : Long) : File? {
         val pageContent = Sample.book.pageContents.find {
             it.pageId == pageId
         }

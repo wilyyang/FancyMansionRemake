@@ -17,20 +17,20 @@ class BookRepository @Inject constructor(
     /**
      * Book
      */
-    suspend fun getConfigFromFile(bookId : String, userId : String) : Config? {
-        return storageSource.getConfigFromFile(bookId, userId)
+    suspend fun getConfigFromFile(userId : String, bookId : String) : Config? {
+        return storageSource.getConfigFromFile(userId = userId, bookId = bookId)
     }
 
-    suspend fun getLogicFromFile(bookId : String, userId : String) : Logic? {
-        return storageSource.getLogicFromFile(bookId, userId)
+    suspend fun getLogicFromFile(userId : String, bookId : String) : Logic? {
+        return storageSource.getLogicFromFile(userId = userId, bookId = bookId)
     }
 
-    suspend fun getImageFromFile(bookId : String, userId : String, pageId : Long) : File? {
-        return storageSource.getImageFromFile(bookId, userId, pageId)
+    suspend fun getImageFromFile(userId : String, bookId : String, pageId : Long) : File? {
+        return storageSource.getImageFromFile(userId = userId, bookId = bookId, pageId = pageId)
     }
 
-    suspend fun getPageContentFromFile(bookId : String, userId : String, pageId : Long) : PageContent? {
-        return storageSource.getPageContentFromFile(bookId, userId, pageId)
+    suspend fun getPageContentFromFile(userId : String, bookId : String, pageId : Long) : PageContent? {
+        return storageSource.getPageContentFromFile(userId = userId, bookId = bookId, pageId = pageId)
     }
 
 
@@ -38,15 +38,15 @@ class BookRepository @Inject constructor(
      * ReadData
      */
 
-    suspend fun isReadDataExist(bookId : String): Boolean {
-        return databaseDao.isReadDataExist(bookId = bookId)
+    suspend fun isReadDataExist(userId : String, bookId : String): Boolean {
+        return databaseDao.isReadDataExist(userId = userId, bookId = bookId)
     }
 
-    suspend fun getSavePageId(bookId : String) : Long {
-        return databaseDao.getSavePageId(bookId)
+    suspend fun getSavePageId(userId : String, bookId : String) : Long {
+        return databaseDao.getSavePageId(userId = userId, bookId = bookId)
     }
 
-    suspend fun insertReadData(readData: ReadData) {
-        databaseDao.insertReadData(readData)
+    suspend fun insertReadData(userId : String, readData: ReadData) {
+        databaseDao.insertReadData(userId = userId, readData = readData)
     }
 }

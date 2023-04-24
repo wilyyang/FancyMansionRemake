@@ -7,11 +7,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.cheesejuice.fancymansion.data.model.ReadCount
 import com.cheesejuice.fancymansion.data.model.ReadData
+import com.cheesejuice.fancymansion.data.model.UserData
 
 @Database(
     version = 1,
     exportSchema = true,
     entities = [
+        UserData::class,
         ReadData::class,
         ReadCount::class
     ]

@@ -19,6 +19,7 @@ class ReadPageViewModel @Inject constructor(
 ) : BaseViewModel()
 {
     private val bookId = SAMPLE_BOOK_ID
+    private val userId = "local"
     private lateinit var config : Config
     private lateinit var logic : Logic
 
@@ -26,12 +27,12 @@ class ReadPageViewModel @Inject constructor(
 
     init {
         launchWithLoading{
-            val configLocal = readBookUseCase.getConfig(bookId, userId = "local")
-            val logicLocal = readBookUseCase.getLogic(bookId, userId = "local")
+            val configLocal = readBookUseCase.getConfig(userId = userId, bookId = bookId)
+            val logicLocal = readBookUseCase.getLogic(userId = userId, bookId = bookId)
             if(configLocal != null && logicLocal != null){
                 config = configLocal
                 logic = logicLocal
-                val startPageId = readBookUseCase.initReadData(config)
+                val startPageId = readBookUseCase.initReadData(userId = userId, config = config)
                 nextPageFromId(startPageId)
             } else {
                 cancel(message = "[$bookId Book] config is ${if(configLocal == null) "" else "not"} null, " +
@@ -49,7 +50,7 @@ class ReadPageViewModel @Inject constructor(
 
     private suspend fun nextPageFromId(pageId : Long){
         delay(300)
-        val page = readBookUseCase.getPage(bookId = bookId, userId = "local", pageId = pageId,  logic = logic)
+        val page = readBookUseCase.getPage(userId = "local", bookId = bookId, pageId = pageId, logic = logic)
         if(page != null){
             this@ReadPageViewModel.page.value = page
         }else{

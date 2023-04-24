@@ -4,6 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
+data class UserData(
+    @PrimaryKey val userId : String,
+    val listReadData : List<ReadData> = listOf()
+)
+
+@Entity
 data class ReadData(
     @PrimaryKey val bookId : String,
     val savePage : Long,
@@ -12,6 +18,6 @@ data class ReadData(
 
 @Entity
 data class ReadCount(
-    @PrimaryKey val readId : Long,
+    @PrimaryKey val pageId : Long,
     val count : Int = 0
 )

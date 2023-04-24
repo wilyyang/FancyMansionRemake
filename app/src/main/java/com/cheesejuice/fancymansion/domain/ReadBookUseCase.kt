@@ -11,30 +11,30 @@ import javax.inject.Inject
 class ReadBookUseCase @Inject constructor(
     private val bookRepository : BookRepository
 ) {
-    suspend fun initReadData(config: Config): Long {
-        val isExist = bookRepository.isReadDataExist(config.bookId)
+    suspend fun initReadData(userId : String, config: Config): Long {
+        val isExist = bookRepository.isReadDataExist(userId = userId, bookId = config.bookId)
         if (!isExist) {
             val readData = ReadData(
                 bookId = config.bookId,
                 savePage = config.defaultStartPageId,
                 listCount = listOf(ReadCount(config.defaultStartPageId, 1))
             )
-            bookRepository.insertReadData(readData)
+            bookRepository.insertReadData(userId = userId, readData = readData)
         }
-        return bookRepository.getSavePageId(config.bookId)
+        return bookRepository.getSavePageId(userId = userId, bookId = config.bookId)
     }
 
-    suspend fun getConfig(bookId : String, userId : String) : Config? {
-        return bookRepository.getConfigFromFile(bookId, userId)
+    suspend fun getConfig(userId : String, bookId : String) : Config? {
+        return bookRepository.getConfigFromFile(userId = userId, bookId = bookId)
     }
 
-    suspend fun getLogic(bookId : String, userId : String) : Logic? {
-        return bookRepository.getLogicFromFile(bookId, userId)
+    suspend fun getLogic(userId : String, bookId : String) : Logic? {
+        return bookRepository.getLogicFromFile(userId = userId, bookId = bookId)
     }
 
-    suspend fun getPage(bookId: String, userId: String, pageId: Long, logic : Logic) : Page? {
-        val pageImage = bookRepository.getImageFromFile(bookId, userId, pageId)
-        val pageContent = bookRepository.getPageContentFromFile(bookId, userId, pageId)
+    suspend fun getPage(userId: String, bookId: String, pageId: Long, logic : Logic) : Page? {
+        val pageImage = bookRepository.getImageFromFile(userId = userId, bookId = bookId, pageId = pageId)
+        val pageContent = bookRepository.getPageContentFromFile(userId = userId, bookId = bookId, pageId = pageId)
         val pageLogic = logic.logics.find { it.pageId == pageId }
         return if(pageContent != null && pageLogic != null && pageImage != null) Page(pageContent, pageLogic, pageImage) else null
     }
