@@ -5,10 +5,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -20,8 +22,10 @@ import androidx.navigation.NavController
 import com.cheesejuice.fancymansion.PageType
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.data.model.ChoiceItem
+import com.cheesejuice.fancymansion.data.model.Page
 import com.cheesejuice.fancymansion.data.source.local.Sample
-import com.cheesejuice.fancymansion.ui.common.UiState
+import com.cheesejuice.fancymansion.ui.common.EmptyState
+import com.cheesejuice.fancymansion.ui.common.LoadingState
 import com.cheesejuice.fancymansion.ui.common.component.BasicButton
 import com.cheesejuice.fancymansion.ui.common.component.BookImage
 import com.cheesejuice.fancymansion.ui.common.component.Label
@@ -37,12 +41,28 @@ fun ReadPageScreenSetup(
     navController : NavController,
     viewModel : ReadPageViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState
-    val page by viewModel.page.collectAsState()
+    val loadingState by viewModel.loadingState.collectAsState()
+    val emptyState by viewModel.emptyState.collectAsState()
+    val page by viewModel.page
+    ReadPageScreenFrame(
+        loadingState = loadingState,
+        emptyState = emptyState,
+        page = page,
+        onClickChoiceItem = viewModel::onClickChoiceItem
+    )
+}
 
-    page?.let {page ->
-        ReadPageScreenFrame(
-            uiState = uiState,
+@Composable
+fun ReadPageScreenFrame(
+    loadingState : LoadingState? = null,
+    emptyState : EmptyState? = null,
+    page : Page,
+    onClickChoiceItem : (ChoiceItem) -> Unit = {}
+) {
+    BaseScreen(
+        loadingState = loadingState
+    ) {
+        ReadPageScreenContent(
             pageImage = page.image,
             pageType = PageType.type(page.logic.type),
             title = page.content.pageTitle,
@@ -52,41 +72,16 @@ fun ReadPageScreenSetup(
 
             testResourceId = Sample.getSampleImageId(page.content.pageImage),
 
-            onClickChoiceItem = viewModel::clickChoiceItem
+            onClickChoiceItem = onClickChoiceItem
         )
-    }
 
-
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun ReadPageScreenPreview(){
-    val pageIdx = 0
-    val page = Sample.book.pageContents[pageIdx]
-    val pageLogic = Sample.book.logic.logics[pageIdx]
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = typography
-    ){
-        ReadPageScreenFrame(
-            uiState = UiState.Loaded(),
-            pageImage = File(page.pageImage),
-            pageType = PageType.type(pageLogic.type),
-            title = page.pageTitle,
-            contentText = page.description,
-            question = page.question,
-            choiceList = pageLogic.choiceItems.toList(),
-
-            testResourceId = Sample.getSampleImageId(page.pageImage)
-        )
+        emptyState?.let {
+            ReadPageScreenEmpty(it.message)
+        }
     }
 }
-
 @Composable
-fun ReadPageScreenFrame(
-    uiState: UiState,
-
+fun ReadPageScreenContent(
     pageImage : File? = null,
     pageType : PageType,
     title : String,
@@ -96,56 +91,52 @@ fun ReadPageScreenFrame(
 
     testResourceId : Int? = null,
 
-    onClickChoiceItem : (ChoiceItem) -> Unit = {},
-){
+    onClickChoiceItem : (ChoiceItem) -> Unit = {}
+) {
     val titleStyle : TextStyle = MaterialTheme.typography.headlineSmall
     val contentTextStyle : TextStyle = MaterialTheme.typography.bodyMedium
     val questionTextStyle : TextStyle = MaterialTheme.typography.titleLarge
     val choiceTextStyle : TextStyle = MaterialTheme.typography.titleMedium
 
-    BaseScreen (
-        uiState = uiState,
-    ){
-        Column(modifier = Modifier.fillMaxSize()){
-            pageImage?.let {
-                BookImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(280.dp),
-                    imageFile = pageImage,
-                    testResourceId = testResourceId
-                )
-                Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha))
-            }
-            LazyColumn(
+    Column(modifier = Modifier.fillMaxSize()) {
+        pageImage?.let {
+            BookImage(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .weight(1f)
-            ) {
-                item {
-                    Spacer(Modifier.height(20.dp))
-                    Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                        if(pageType == PageType.END){
-                            Label(
-                                modifier = Modifier.padding(bottom = 4.dp),
-                                label = stringResource(id = R.string.page_type_end)
-                            )
-                        }
-                        Text(text = title, style = titleStyle)
+                    .fillMaxWidth()
+                    .height(280.dp),
+                imageFile = pageImage,
+                testResourceId = testResourceId
+            )
+            Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha))
+        }
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .weight(1f)
+        ) {
+            item {
+                Spacer(Modifier.height(20.dp))
+                Column(modifier = Modifier.padding(vertical = 20.dp)) {
+                    if (pageType == PageType.END) {
+                        Label(
+                            modifier = Modifier.padding(bottom = 4.dp),
+                            label = stringResource(id = R.string.page_type_end)
+                        )
                     }
-                    Text(text = contentText, style = contentTextStyle)
-                    Spacer(Modifier.height(20.dp))
-                    Text(text = question, style = questionTextStyle)
-                    Spacer(Modifier.height(20.dp))
+                    Text(text = title, style = titleStyle)
                 }
+                Text(text = contentText, style = contentTextStyle)
+                Spacer(Modifier.height(20.dp))
+                Text(text = question, style = questionTextStyle)
+                Spacer(Modifier.height(20.dp))
+            }
 
-                items(choiceList) { choice ->
-                    ChoiceButton(
-                        choice = choice,
-                        textStyle = choiceTextStyle,
-                        onClickChoiceItem = onClickChoiceItem
-                    )
-                }
+            items(choiceList) { choice ->
+                ChoiceButton(
+                    choice = choice,
+                    textStyle = choiceTextStyle,
+                    onClickChoiceItem = onClickChoiceItem
+                )
             }
         }
     }
@@ -156,7 +147,7 @@ fun ChoiceButton(
     choice : ChoiceItem,
     textStyle : TextStyle,
     onClickChoiceItem : (ChoiceItem) -> Unit
-){
+) {
     BasicButton(
         modifier = Modifier
             .padding(vertical = 8.dp)
@@ -170,4 +161,38 @@ fun ChoiceButton(
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 15.dp),
         contentArrangement = Arrangement.Start
     )
+}
+
+@Composable
+fun ReadPageScreenEmpty(message : String) {
+    val contentTextStyle : TextStyle = MaterialTheme.typography.bodyMedium
+
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = message, style = contentTextStyle)
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun ReadPageScreenPreview() {
+    val samplePageIdx = 0
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = typography
+    ) {
+        ReadPageScreenFrame(
+            loadingState = null,
+            emptyState = null,
+            page = Page(
+                content = Sample.book.pageContents[samplePageIdx],
+                logic = Sample.book.logic.logics[samplePageIdx],
+                image = File("")
+            )
+        )
+    }
 }

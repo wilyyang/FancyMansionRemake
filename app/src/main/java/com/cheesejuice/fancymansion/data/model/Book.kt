@@ -130,3 +130,16 @@ data class Condition(
     var comparison : String = Comparison.EQUAL.name,
     var nextRelation : String = Relation.OR.name
 )
+
+object InitData{
+    val condition = Condition(conditionId = INIT_ID)
+    val route = Route(routeId = INIT_ID)
+    val choice = ChoiceItem(choiceId = INIT_ID, title = "")
+
+    val pageLogic = PageLogic(pageId = INIT_ID, pageTitle = "")
+    val pageContent = PageContent(pageId = INIT_ID, pageTitle = "", question = "")
+    val page = Page(content = pageContent, logic = pageLogic)
+
+    val logic = Logic(bookId = INIT_BOOK_ID)
+    val config = Config()
+}

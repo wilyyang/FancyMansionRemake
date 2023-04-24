@@ -26,10 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.ui.common.UiState
+import com.cheesejuice.fancymansion.ui.common.LoadingState
 import com.cheesejuice.fancymansion.ui.common.component.*
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
-import com.cheesejuice.fancymansion.ui.nav.TestScreen
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
 import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.disableAlpha
@@ -44,20 +43,12 @@ import kotlinx.coroutines.launch
 fun TestScreenSetup(
     viewModel : TestViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState
+    val loadingState by viewModel.loadingState.collectAsState()
     TestScreenFrame(
-        uiState = uiState,
-        menu1Click = {
-        },
-        menu3Click = {
-            viewModel.showErrorDialog(
-                title = "대화상자 에러",
-                message = "대화 상자 에러가 발생 했습니다."
-            )
-        },
-        bottomClick = {
-            viewModel.showTestLoading(message = "잠시만 기다려 주세용!")
-        },
+        loadingState = loadingState,
+        menu1Click = {},
+        menu3Click = {},
+        bottomClick = {},
     )
 }
 
@@ -74,7 +65,7 @@ fun TestScreenPreview(){
 
 @Composable
 fun TestScreenFrame(
-    uiState: UiState = UiState.Loaded(null),
+    loadingState: LoadingState? = null,
     menu1Click : ()->Unit = {},
     menu2Click : ()->Unit = {},
     menu3Click : ()->Unit = {},
@@ -108,7 +99,7 @@ fun TestScreenFrame(
             )
             MainDrawer(menuItems = menuList)
         },
-        uiState = uiState,
+        loadingState = loadingState
     ) {
         TestScreenContent(
             onClickBottom = {
@@ -220,7 +211,10 @@ fun TestScreenContent(
                     )
                 }
 
-                Divider(Modifier.padding(top = 4.dp).height(1.dp))
+                Divider(
+                    Modifier
+                        .padding(top = 4.dp)
+                        .height(1.dp))
 
                 val dropdownList = listOf(
                     DropdownType(key = "1", title = "삭제하기", onClick = { data -> Log.e("Crane", "${data.title} 삭제하기")}),
