@@ -27,6 +27,8 @@ const val DEFAULT_END_PAGE_ID = -1L
 
 const val SAMPLE_BOOK_ID = "12345"
 
+const val LOCAL_USER_ID = "local"
+
 enum class Comparison(
     val enName : String,
     val koName : String,
