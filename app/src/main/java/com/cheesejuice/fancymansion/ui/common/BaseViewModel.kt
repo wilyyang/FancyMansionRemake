@@ -1,71 +1,69 @@
 package com.cheesejuice.fancymansion.ui.common
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cheesejuice.fancymansion.StringResource.empty_message_error
+import com.cheesejuice.fancymansion.StringResource.empty_message_no_data
+import com.cheesejuice.fancymansion.module.throwable.ThrowableManager
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlin.coroutines.CoroutineContext
 
-enum class ErrorType{
-    Toast, Dialog, Skip
-}
-data class ErrorData(val errorType : ErrorType, val title : String, val message : String)
-sealed class UiState {
-    object Empty : UiState()
-    class Error(val errorData: ErrorData, val onConfirm:()-> Unit = {}, val onDismiss:()-> Unit = {}) : UiState()
-    class Loading(val message: String?, val onDismiss:()-> Unit = {}) : UiState()
-    class Loaded(val message: String? = null) : UiState()
+const val DEFAULT_DELAY_TIME = 10000L
 
-    // class Permission(val message: String?) : UiState()
-}
+data class LoadingState(val message : String? = null, val onDismiss : () -> Unit = {})
+data class EmptyState(val message : String)
+abstract class BaseViewModel : ViewModel(), CoroutineScope {
 
-abstract class BaseViewModel : ViewModel(){
-    protected val _uiState = MutableStateFlow<UiState>(UiState.Empty)
-    val uiState: StateFlow<UiState> = _uiState
+    private val _loadingState : MutableStateFlow<LoadingState?> = MutableStateFlow(null)
+    val loadingState : StateFlow<LoadingState?> = _loadingState.asStateFlow()
 
-    fun showLoading(message : String? = null, onDismiss:()-> Unit = {}) {
-        if(_uiState.value !is UiState.Loading){
-            _uiState.value = UiState.Loading(
-                message = message,
-                onDismiss = onDismiss
-            )
+    private val _emptyState : MutableStateFlow<EmptyState?> = MutableStateFlow(null)
+    val emptyState : StateFlow<EmptyState?> = _emptyState.asStateFlow()
+
+    override val coroutineContext : CoroutineContext
+        get() = viewModelScope.coroutineContext + CoroutineExceptionHandler { _, throwable ->
+            ThrowableManager.sendError(throwable)
+
+            dismissLoading(message = empty_message_error)
+        }
+
+    fun launchWithLoading(
+        context : CoroutineContext = Dispatchers.IO,
+        start : CoroutineStart = CoroutineStart.DEFAULT,
+        delayTime : Long = DEFAULT_DELAY_TIME,
+        block : suspend CoroutineScope.() -> Unit
+    ) : Job {
+        return launch(context, start) {
+            withContext(Dispatchers.Main) {
+                showLoading()
+                withContext(context = context) {
+                    withTimeout(delayTime) {
+                        block.invoke(this)
+                    }
+                }
+                dismissLoading()
+            }
+        }.apply {
+            invokeOnCompletion { cause : Throwable? ->
+                cause?.also {
+                    dismissLoading(message = empty_message_no_data)
+                    ThrowableManager.sendError(it)
+                }
+            }
         }
     }
 
-    fun showErrorDialog(
-        title : String,
-        message : String,
-        onConfirm: ()-> Unit = { dismissDialog() },
-        onDismiss:()-> Unit = { dismissDialog() })
-    {
-        if(_uiState.value !is UiState.Error){
-            _uiState.value = UiState.Error(
-                ErrorData(
-                    errorType = ErrorType.Dialog,
-                    title = title,
-                    message = message,
-                ),
-                onConfirm = onConfirm,
-                onDismiss = onDismiss
-            )
-        }
+    fun showLoading(message : String? = null) {
+        _loadingState.value = LoadingState(message)
     }
 
-    protected fun dismissDialog() {
-        if(_uiState.value !is UiState.Loaded){
-            _uiState.value = UiState.Loaded(null)
+    fun dismissLoading(message : String? = null) {
+        _loadingState.value = null
+        message?.let {
+            _emptyState.value = EmptyState(message = message)
         }
-    }
-
-    fun showErrorToast(
-        title : String,
-        message : String)
-    {
-        _uiState.value = UiState.Error(
-            ErrorData(
-                errorType = ErrorType.Toast,
-                title = title,
-                message = message,
-            ),
-            onDismiss = { dismissDialog() }
-        )
     }
 }

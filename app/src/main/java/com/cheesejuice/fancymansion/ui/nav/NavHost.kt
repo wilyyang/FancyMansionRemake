@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.cheesejuice.fancymansion.ui.common.screen.SetupScreen
-import com.cheesejuice.fancymansion.ui.common.screen.ThemeTestScreen
+import com.cheesejuice.fancymansion.ui.common.screen.test.TestScreenSetup
+import com.cheesejuice.fancymansion.ui.content.read.page.ReadPageScreenSetup
 
 @Composable
 fun FancyMansionNavHost(
@@ -15,11 +15,17 @@ fun FancyMansionNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = TestScreen.route,
+        startDestination = ReadPageScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = TestScreen.route){
-            SetupScreen()
+            TestScreenSetup()
+        }
+
+        composable(route = ReadPageScreen.route){
+            ReadPageScreenSetup(
+                navController = navController
+            )
         }
     }
 }

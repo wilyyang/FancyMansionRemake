@@ -5,5 +5,9 @@ interface NavDestination {
 }
 
 object TestScreen : NavDestination {
-    override val route = "testscreen"
+    override val route = "test"
+}
+
+object ReadPageScreen : NavDestination {
+    override val route = "read_page"
 }

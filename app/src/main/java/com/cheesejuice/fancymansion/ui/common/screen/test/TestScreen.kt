@@ -1,7 +1,7 @@
-package com.cheesejuice.fancymansion.ui.common.screen
+package com.cheesejuice.fancymansion.ui.common.screen.test
 
 import android.util.Log
-import android.widget.Toast
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,12 +20,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.ui.common.UiState
+import com.cheesejuice.fancymansion.ui.common.LoadingState
 import com.cheesejuice.fancymansion.ui.common.component.*
 import com.cheesejuice.fancymansion.ui.common.frame.BaseScreen
 import com.cheesejuice.fancymansion.ui.theme.TextStyleGroup
@@ -33,37 +34,38 @@ import com.cheesejuice.fancymansion.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.ui.theme.disableAlpha
 import com.cheesejuice.fancymansion.ui.theme.green
 import com.cheesejuice.fancymansion.ui.theme.red
+import com.cheesejuice.fancymansion.ui.theme.typography
 import com.cheesejuice.fancymansion.ui.theme.yellow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun SetupScreen(
-    viewModel: ThemeTestViewModel = hiltViewModel()
-){
-    val uiState by viewModel.uiState.collectAsState()
-    ThemeTestScreen(
-        uiState = uiState,
-        menu1Click = {
-            viewModel.showErrorToast(
-                title = "토스트",
-                message = "토스트 에러입니다."
-            )
-        },
-        menu3Click = {viewModel.showErrorDialog(
-            title = "대화상자 에러",
-            message = "대화 상자 에러가 발생 했습니다."
-        )},
-        bottomClick = {
-            viewModel.showTestLoading(message = "잠시만 기다려 주세용!")
-        },
+fun TestScreenSetup(
+    viewModel : TestViewModel = hiltViewModel()
+) {
+    val loadingState by viewModel.loadingState.collectAsState()
+    TestScreenFrame(
+        loadingState = loadingState,
+        menu1Click = {},
+        menu3Click = {},
+        bottomClick = {},
     )
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
-fun ThemeTestScreen(
-    uiState: UiState = UiState.Loaded(null),
+fun TestScreenPreview(){
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = typography
+    ){
+        TestScreenBasicButton()
+    }
+}
+
+@Composable
+fun TestScreenFrame(
+    loadingState: LoadingState? = null,
     menu1Click : ()->Unit = {},
     menu2Click : ()->Unit = {},
     menu3Click : ()->Unit = {},
@@ -97,9 +99,9 @@ fun ThemeTestScreen(
             )
             MainDrawer(menuItems = menuList)
         },
-        uiState = uiState,
+        loadingState = loadingState
     ) {
-        TestComponentContent(
+        TestScreenContent(
             onClickBottom = {
                 bottomClick()
             }
@@ -108,7 +110,7 @@ fun ThemeTestScreen(
 }
 
 @Composable
-fun TestComponentContent(
+fun TestScreenContent(
     onClickBottom : () -> Unit = {}
 ){
     // 배경
@@ -212,7 +214,6 @@ fun TestComponentContent(
                 Divider(
                     Modifier
                         .padding(top = 4.dp)
-                        .fillMaxWidth()
                         .height(1.dp))
 
                 val dropdownList = listOf(
@@ -277,9 +278,62 @@ fun TestComponentContent(
         }
     }
 }
+@Composable
+fun TestScreenBasicButton(){
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = typography
+    ){
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            BasicButton(text = "테스트 버튼")
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium),
+                text = "테스트 버튼")
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                text = "테스트 버튼")
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                text = "테스트 버튼",
+                contentPadding = PaddingValues(10.dp)
+            )
+            Spacer(Modifier.height(5.dp))
+            BasicButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                text = "테스트 버튼",
+                contentArrangement = Arrangement.Start
+            )
+        }
+    }
+}
 
 @Composable
-fun IconTest(){
+fun TestScreenIconTest(){
     val listId = listOf(
         Pair(R.drawable.add_photo_48px, null),
         Pair(R.drawable.crop_48px, null),
@@ -321,7 +375,7 @@ fun IconTest(){
 }
 
 @Composable
-fun TypographyTest(){
+fun TestScreenTypographyTest(){
     Column {
         Text(text = "Headline Large", style = MaterialTheme.typography.headlineLarge)
         Text(text = "Headline Medium", style = MaterialTheme.typography.headlineMedium)
@@ -398,7 +452,7 @@ fun TypographyTest(){
 }
 
 @Composable
-fun ColorTest(){
+fun TestScreenColorTest(){
     Column (Modifier.verticalScroll(
         state = rememberScrollState()
     )){

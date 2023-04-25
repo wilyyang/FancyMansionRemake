@@ -1,10 +1,15 @@
 package com.cheesejuice.fancymansion.ui.theme
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
 val disableAlpha = 0.38f
+val dividerAlpha = 0.38f
+val onTextAlpha = 0.76f
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,
@@ -55,6 +60,7 @@ private val LightColorScheme = lightColorScheme(
 // Default 값은 MaterialTheme 에서 참조하고 Default가 아닌 경우 해당 객체에서 직접 참조
 var colorScheme = LightColorScheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FancyMansionTheme(
     content : @Composable () -> Unit)
@@ -63,6 +69,10 @@ fun FancyMansionTheme(
         colorScheme = colorScheme,
         typography = typography
     ){
-        content()
+        CompositionLocalProvider(
+            LocalOverscrollConfiguration provides null
+        ){
+            content()
+        }
     }
 }
