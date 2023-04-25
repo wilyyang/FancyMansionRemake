@@ -8,8 +8,8 @@ enum class PageType{
     }
 }
 
-enum class ReadMode{
-    READ_ONLY, EDIT
+enum class ReadMode(val dirName : String){
+    READ_ONLY("read_only"), EDIT("edit")
 }
 
 const val LOG_TAG = "CraneLog"

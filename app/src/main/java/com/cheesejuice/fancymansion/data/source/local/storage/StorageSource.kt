@@ -8,6 +8,20 @@ import com.cheesejuice.fancymansion.data.source.local.Sample
 import java.io.File
 
 class StorageSource constructor(private val context: Context){
+    private val dirRoot = File(context.getExternalFilesDir(null), dirRootName)
+
+    // make data
+    fun initRootFolder():Boolean{
+        return try{
+            if(!dirRoot.exists()){
+                dirRoot.mkdirs()
+            }
+            true
+        }catch (e: Exception){
+            false
+        }
+    }
+
     suspend fun getConfigFromFile(userId : String, bookId : String) : Config? {
         return Sample.book.config
     }
