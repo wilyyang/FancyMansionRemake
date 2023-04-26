@@ -9,7 +9,10 @@ enum class PageType{
 }
 
 enum class ReadMode(val dirName : String){
-    READ_ONLY("read_only"), EDIT("edit")
+    READ_ONLY("read_only"), EDIT("edit");
+    companion object {
+        fun from(dirName : String?) : ReadMode = ReadMode.values().find { it.dirName == dirName } ?: EDIT
+    }
 }
 
 const val LOG_TAG = "CraneLog"

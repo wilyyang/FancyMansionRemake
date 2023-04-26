@@ -1,7 +1,7 @@
 package com.cheesejuice.fancymansion.data.source.local.storage
 
 import com.cheesejuice.fancymansion.ReadMode
-import com.cheesejuice.fancymansion.ifNotBlank
+import com.cheesejuice.fancymansion.util.ifNotBlank
 import java.io.File
 
 const val dirRootName = "book"
@@ -80,7 +80,7 @@ fun dirPage(root:File, userId : String, readMode : ReadMode, bookId : String) = 
 /**
  * /book/userId/ [read_only | edit] /bookId/content/page/page_1.json
  */
-fun fileMediaImage(root : File, userId : String, readMode : ReadMode, bookId : String, pageId : Long)
+fun filePage(root : File, userId : String, readMode : ReadMode, bookId : String, pageId : Long)
 = dirMedia(root, userId, readMode, bookId)?.let {
     File(it, "page_$pageId.json")
 }

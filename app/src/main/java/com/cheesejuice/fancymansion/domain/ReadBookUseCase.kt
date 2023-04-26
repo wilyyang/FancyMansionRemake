@@ -4,9 +4,12 @@ import com.cheesejuice.fancymansion.Comparison
 import com.cheesejuice.fancymansion.DEFAULT_END_PAGE_ID
 import com.cheesejuice.fancymansion.NOT_ASSIGN_COUNT
 import com.cheesejuice.fancymansion.NOT_ASSIGN_ID
+import com.cheesejuice.fancymansion.ReadMode
 import com.cheesejuice.fancymansion.Relation
 import com.cheesejuice.fancymansion.data.model.*
 import com.cheesejuice.fancymansion.data.repository.BookRepository
+import com.cheesejuice.fancymansion.data.source.local.Sample
+import java.io.InputStream
 import javax.inject.Inject
 
 class ReadBookUseCase @Inject constructor(
@@ -14,19 +17,33 @@ class ReadBookUseCase @Inject constructor(
 ) {
 
     /**
+     * Make Sampe
+     */
+    suspend fun makeSample(userId : String, readMode: ReadMode, bookId : String) {
+        bookRepository.makeSample(userId, readMode, bookId)
+    }
+
+    /**
      * Get BookObject From File
      */
-    suspend fun getConfig(userId : String, bookId : String) : Config? {
-        return bookRepository.getConfigFromFile(userId = userId, bookId = bookId)
+    suspend fun getConfig(userId : String, readMode: ReadMode, bookId : String) : Config? {
+        return bookRepository.getConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
     }
 
-    suspend fun getLogic(userId : String, bookId : String) : Logic? {
-        return bookRepository.getLogicFromFile(userId = userId, bookId = bookId)
+    suspend fun getLogic(userId : String, readMode: ReadMode, bookId : String) : Logic? {
+        return bookRepository.getLogicFromFile(userId = userId, readMode = readMode, bookId = bookId)
     }
 
-    suspend fun getPage(userId: String, bookId: String, pageId: Long, logic : Logic) : Page? {
-        val pageImage = bookRepository.getImageFromFile(userId = userId, bookId = bookId, pageId = pageId)
-        val pageContent = bookRepository.getPageContentFromFile(userId = userId, bookId = bookId, pageId = pageId)
+    suspend fun getPage(userId: String, readMode: ReadMode, bookId: String, pageId: Long, logic : Logic) : Page? {
+        val pageContent = bookRepository.getPageFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId)
+        val pageImage = pageContent?.let {
+            bookRepository.getImageFromFile(
+                userId = userId,
+                readMode = readMode,
+                bookId = bookId,
+                image = it.pageImage
+            )
+        }
 
         val findPageLogic = logic.logics.find { it.pageId == pageId }
         val pageLogic = findPageLogic?.copy(choiceItems = mutableListOf())
