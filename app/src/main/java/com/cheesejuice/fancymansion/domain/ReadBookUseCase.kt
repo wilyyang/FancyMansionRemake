@@ -6,10 +6,9 @@ import com.cheesejuice.fancymansion.NOT_ASSIGN_COUNT
 import com.cheesejuice.fancymansion.NOT_ASSIGN_ID
 import com.cheesejuice.fancymansion.ReadMode
 import com.cheesejuice.fancymansion.Relation
-import com.cheesejuice.fancymansion.data.model.*
 import com.cheesejuice.fancymansion.data.repository.BookRepository
-import com.cheesejuice.fancymansion.data.source.local.Sample
-import java.io.InputStream
+import com.cheesejuice.fancymansion.data.source.local.database.model.*
+import com.cheesejuice.fancymansion.data.source.local.storage.model.*
 import javax.inject.Inject
 
 class ReadBookUseCase @Inject constructor(

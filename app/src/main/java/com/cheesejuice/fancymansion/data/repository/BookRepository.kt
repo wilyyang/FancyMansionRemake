@@ -1,12 +1,12 @@
 package com.cheesejuice.fancymansion.data.repository
 
 import com.cheesejuice.fancymansion.ReadMode
-import com.cheesejuice.fancymansion.data.model.Config
-import com.cheesejuice.fancymansion.data.model.Logic
-import com.cheesejuice.fancymansion.data.model.PageContent
-import com.cheesejuice.fancymansion.data.model.ReadCount
-import com.cheesejuice.fancymansion.data.model.ReadData
-import com.cheesejuice.fancymansion.data.model.UserData
+import com.cheesejuice.fancymansion.data.source.local.storage.model.Config
+import com.cheesejuice.fancymansion.data.source.local.storage.model.Logic
+import com.cheesejuice.fancymansion.data.source.local.storage.model.PageContent
+import com.cheesejuice.fancymansion.data.source.local.database.model.ReadCount
+import com.cheesejuice.fancymansion.data.source.local.database.model.ReadData
+import com.cheesejuice.fancymansion.data.source.local.database.model.UserData
 import com.cheesejuice.fancymansion.data.source.local.database.DatabaseDao
 import com.cheesejuice.fancymansion.data.source.local.storage.StorageSource
 import javax.inject.Inject
@@ -20,10 +20,12 @@ class BookRepository @Inject constructor(
      */
     suspend fun makeSample(userId : String, readMode: ReadMode, bookId : String)
     = storageSource.makeSample(userId, readMode, bookId)
-    suspend fun initRootDir()
-    = storageSource.initRootDir()
-    suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String)
-    = storageSource.initBookDir(userId, readMode, bookId)
+    suspend fun initRootDir(remove:Boolean = false)
+    = storageSource.initRootDir(remove)
+    suspend fun initUserDir(userId : String, remove:Boolean = false)
+    = storageSource.initUserDir(userId, remove)
+    suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean = false)
+    = storageSource.initBookDir(userId, readMode, bookId, remove)
     suspend fun makeConfigFile(config : Config)
     = storageSource.makeConfigFile(config)
     suspend fun makeLogicFile(logic : Logic, userId : String, readMode : ReadMode, bookId : String)

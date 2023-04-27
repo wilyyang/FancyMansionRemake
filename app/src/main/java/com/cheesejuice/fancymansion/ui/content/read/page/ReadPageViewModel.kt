@@ -4,10 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.cheesejuice.fancymansion.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.ReadMode
 import com.cheesejuice.fancymansion.SAMPLE_BOOK_ID
-import com.cheesejuice.fancymansion.data.model.ChoiceItem
-import com.cheesejuice.fancymansion.data.model.Config
-import com.cheesejuice.fancymansion.data.model.InitData
-import com.cheesejuice.fancymansion.data.model.Logic
+import com.cheesejuice.fancymansion.data.source.local.storage.model.*
 import com.cheesejuice.fancymansion.domain.ReadBookUseCase
 import com.cheesejuice.fancymansion.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +18,7 @@ class ReadPageViewModel @Inject constructor(
 ) : BaseViewModel()
 {
     private val userId = LOCAL_USER_ID
-    private val readMode = ReadMode.EDIT
+    private val readMode = ReadMode.edit
     private val bookId = SAMPLE_BOOK_ID
     private val initBook = true
     private lateinit var config : Config
@@ -33,7 +30,8 @@ class ReadPageViewModel @Inject constructor(
         launchWithLoading{
             // make file
             readBookUseCase.makeSample(userId = userId, readMode = readMode, bookId = bookId)
-            ////
+
+            // get file
             val configLocal = readBookUseCase.getConfig(userId = userId, readMode = readMode, bookId = bookId)
             val logicLocal = readBookUseCase.getLogic(userId = userId, readMode = readMode, bookId = bookId)
             if(configLocal != null && logicLocal != null){

@@ -8,10 +8,10 @@ enum class PageType{
     }
 }
 
-enum class ReadMode(val dirName : String){
-    READ_ONLY("read_only"), EDIT("edit");
+enum class ReadMode{
+    read_only, edit;
     companion object {
-        fun from(dirName : String?) : ReadMode = ReadMode.values().find { it.dirName == dirName } ?: EDIT
+        fun from(name : String?) : ReadMode = ReadMode.values().find { it.name == name } ?: edit
     }
 }
 

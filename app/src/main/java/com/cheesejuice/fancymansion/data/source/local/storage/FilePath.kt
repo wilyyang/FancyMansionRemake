@@ -10,6 +10,7 @@ const val dirContentName = "content"
 const val fileLogicName = "logic.json"
 const val dirMediaName = "media"
 const val dirPageName = "page"
+fun  pageFormat(pageId : Long) = "page_$pageId.json"
 
 /**
  * /book/userId
@@ -21,7 +22,7 @@ fun dirUser(root:File, userId : String) = userId.ifNotBlank {
  * /book/userId/ [read_only | edit] /
  */
 fun dirRead(root:File, userId : String, readMode : ReadMode) = dirUser(root, userId)?.let {
-    File(it, readMode.dirName)
+    File(it, readMode.name)
 }
 /**
  * /book/userId/ [read_only | edit] /bookId/
@@ -60,7 +61,7 @@ fun fileLogic(root:File, userId : String, readMode : ReadMode, bookId : String) 
 /**
  * /book/userId/ [read_only | edit] /bookId/content/media/
  */
-fun dirMedia(root:File, userId : String, readMode : ReadMode, bookId : String) = dirBook(root, userId, readMode, bookId)?.let {
+fun dirMedia(root:File, userId : String, readMode : ReadMode, bookId : String) = dirContent(root, userId, readMode, bookId)?.let {
     File(it, dirMediaName)
 }
 /**
@@ -74,13 +75,13 @@ fun fileMediaImage(root : File, userId : String, readMode : ReadMode, bookId : S
 /**
  * /book/userId/ [read_only | edit] /bookId/content/page/
  */
-fun dirPage(root:File, userId : String, readMode : ReadMode, bookId : String) = dirBook(root, userId, readMode, bookId)?.let {
+fun dirPage(root:File, userId : String, readMode : ReadMode, bookId : String) = dirContent(root, userId, readMode, bookId)?.let {
     File(it, dirPageName)
 }
 /**
  * /book/userId/ [read_only | edit] /bookId/content/page/page_1.json
  */
 fun filePage(root : File, userId : String, readMode : ReadMode, bookId : String, pageId : Long)
-= dirMedia(root, userId, readMode, bookId)?.let {
-    File(it, "page_$pageId.json")
+= dirPage(root, userId, readMode, bookId)?.let {
+    File(it, pageFormat(pageId))
 }

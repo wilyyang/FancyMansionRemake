@@ -3,9 +3,9 @@ package com.cheesejuice.fancymansion.data.source.local.storage
 import android.content.Context
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.ReadMode
-import com.cheesejuice.fancymansion.data.model.Config
-import com.cheesejuice.fancymansion.data.model.Logic
-import com.cheesejuice.fancymansion.data.model.PageContent
+import com.cheesejuice.fancymansion.data.source.local.storage.model.Config
+import com.cheesejuice.fancymansion.data.source.local.storage.model.Logic
+import com.cheesejuice.fancymansion.data.source.local.storage.model.PageContent
 import com.cheesejuice.fancymansion.data.source.local.Sample
 import com.cheesejuice.fancymansion.util.tryBooleanScope
 import com.cheesejuice.fancymansion.util.tryNullableScope
@@ -21,6 +21,7 @@ class StorageSource constructor(private val context: Context){
     // make Sample
     suspend fun makeSample(userId : String, readMode: ReadMode, bookId : String) {
         initRootDir()
+        initUserDir(userId)
         initBookDir(userId, readMode, bookId)
 
         makeConfigFile(Sample.book.config)
@@ -32,40 +33,60 @@ class StorageSource constructor(private val context: Context){
         val array = arrayOf("image_1.gif", "image_2.gif", "image_3.gif", "image_4.gif", "image_5.gif", "image_6.gif", "fish_cat.jpg", "game_end.jpg")
         val arrayId = arrayOf(R.raw.image_1, R.raw.image_2, R.raw.image_3, R.raw.image_4, R.raw.image_5, R.raw.image_6, R.raw.fish_cat, R.raw.game_end)
         array.forEachIndexed { index, imageName ->
-            val file = fileMediaImage(dirRoot, userId, readMode, bookId, imageName)
-            val input: InputStream = context.resources.openRawResource(arrayId[index])
-            val out = FileOutputStream(file)
-            val buff = ByteArray(1024)
-            var read = 0
-            try {
-                while (input.read(buff).also { read = it } > 0) {
-                    out.write(buff, 0, read)
+            fileMediaImage(dirRoot, userId, readMode, bookId, imageName)?.let {
+                val inputStream : InputStream = context.resources.openRawResource(arrayId[index])
+                val outputStream = FileOutputStream(it)
+                val buff = ByteArray(1024)
+
+                var read = 0
+                try {
+                    while (inputStream.read(buff).also { read = it } > 0) {
+                        outputStream.write(buff, 0, read)
+                    }
+                } finally {
+                    inputStream.close()
+                    outputStream.close()
                 }
-            } finally {
-                input.close()
-                out.close()
             }
         }
     }
 
     // make file
-    suspend fun initRootDir() = tryBooleanScope{
-        if(dirRoot.exists()){
-            true
-        }else{
-            dirRoot.mkdirs()
+    suspend fun initRootDir(remove : Boolean = false) = tryBooleanScope {
+        dirRoot.let {
+            if (it.exists() && remove) it.deleteRecursively()
+            if (it.exists()) {
+                true
+            } else {
+                it.mkdirs()
+            }
         }
     }
 
-    suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
-        dirBook(dirRoot, userId, readMode, bookId)?.let {
+    suspend fun initUserDir(userId : String, remove : Boolean = false) = tryBooleanScope{
+        dirUser(dirRoot, userId)?.let{
+            if (it.exists() && remove) it.deleteRecursively()
             if (it.exists()) {
-                it.deleteRecursively()
+                true
+            } else {
+                (it.mkdirs() &&
+                    dirRead(dirRoot, userId, ReadMode.read_only)?.mkdir() ?: false &&
+                    dirRead(dirRoot, userId, ReadMode.edit)?.mkdir() ?: false)
             }
-            (it.mkdir() &&
-                dirContent(dirRoot, userId, readMode, bookId)!!.mkdir() &&
-                dirMedia(dirRoot, userId, readMode, bookId)!!.mkdir() &&
-                dirPage(dirRoot, userId, readMode, bookId)!!.mkdir())
+        }?: false
+    }
+
+    suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean = false) = tryBooleanScope {
+        dirBook(dirRoot, userId, readMode, bookId)?.let {
+            if (it.exists() && remove) it.deleteRecursively()
+            if (it.exists()) {
+                true
+            } else {
+                (it.mkdir() &&
+                    dirContent(dirRoot, userId, readMode, bookId)!!.mkdir() &&
+                    dirMedia(dirRoot, userId, readMode, bookId)!!.mkdir() &&
+                    dirPage(dirRoot, userId, readMode, bookId)!!.mkdir())
+            }
         } ?: false
     }
 

@@ -21,8 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.cheesejuice.fancymansion.PageType
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.data.model.ChoiceItem
-import com.cheesejuice.fancymansion.data.model.Page
+import com.cheesejuice.fancymansion.data.source.local.storage.model.ChoiceItem
+import com.cheesejuice.fancymansion.data.source.local.storage.model.Page
 import com.cheesejuice.fancymansion.data.source.local.Sample
 import com.cheesejuice.fancymansion.ui.common.EmptyState
 import com.cheesejuice.fancymansion.ui.common.LoadingState
@@ -69,9 +69,6 @@ fun ReadPageScreenFrame(
             contentText = page.content.description,
             question = page.content.question,
             choiceList = page.logic.choiceItems.toList(),
-
-            testResourceId = Sample.getSampleImageId(page.content.pageImage),
-
             onClickChoiceItem = onClickChoiceItem
         )
 
@@ -88,9 +85,6 @@ fun ReadPageScreenContent(
     contentText : String,
     question : String,
     choiceList : List<ChoiceItem>,
-
-    testResourceId : Int? = null,
-
     onClickChoiceItem : (ChoiceItem) -> Unit = {}
 ) {
     val titleStyle : TextStyle = MaterialTheme.typography.headlineSmall
@@ -104,8 +98,7 @@ fun ReadPageScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(280.dp),
-                imageFile = pageImage,
-                testResourceId = testResourceId
+                image = pageImage
             )
             Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha))
         }

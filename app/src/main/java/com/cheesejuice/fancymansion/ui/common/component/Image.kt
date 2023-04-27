@@ -18,35 +18,32 @@ import java.io.File
 @Composable
 fun BookImage(
     modifier : Modifier = Modifier,
-    imageFile : File,
-    testResourceId : Int? = null
+    image : Any?
 ) {
+    val painter = if ((image is File && image.exists()) || (image is Int)) {
+        LocalContext.current.let {
+            rememberAsyncImagePainter(
+                model = ImageRequest.Builder(it).data(
+                    data = image
+                ).apply(block = { size(Size.ORIGINAL) }).build(),
+
+                imageLoader = ImageLoader.Builder(it)
+                    .components {
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            add(ImageDecoderDecoder.Factory())
+                        } else {
+                            add(GifDecoder.Factory())
+                        }
+                    }.build()
+            )
+        }
+    } else {
+        painterResource(id = R.drawable.ic_launcher_background)
+    }
+
     Image(
         modifier = modifier,
         contentDescription = null,
-        painter =
-        if (!imageFile.exists() && testResourceId == null) {
-            painterResource(id = R.drawable.ic_launcher_background)
-        } else {
-            val context = LocalContext.current
-            val imageLoader = ImageLoader.Builder(context)
-                .components {
-                    if (Build.VERSION.SDK_INT >= 28) {
-                        add(ImageDecoderDecoder.Factory())
-                    } else {
-                        add(GifDecoder.Factory())
-                    }
-                }.build()
-            rememberAsyncImagePainter(
-                model = ImageRequest.Builder(context).data(
-                    data = if (imageFile.exists()) {
-                        imageFile
-                    } else {
-                        testResourceId
-                    }
-                ).apply(block = { size(Size.ORIGINAL) }).build(),
-                imageLoader = imageLoader
-            )
-        }
+        painter = painter
     )
 }

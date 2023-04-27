@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.data.model
+package com.cheesejuice.fancymansion.data.source.local.storage.model
 
 import com.cheesejuice.fancymansion.*
 import java.io.File
@@ -74,7 +74,7 @@ data class Config(
     var coverImage : String = "",
     var tagList : MutableList<String> = mutableListOf(),
 
-    var readMode : String = ReadMode.EDIT.name,
+    var readMode : String = ReadMode.edit.name,
     var defaultStartPageId : Long = DEFAULT_START_PAGE_ID,
     var defaultEndPageId : Long = DEFAULT_END_PAGE_ID,
 

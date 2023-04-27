@@ -1,11 +1,12 @@
 package com.cheesejuice.fancymansion.data.source.local
 
 import com.cheesejuice.fancymansion.Comparison
+import com.cheesejuice.fancymansion.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.PageType
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.Relation
 import com.cheesejuice.fancymansion.SAMPLE_BOOK_ID
-import com.cheesejuice.fancymansion.data.model.*
+import com.cheesejuice.fancymansion.data.source.local.storage.model.*
 
 object Sample {
     private const val bookId = SAMPLE_BOOK_ID
@@ -15,6 +16,8 @@ object Sample {
 
         version = 101001,
         updateTime = 234256544566,
+
+        userId = LOCAL_USER_ID,
 
         writer = "팀 치즈쥬스",
         illustrator = "Ekaterina Rogova",

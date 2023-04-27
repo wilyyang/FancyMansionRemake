@@ -3,7 +3,7 @@ package com.cheesejuice.fancymansion.util
 import com.cheesejuice.fancymansion.module.throwable.ThrowableManager
 
 inline fun <R> String.ifNotBlank(value : (String) -> R) : R? =
-    if (this.isBlank()) value(this) else null
+    if (this.isNotBlank()) value(this) else null
 
 inline fun tryBooleanScope(block : () -> Boolean) : Boolean {
     return try {

@@ -1,8 +1,8 @@
 package com.cheesejuice.fancymansion.data.source.local.database
 
 import androidx.room.TypeConverter
-import com.cheesejuice.fancymansion.data.model.ReadCount
-import com.cheesejuice.fancymansion.data.model.ReadData
+import com.cheesejuice.fancymansion.data.source.local.database.model.ReadCount
+import com.cheesejuice.fancymansion.data.source.local.database.model.ReadData
 import com.google.gson.Gson
 
 class Converters {

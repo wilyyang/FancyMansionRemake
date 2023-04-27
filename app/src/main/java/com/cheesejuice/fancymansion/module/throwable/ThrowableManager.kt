@@ -2,6 +2,8 @@ package com.cheesejuice.fancymansion.module.throwable
 
 import com.cheesejuice.fancymansion.StringResource.error_empty_message
 import com.cheesejuice.fancymansion.StringResource.error_title
+import com.cheesejuice.fancymansion.module.log.Log
+import com.cheesejuice.fancymansion.module.log.LogType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +26,8 @@ object ThrowableManager {
 
     fun sendError(throwable : Throwable) {
         scopeApplication.launch {
+            throwable.printStackTrace()
+            Log.send(throwable.message, type = LogType.E)
             showErrorDialog(throwable = throwable)
         }
     }
