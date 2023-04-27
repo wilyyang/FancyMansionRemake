@@ -48,8 +48,8 @@ class ReadPageViewModel @Inject constructor(
 
     fun onClickChoiceItem(choice: ChoiceItem){
         launchWithLoading {
-            readBookUseCase.visitReadElement(userId = userId, bookId = bookId, elementId = choice.choiceId)
-            val nextPageId = readBookUseCase.decideRoute(userId = userId, bookId = bookId, choice = choice)
+            readBookUseCase.visitReadElement(userId = userId, readMode = readMode.name, bookId = bookId, elementId = choice.choiceId)
+            val nextPageId = readBookUseCase.decideRoute(userId = userId, readMode = readMode.name, bookId = bookId, choice = choice)
             movePageFromId(nextPageId)
         }
     }
@@ -59,7 +59,9 @@ class ReadPageViewModel @Inject constructor(
         val page = readBookUseCase.getPage(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId, logic = logic)
         if(page != null){
             this@ReadPageViewModel.page.value = page
-            readBookUseCase.visitReadElement(userId = userId, bookId = bookId, elementId = pageId, isStartPage = isStartPage)
+            readBookUseCase.visitReadElement(
+                userId = userId, readMode = readMode.name, bookId = bookId, elementId = pageId,
+                isStartPage = isStartPage)
         }else{
             cancel(message = "[$bookId Book] page[$pageId] is null")
         }

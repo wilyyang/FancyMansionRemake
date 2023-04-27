@@ -56,24 +56,24 @@ class BookRepository @Inject constructor(
      */
     suspend fun insertReadData(readData: ReadData)
     = databaseDao.insertReadData(readData)
-    suspend fun getReadData(userId : String, bookId : String)
-    = databaseDao.getReadData(userId, bookId)
+    suspend fun getReadData(userId : String, readMode : String, bookId : String)
+    = databaseDao.getReadData(userId, readMode, bookId)
     suspend fun updateReadData(readData: ReadData)
     = databaseDao.updateReadData(readData)
-    suspend fun deleteReadDataFromId(userId : String, bookId : String)
-    = databaseDao.deleteReadDataFromId(userId, bookId)
+    suspend fun deleteReadDataFromId(userId : String, readMode : String, bookId : String)
+    = databaseDao.deleteReadDataFromId(userId, readMode, bookId)
 
     /**
      * ReadCount
      */
     suspend fun insertReadCount(readCount: ReadCount)
     = databaseDao.insertReadCount(readCount)
-    suspend fun isReadCountExist(userId : String, bookId : String, elementId : Long)
-    = databaseDao.isReadCountExist(userId, bookId, elementId)
-    suspend fun getElementCount(userId : String, bookId : String, elementId : Long)
-    = databaseDao.getElementCount(userId, bookId, elementId)
-    suspend fun incrementReadCount(userId : String, bookId : String, elementId : Long)
-    = databaseDao.incrementReadCount(userId, bookId, elementId)
-    suspend fun deleteReadCountFromBookId(userId : String, bookId : String)
-    = databaseDao.deleteReadCountFromBookId(userId, bookId)
+    suspend fun isReadCountExist(userId : String, readMode : String, bookId : String, elementId : Long)
+    = databaseDao.isReadCountExist(userId, readMode, bookId, elementId)
+    suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long)
+    = databaseDao.getElementCount(userId, readMode, bookId, elementId)
+    suspend fun incrementReadCount(userId : String, readMode : String, bookId : String, elementId : Long)
+    = databaseDao.incrementReadCount(userId, readMode, bookId, elementId)
+    suspend fun deleteReadCountFromBookId(userId : String, readMode : String, bookId : String)
+    = databaseDao.deleteReadCountFromBookId(userId, readMode, bookId)
 }

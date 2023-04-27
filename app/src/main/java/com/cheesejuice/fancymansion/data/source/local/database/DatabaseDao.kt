@@ -41,10 +41,10 @@ interface DatabaseDao {
     suspend fun insertReadData(readData: ReadData) : Long
 
     // Get
-    @Query("SELECT EXISTS(SELECT * FROM ReadData WHERE userId = :userId AND bookId = :bookId)")
-    suspend fun isReadDataExist(userId : String, bookId : String) : Boolean
-    @Query("SELECT * FROM ReadData WHERE userId = :userId AND bookId = :bookId")
-    suspend fun getReadData(userId : String, bookId : String): ReadData?
+    @Query("SELECT EXISTS(SELECT * FROM ReadData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId)")
+    suspend fun isReadDataExist(userId : String, readMode : String, bookId : String) : Boolean
+    @Query("SELECT * FROM ReadData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
+    suspend fun getReadData(userId : String, readMode : String, bookId : String): ReadData?
 
     // Update
     @Update
@@ -55,8 +55,8 @@ interface DatabaseDao {
     suspend fun deleteReadData(readData: ReadData)
     @Query("DELETE FROM ReadData WHERE userId = :userId")
     suspend fun deleteReadDataFromUserId(userId : String)
-    @Query("DELETE FROM ReadData WHERE userId = :userId AND bookId = :bookId")
-    suspend fun deleteReadDataFromId(userId : String, bookId : String)
+    @Query("DELETE FROM ReadData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
+    suspend fun deleteReadDataFromId(userId : String, readMode : String, bookId : String)
 
     /**
      * ReadCountDao
@@ -67,28 +67,28 @@ interface DatabaseDao {
     suspend fun insertReadCount(readCount: ReadCount) : Long
 
     // Get
-    @Query("SELECT EXISTS(SELECT * FROM ReadCount WHERE userId = :userId AND bookId = :bookId AND elementId = :elementId)")
-    suspend fun isReadCountExist(userId : String, bookId : String, elementId : Long) : Boolean
-    @Query("SELECT * FROM ReadCount WHERE userId = :userId AND bookId = :bookId AND elementId = :elementId")
-    suspend fun getReadCount(userId : String, bookId : String, elementId : Long): ReadCount?
-    @Query("SELECT * FROM ReadCount WHERE userId = :userId AND bookId = :bookId")
-    suspend fun getReadCountList(userId : String, bookId : String): List<ReadCount>
-    @Query("SELECT count FROM ReadCount WHERE userId = :userId AND bookId = :bookId AND elementId = :elementId")
-    suspend fun getElementCount(userId : String, bookId : String, elementId : Long): Int?
+    @Query("SELECT EXISTS(SELECT * FROM ReadCount WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId)")
+    suspend fun isReadCountExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
+    @Query("SELECT * FROM ReadCount WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
+    suspend fun getReadCount(userId : String, readMode : String, bookId : String, elementId : Long): ReadCount?
+    @Query("SELECT * FROM ReadCount WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
+    suspend fun getReadCountList(userId : String, readMode : String, bookId : String): List<ReadCount>
+    @Query("SELECT count FROM ReadCount WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
+    suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long): Int?
 
     // Update
     @Update
     suspend fun updateReadCount(readCount: ReadCount)
-    @Query("UPDATE ReadCount SET count = count + 1 WHERE userId = :userId AND bookId = :bookId AND elementId = :elementId")
-    suspend fun incrementReadCount(userId : String, bookId : String, elementId : Long)
+    @Query("UPDATE ReadCount SET count = count + 1 WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
+    suspend fun incrementReadCount(userId : String, readMode : String, bookId : String, elementId : Long)
 
     // Delete
     @Delete
     suspend fun deleteReadCount(readCount: ReadCount)
     @Query("DELETE FROM ReadCount WHERE userId = :userId")
     suspend fun deleteReadCountFromUserId(userId : String)
-    @Query("DELETE FROM ReadCount WHERE userId = :userId AND bookId = :bookId")
-    suspend fun deleteReadCountFromBookId(userId : String, bookId : String)
-    @Query("DELETE FROM ReadCount WHERE userId = :userId AND bookId = :bookId AND elementId = :elementId")
-    suspend fun deleteReadCountFromId(userId : String, bookId : String, elementId : Long)
+    @Query("DELETE FROM ReadCount WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
+    suspend fun deleteReadCountFromBookId(userId : String, readMode : String, bookId : String)
+    @Query("DELETE FROM ReadCount WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
+    suspend fun deleteReadCountFromId(userId : String, readMode : String, bookId : String, elementId : Long)
 }

@@ -11,7 +11,7 @@ data class UserData(
 )
 
 @Entity(
-    primaryKeys = ["userId", "bookId"],
+    primaryKeys = ["userId", "readMode", "bookId"],
     foreignKeys = [
         ForeignKey(
             entity = UserData::class,
@@ -23,23 +23,25 @@ data class UserData(
 )
 data class ReadData(
     val userId : String,
+    val readMode : String,
     val bookId : String,
     val savePage : Long
 )
 
 @Entity(
-    primaryKeys = ["userId", "bookId", "elementId"],
+    primaryKeys = ["userId", "readMode", "bookId", "elementId"],
     foreignKeys = [
         ForeignKey(
             entity = ReadData::class,
-            parentColumns = ["userId", "bookId"],
-            childColumns = ["userId", "bookId"],
+            parentColumns = ["userId", "readMode", "bookId"],
+            childColumns = ["userId", "readMode", "bookId"],
             onDelete = CASCADE
         )
     ]
 )
 data class ReadCount(
     val userId : String,
+    val readMode : String,
     val bookId : String,
     val elementId : Long,
     val count : Int = 0

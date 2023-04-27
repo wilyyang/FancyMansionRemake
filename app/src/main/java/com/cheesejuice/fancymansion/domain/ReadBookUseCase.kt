@@ -48,7 +48,7 @@ class ReadBookUseCase @Inject constructor(
         val pageLogic = findPageLogic?.copy(choiceItems = mutableListOf())
         findPageLogic?.let {
             for(choice in it.choiceItems){
-                if(checkConditions(userId, bookId, choice.showConditions)){
+                if(checkConditions(userId, readMode.name, bookId, choice.showConditions)){
                     pageLogic!!.choiceItems.add(choice)
                 }
             }
@@ -65,35 +65,38 @@ class ReadBookUseCase @Inject constructor(
         }
 
         if(initBook){
-            bookRepository.deleteReadDataFromId(userId, config.bookId)
+            bookRepository.deleteReadDataFromId(userId, config.readMode, config.bookId)
         }
 
-        val readData = bookRepository.getReadData(userId = userId, bookId = config.bookId)?:let{
-            val newReadData = ReadData(userId = userId, bookId = config.bookId, savePage = config.defaultStartPageId)
-            bookRepository.deleteReadCountFromBookId(userId = userId, bookId = config.bookId)
+        val readData = bookRepository.getReadData(userId = userId, readMode = config.readMode, bookId = config.bookId)?:let{
+            val newReadData = ReadData(
+                userId = userId, readMode = config.readMode, bookId = config.bookId,
+                savePage = config.defaultStartPageId
+            )
+            bookRepository.deleteReadCountFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
             bookRepository.insertReadData(readData = newReadData)
             newReadData
         }
         return readData
     }
 
-    suspend fun visitReadElement(userId : String, bookId : String, elementId : Long, isStartPage : Boolean = false) {
-        if(bookRepository.isReadCountExist(userId, bookId, elementId)){
+    suspend fun visitReadElement(userId : String, readMode: String, bookId : String, elementId : Long, isStartPage : Boolean = false) {
+        if(bookRepository.isReadCountExist(userId, readMode, bookId, elementId)){
             if(!isStartPage){
-                bookRepository.incrementReadCount(userId, bookId, elementId)
+                bookRepository.incrementReadCount(userId, readMode, bookId, elementId)
             }
         } else {
-            bookRepository.insertReadCount(ReadCount(userId, bookId, elementId, 1))
+            bookRepository.insertReadCount(ReadCount(userId, readMode, bookId, elementId, 1))
         }
     }
 
     /**
      * Decide Route
      */
-    suspend fun decideRoute(userId : String, bookId : String, choice : ChoiceItem) : Long {
+    suspend fun decideRoute(userId : String, readMode: String, bookId : String, choice : ChoiceItem) : Long {
         var decideRouteId = DEFAULT_END_PAGE_ID
         for(route in choice.routes){
-            if(checkConditions(userId, bookId, route.routeConditions)){
+            if(checkConditions(userId, readMode, bookId, route.routeConditions)){
                 decideRouteId = route.routePageId
                 break
             }
@@ -101,12 +104,12 @@ class ReadBookUseCase @Inject constructor(
         return decideRouteId
     }
 
-    private suspend fun checkConditions(userId: String, bookId: String, conditions: List<Condition>): Boolean{
+    private suspend fun checkConditions(userId: String, readMode : String, bookId: String, conditions: List<Condition>): Boolean{
         var relationResult = true
         var nextRelation = Relation.AND
         for(condition in conditions){
             // 현재 조건을 검사 한다
-            val conditionResult = checkCondition(userId, bookId, condition)
+            val conditionResult = checkCondition(userId, readMode, bookId, condition)
 
             // 현재 조건 결과와 이전 결과의 관계 결과를 도출 한다
             relationResult = nextRelation.check(relationResult, conditionResult)
@@ -120,13 +123,13 @@ class ReadBookUseCase @Inject constructor(
         return relationResult
     }
 
-    private suspend fun checkCondition(userId: String, bookId: String, condition: Condition): Boolean =
+    private suspend fun checkCondition(userId: String, readMode : String, bookId: String, condition: Condition): Boolean =
         condition.run{
-            val targetCount1 = bookRepository.getElementCount(userId, bookId, targetId1)?:0
+            val targetCount1 = bookRepository.getElementCount(userId, readMode, bookId, targetId1)?:0
             val targetCount2 = if (targetId2 == NOT_ASSIGN_ID) {
                 targetCount
             } else {
-                bookRepository.getElementCount(userId, bookId, this.targetId2)?:0
+                bookRepository.getElementCount(userId, readMode, bookId, this.targetId2)?:0
             }
 
             if(targetCount2 != NOT_ASSIGN_COUNT){
