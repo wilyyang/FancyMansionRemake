@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.cheesejuice.fancymansion.ui.common.screen.test.TestScreenSetup
-import com.cheesejuice.fancymansion.ui.content.read.page.ReadPageScreenSetup
+import com.cheesejuice.fancymansion.core.ui.theme.preview.TestScreenSetup
+import com.cheesejuice.fancymansion.feature.readbook.readpage.ReadPageScreenSetup
 
 @Composable
 fun FancyMansionNavHost(

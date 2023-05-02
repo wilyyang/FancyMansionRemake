@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import com.cheesejuice.fancymansion.core.ui.theme.FancyMansionTheme
 import com.cheesejuice.fancymansion.ui.nav.FancyMansionNavHost
-import com.cheesejuice.fancymansion.ui.theme.FancyMansionTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
