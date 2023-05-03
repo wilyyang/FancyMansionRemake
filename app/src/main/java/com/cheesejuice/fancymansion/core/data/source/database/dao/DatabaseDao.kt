@@ -2,6 +2,9 @@ package com.cheesejuice.fancymansion.core.data.source.database.dao
 
 import androidx.room.*
 import com.cheesejuice.fancymansion.core.entity.*
+import com.cheesejuice.fancymansion.core.entity.book.ReadCount
+import com.cheesejuice.fancymansion.core.entity.book.ReadData
+import com.cheesejuice.fancymansion.core.entity.book.UserData
 
 @Dao
 interface DatabaseDao {

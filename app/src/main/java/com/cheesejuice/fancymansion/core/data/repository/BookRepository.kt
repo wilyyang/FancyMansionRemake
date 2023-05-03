@@ -2,12 +2,18 @@ package com.cheesejuice.fancymansion.core.data.repository
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.data.source.database.dao.DatabaseDao
-import com.cheesejuice.fancymansion.core.data.source.storage.StorageSource
-import com.cheesejuice.fancymansion.core.entity.*
+import com.cheesejuice.fancymansion.core.data.source.storage.BookStorageSource
+import com.cheesejuice.fancymansion.core.data.source.storage.di.LocalBookStorage
+import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
+import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
+import com.cheesejuice.fancymansion.core.entity.book.PageContentEntity
+import com.cheesejuice.fancymansion.core.entity.book.ReadCount
+import com.cheesejuice.fancymansion.core.entity.book.ReadData
+import com.cheesejuice.fancymansion.core.entity.book.UserData
 import javax.inject.Inject
 
 class BookRepository @Inject constructor(
-    private val storageSource : StorageSource,
+    @LocalBookStorage private val storageSource : BookStorageSource,
     private val databaseDao : DatabaseDao
 ) {
     /**
@@ -19,11 +25,11 @@ class BookRepository @Inject constructor(
     = storageSource.initUserDir(userId, remove)
     suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean = false)
     = storageSource.initBookDir(userId, readMode, bookId, remove)
-    suspend fun makeConfigFile(config : Config)
+    suspend fun makeConfigFile(config : ConfigEntity)
     = storageSource.makeConfigFile(config)
-    suspend fun makeLogicFile(logic : Logic, userId : String, readMode : ReadMode, bookId : String)
+    suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String)
     = storageSource.makeLogicFile(logic, userId, readMode, bookId)
-    suspend fun makePageFile(page : PageContent, userId : String, readMode : ReadMode, bookId : String)
+    suspend fun makePageFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String)
     = storageSource.makePageFile(page, userId, readMode, bookId)
     suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
     = storageSource.makeImageFromResource(userId, readMode, bookId, imageName, resourceId)

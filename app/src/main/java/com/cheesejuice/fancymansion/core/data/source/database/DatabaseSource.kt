@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.cheesejuice.fancymansion.core.data.source.database.dao.DatabaseDao
-import com.cheesejuice.fancymansion.core.entity.ReadCount
-import com.cheesejuice.fancymansion.core.entity.ReadData
-import com.cheesejuice.fancymansion.core.entity.UserData
+import com.cheesejuice.fancymansion.core.entity.book.ReadCount
+import com.cheesejuice.fancymansion.core.entity.book.ReadData
+import com.cheesejuice.fancymansion.core.entity.book.UserData
 
 @Database(
     version = 1,

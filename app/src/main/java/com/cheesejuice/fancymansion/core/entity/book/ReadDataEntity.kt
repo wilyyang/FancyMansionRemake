@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.core.entity
+package com.cheesejuice.fancymansion.core.entity.book
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

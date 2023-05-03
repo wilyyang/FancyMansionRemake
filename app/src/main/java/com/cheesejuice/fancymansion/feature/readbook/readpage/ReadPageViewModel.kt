@@ -5,10 +5,10 @@ import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.fancymansion.core.domain.ReadBookUseCase
-import com.cheesejuice.fancymansion.core.entity.ChoiceItem
-import com.cheesejuice.fancymansion.core.entity.Config
-import com.cheesejuice.fancymansion.core.entity.InitData
-import com.cheesejuice.fancymansion.core.entity.Logic
+import com.cheesejuice.fancymansion.core.entity.book.ChoiceItemEntity
+import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
+import com.cheesejuice.fancymansion.core.entity.book.InitEntity
+import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
 import com.cheesejuice.fancymansion.core.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
@@ -24,10 +24,10 @@ class ReadPageViewModel @Inject constructor(
     private val readMode = ReadMode.edit
     private val bookId = SAMPLE_BOOK_ID
     private val initBook = true
-    private lateinit var config : Config
-    private lateinit var logic : Logic
+    private lateinit var config : ConfigEntity
+    private lateinit var logic : LogicEntity
 
-    val page = mutableStateOf(InitData.page)
+    val page = mutableStateOf(InitEntity.page)
 
     init {
         launchWithLoading{
@@ -49,7 +49,7 @@ class ReadPageViewModel @Inject constructor(
         }
     }
 
-    fun onClickChoiceItem(choice: ChoiceItem){
+    fun onClickChoiceItem(choice: ChoiceItemEntity){
         launchWithLoading {
             readBookUseCase.visitReadElement(userId = userId, readMode = readMode.name, bookId = bookId, elementId = choice.choiceId)
             val nextPageId = readBookUseCase.decideRoute(userId = userId, readMode = readMode.name, bookId = bookId, choice = choice)

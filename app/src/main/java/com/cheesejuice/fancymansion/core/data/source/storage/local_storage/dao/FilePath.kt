@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.core.data.source.storage
+package com.cheesejuice.fancymansion.core.data.source.storage.local_storage.dao
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.util.ifNotBlank

@@ -1,23 +1,27 @@
-package com.cheesejuice.fancymansion.core.data.source.storage
+package com.cheesejuice.fancymansion.core.data.source.storage.local_storage.dao
 
 import android.content.Context
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.util.tryBooleanScope
 import com.cheesejuice.fancymansion.core.common.util.tryNullableScope
-import com.cheesejuice.fancymansion.core.entity.Config
-import com.cheesejuice.fancymansion.core.entity.Logic
-import com.cheesejuice.fancymansion.core.entity.PageContent
+import com.cheesejuice.fancymansion.core.data.source.storage.model.*
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class StorageSource constructor(private val context: Context){
+@Singleton
+class LocalBookStorageDao @Inject internal constructor(
+    @ApplicationContext private val context : Context
+) {
     private val dirRoot = File(context.getExternalFilesDir(null), dirRootName)
 
     // make file
-    suspend fun initRootDir(remove : Boolean = false) = tryBooleanScope {
+    suspend fun initRootDir(remove : Boolean) = tryBooleanScope {
         dirRoot.let {
             if (it.exists() && remove) it.deleteRecursively()
             if (it.exists()) {
@@ -28,7 +32,7 @@ class StorageSource constructor(private val context: Context){
         }
     }
 
-    suspend fun initUserDir(userId : String, remove : Boolean = false) = tryBooleanScope{
+    suspend fun initUserDir(userId : String, remove : Boolean) = tryBooleanScope{
         dirUser(dirRoot, userId)?.let{
             if (it.exists() && remove) it.deleteRecursively()
             if (it.exists()) {
@@ -41,7 +45,7 @@ class StorageSource constructor(private val context: Context){
         }?: false
     }
 
-    suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean = false) = tryBooleanScope {
+    suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean) = tryBooleanScope {
         dirBook(dirRoot, userId, readMode, bookId)?.let {
             if (it.exists() && remove) it.deleteRecursively()
             if (it.exists()) {
@@ -55,7 +59,7 @@ class StorageSource constructor(private val context: Context){
         } ?: false
     }
 
-    suspend fun makeConfigFile(config : Config) = tryBooleanScope {
+    suspend fun makeConfigFile(config : ConfigData) = tryBooleanScope {
         fileConfig(dirRoot, config.userId, ReadMode.from(config.readMode), config.bookId)?.let {
             if (it.exists()) {
                 it.delete()
@@ -68,7 +72,7 @@ class StorageSource constructor(private val context: Context){
         } ?: false
     }
 
-    suspend fun makeLogicFile(logic : Logic, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
+    suspend fun makeLogicFile(logic : LogicData, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
         fileLogic(dirRoot, userId, readMode, bookId)?.let {
             if (it.exists()) {
                 it.delete()
@@ -81,7 +85,7 @@ class StorageSource constructor(private val context: Context){
         } ?: false
     }
 
-    suspend fun makePageFile(page : PageContent, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
+    suspend fun makePageFile(page : PageContentData, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
         filePage(dirRoot, userId, readMode, bookId, page.pageId)?.let {
             if (it.exists()) {
                 it.delete()
@@ -113,11 +117,11 @@ class StorageSource constructor(private val context: Context){
     }
 
     // get file
-    suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : Config? = tryNullableScope {
+    suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigData? = tryNullableScope {
         fileConfig(dirRoot, userId, readMode, bookId)?.let {
             if (it.exists()) {
                 val configJson = FileInputStream(it).bufferedReader().use { stream -> stream.readText() }
-                Gson().fromJson(configJson, Config::class.java)
+                Gson().fromJson(configJson, ConfigData::class.java)
             }else{
                 null
             }
@@ -128,21 +132,21 @@ class StorageSource constructor(private val context: Context){
         fileCover(dirRoot, userId, readMode, bookId, image)
     }
 
-    suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : Logic? = tryNullableScope {
+    suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicData? = tryNullableScope {
         fileLogic(dirRoot, userId, readMode, bookId)?.let {
             if (it.exists()) {
                 val logicJson = FileInputStream(it).bufferedReader().use { stream -> stream.readText() }
-                Gson().fromJson(logicJson, Logic::class.java)
+                Gson().fromJson(logicJson, LogicData::class.java)
             }else{
                 null
             }
         }
     }
-    suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContent? = tryNullableScope {
+    suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentData? = tryNullableScope {
         filePage(dirRoot, userId, readMode, bookId, pageId)?.let {
             if (it.exists()) {
                 val pageJson = FileInputStream(it).bufferedReader().use { stream -> stream.readText() }
-                Gson().fromJson(pageJson, PageContent::class.java)
+                Gson().fromJson(pageJson, PageContentData::class.java)
             }else{
                 null
             }

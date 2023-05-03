@@ -4,7 +4,7 @@ import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.core.common.*
 import com.cheesejuice.fancymansion.core.common.sample.Sample
 import com.cheesejuice.fancymansion.core.data.repository.BookRepository
-import com.cheesejuice.fancymansion.core.entity.*
+import com.cheesejuice.fancymansion.core.entity.book.*
 import javax.inject.Inject
 
 class ReadBookUseCase @Inject constructor(
@@ -38,15 +38,15 @@ class ReadBookUseCase @Inject constructor(
     /**
      * Get BookObject From File
      */
-    suspend fun getConfig(userId : String, readMode: ReadMode, bookId : String) : Config? {
+    suspend fun getConfig(userId : String, readMode: ReadMode, bookId : String) : ConfigEntity? {
         return bookRepository.getConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
     }
 
-    suspend fun getLogic(userId : String, readMode: ReadMode, bookId : String) : Logic? {
+    suspend fun getLogic(userId : String, readMode: ReadMode, bookId : String) : LogicEntity? {
         return bookRepository.getLogicFromFile(userId = userId, readMode = readMode, bookId = bookId)
     }
 
-    suspend fun getPage(userId: String, readMode: ReadMode, bookId: String, pageId: Long, logic : Logic) : Page? {
+    suspend fun getPage(userId: String, readMode: ReadMode, bookId: String, pageId: Long, logic : LogicEntity) : PageEntity? {
         val pageContent = bookRepository.getPageFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId)
         val pageImage = pageContent?.let {
             bookRepository.getImageFromFile(
@@ -58,21 +58,22 @@ class ReadBookUseCase @Inject constructor(
         }
 
         val findPageLogic = logic.logics.find { it.pageId == pageId }
-        val pageLogic = findPageLogic?.copy(choiceItems = mutableListOf())
+        val checkedChoiceList : MutableList<ChoiceItemEntity> = mutableListOf()
         findPageLogic?.let {
             for(choice in it.choiceItems){
                 if(checkConditions(userId, readMode.name, bookId, choice.showConditions)){
-                    pageLogic!!.choiceItems.add(choice)
+                    checkedChoiceList.add(choice)
                 }
             }
         }
-        return if(pageContent != null && pageLogic != null && pageImage != null) Page(pageContent, pageLogic, pageImage) else null
+        val pageLogic = findPageLogic?.copy(choiceItems = checkedChoiceList)
+        return if(pageContent != null && pageLogic != null && pageImage != null) PageEntity(pageContent, pageLogic, pageImage) else null
     }
 
     /**
      * ReadData From Room
      */
-    suspend fun getReadData(userId : String, config: Config, initBook: Boolean): ReadData {
+    suspend fun getReadData(userId : String, config: ConfigEntity, initBook: Boolean): ReadData {
         if(!bookRepository.isUserDataExist(userId)){
             bookRepository.insertUserData(UserData(userId = userId))
         }
@@ -106,7 +107,7 @@ class ReadBookUseCase @Inject constructor(
     /**
      * Decide Route
      */
-    suspend fun decideRoute(userId : String, readMode: String, bookId : String, choice : ChoiceItem) : Long {
+    suspend fun decideRoute(userId : String, readMode: String, bookId : String, choice : ChoiceItemEntity) : Long {
         var decideRouteId = DEFAULT_END_PAGE_ID
         for(route in choice.routes){
             if(checkConditions(userId, readMode, bookId, route.routeConditions)){
@@ -117,7 +118,7 @@ class ReadBookUseCase @Inject constructor(
         return decideRouteId
     }
 
-    private suspend fun checkConditions(userId: String, readMode : String, bookId: String, conditions: List<Condition>): Boolean{
+    private suspend fun checkConditions(userId: String, readMode : String, bookId: String, conditions: List<ConditionEntity>): Boolean{
         var relationResult = true
         var nextRelation = Relation.AND
         for(condition in conditions){
@@ -136,7 +137,7 @@ class ReadBookUseCase @Inject constructor(
         return relationResult
     }
 
-    private suspend fun checkCondition(userId: String, readMode : String, bookId: String, condition: Condition): Boolean =
+    private suspend fun checkCondition(userId: String, readMode : String, bookId: String, condition: ConditionEntity): Boolean =
         condition.run{
             val targetCount1 = bookRepository.getElementCount(userId, readMode, bookId, targetId1)?:0
             val targetCount2 = if (targetId2 == NOT_ASSIGN_ID) {

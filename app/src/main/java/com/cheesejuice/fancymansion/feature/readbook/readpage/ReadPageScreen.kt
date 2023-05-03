@@ -22,8 +22,8 @@ import androidx.navigation.NavController
 import com.cheesejuice.fancymansion.core.common.PageType
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.core.common.sample.Sample
-import com.cheesejuice.fancymansion.core.entity.ChoiceItem
-import com.cheesejuice.fancymansion.core.entity.Page
+import com.cheesejuice.fancymansion.core.entity.book.ChoiceItemEntity
+import com.cheesejuice.fancymansion.core.entity.book.PageEntity
 import com.cheesejuice.fancymansion.core.ui.base.BaseScreen
 import com.cheesejuice.fancymansion.core.ui.base.EmptyState
 import com.cheesejuice.fancymansion.core.ui.base.LoadingState
@@ -56,8 +56,8 @@ fun ReadPageScreenSetup(
 fun ReadPageScreenFrame(
     loadingState : LoadingState? = null,
     emptyState : EmptyState? = null,
-    page : Page,
-    onClickChoiceItem : (ChoiceItem) -> Unit = {}
+    page : PageEntity,
+    onClickChoiceItem : (ChoiceItemEntity) -> Unit = {}
 ) {
     BaseScreen(
         loadingState = loadingState
@@ -84,8 +84,8 @@ fun ReadPageScreenContent(
     title : String,
     contentText : String,
     question : String,
-    choiceList : List<ChoiceItem>,
-    onClickChoiceItem : (ChoiceItem) -> Unit = {}
+    choiceList : List<ChoiceItemEntity>,
+    onClickChoiceItem : (ChoiceItemEntity) -> Unit = {}
 ) {
     val titleStyle : TextStyle = MaterialTheme.typography.headlineSmall
     val contentTextStyle : TextStyle = MaterialTheme.typography.bodyMedium
@@ -137,9 +137,9 @@ fun ReadPageScreenContent(
 
 @Composable
 fun ChoiceButton(
-    choice : ChoiceItem,
+    choice : ChoiceItemEntity,
     textStyle : TextStyle,
-    onClickChoiceItem : (ChoiceItem) -> Unit
+    onClickChoiceItem : (ChoiceItemEntity) -> Unit
 ) {
     BasicButton(
         modifier = Modifier
@@ -181,7 +181,7 @@ fun ReadPageScreenPreview() {
         ReadPageScreenFrame(
             loadingState = null,
             emptyState = null,
-            page = Page(
+            page = PageEntity(
                 content = Sample.book.pageContents[samplePageIdx],
                 logic = Sample.book.logic.logics[samplePageIdx],
                 image = File("")
