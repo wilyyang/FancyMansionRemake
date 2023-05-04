@@ -1,20 +1,23 @@
 package com.cheesejuice.fancymansion.core.data.repository
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.core.data.source.database.dao.DatabaseDao
+import com.cheesejuice.fancymansion.core.data.source.database.UserDatabaseSource
+import com.cheesejuice.fancymansion.core.data.source.database.di.RoomUserDatabase
 import com.cheesejuice.fancymansion.core.data.source.storage.BookStorageSource
 import com.cheesejuice.fancymansion.core.data.source.storage.di.LocalBookStorage
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
 import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
 import com.cheesejuice.fancymansion.core.entity.book.PageContentEntity
-import com.cheesejuice.fancymansion.core.entity.book.ReadCount
-import com.cheesejuice.fancymansion.core.entity.book.ReadData
-import com.cheesejuice.fancymansion.core.entity.book.UserData
+import com.cheesejuice.fancymansion.core.entity.book.CountEntity
+import com.cheesejuice.fancymansion.core.entity.book.ReadEntity
+import com.cheesejuice.fancymansion.core.entity.book.UserEntity
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class BookRepository @Inject constructor(
     @LocalBookStorage private val storageSource : BookStorageSource,
-    private val databaseDao : DatabaseDao
+    @RoomUserDatabase private val databaseSource : UserDatabaseSource
 ) {
     /**
      * File IO
@@ -45,36 +48,36 @@ class BookRepository @Inject constructor(
     = storageSource.getImageFromFile(userId, readMode, bookId, image)
 
     /**
-     * UserData
+     * UserEntity
      */
-    suspend fun insertUserData(userData: UserData)
-    = databaseDao.insertUserData(userData)
-    suspend fun isUserDataExist(userId : String)
-    = databaseDao.isUserDataExist(userId)
+    suspend fun insertUserEntity(userEntity: UserEntity)
+    = databaseSource.insertUserEntity(userEntity)
+    suspend fun isUserEntityExist(userId : String)
+    = databaseSource.isUserEntityExist(userId)
 
     /**
-     * ReadData
+     * ReadEntity
      */
-    suspend fun insertReadData(readData: ReadData)
-    = databaseDao.insertReadData(readData)
-    suspend fun getReadData(userId : String, readMode : String, bookId : String)
-    = databaseDao.getReadData(userId, readMode, bookId)
-    suspend fun updateReadData(readData: ReadData)
-    = databaseDao.updateReadData(readData)
-    suspend fun deleteReadDataFromId(userId : String, readMode : String, bookId : String)
-    = databaseDao.deleteReadDataFromId(userId, readMode, bookId)
+    suspend fun insertReadEntity(readEntity: ReadEntity)
+    = databaseSource.insertReadEntity(readEntity)
+    suspend fun getReadEntity(userId : String, readMode : String, bookId : String)
+    = databaseSource.getReadEntity(userId, readMode, bookId)
+    suspend fun updateReadEntity(readEntity: ReadEntity)
+    = databaseSource.updateReadEntity(readEntity)
+    suspend fun deleteReadEntityFromId(userId : String, readMode : String, bookId : String)
+    = databaseSource.deleteReadEntityFromId(userId, readMode, bookId)
 
     /**
-     * ReadCount
+     * CountEntity
      */
-    suspend fun insertReadCount(readCount: ReadCount)
-    = databaseDao.insertReadCount(readCount)
-    suspend fun isReadCountExist(userId : String, readMode : String, bookId : String, elementId : Long)
-    = databaseDao.isReadCountExist(userId, readMode, bookId, elementId)
+    suspend fun insertCountEntity(countEntity: CountEntity)
+    = databaseSource.insertCountEntity(countEntity)
+    suspend fun isCountEntityExist(userId : String, readMode : String, bookId : String, elementId : Long)
+    = databaseSource.isCountEntityExist(userId, readMode, bookId, elementId)
     suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long)
-    = databaseDao.getElementCount(userId, readMode, bookId, elementId)
-    suspend fun incrementReadCount(userId : String, readMode : String, bookId : String, elementId : Long)
-    = databaseDao.incrementReadCount(userId, readMode, bookId, elementId)
-    suspend fun deleteReadCountFromBookId(userId : String, readMode : String, bookId : String)
-    = databaseDao.deleteReadCountFromBookId(userId, readMode, bookId)
+    = databaseSource.getElementCount(userId, readMode, bookId, elementId)
+    suspend fun incrementCountEntity(userId : String, readMode : String, bookId : String, elementId : Long)
+    = databaseSource.incrementCountEntity(userId, readMode, bookId, elementId)
+    suspend fun deleteCountEntityFromBookId(userId : String, readMode : String, bookId : String)
+    = databaseSource.deleteCountEntityFromBookId(userId, readMode, bookId)
 }

@@ -20,7 +20,9 @@ class LocalBookStorageDao @Inject internal constructor(
 ) {
     private val dirRoot = File(context.getExternalFilesDir(null), dirRootName)
 
-    // make file
+    /**
+     * Init
+     */
     suspend fun initRootDir(remove : Boolean) = tryBooleanScope {
         dirRoot.let {
             if (it.exists() && remove) it.deleteRecursively()
@@ -59,6 +61,9 @@ class LocalBookStorageDao @Inject internal constructor(
         } ?: false
     }
 
+    /**
+     * Make File
+     */
     suspend fun makeConfigFile(config : ConfigData) = tryBooleanScope {
         fileConfig(dirRoot, config.userId, ReadMode.from(config.readMode), config.bookId)?.let {
             if (it.exists()) {
@@ -116,7 +121,9 @@ class LocalBookStorageDao @Inject internal constructor(
         }
     }
 
-    // get file
+    /**
+     * Get Object
+     */
     suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigData? = tryNullableScope {
         fileConfig(dirRoot, userId, readMode, bookId)?.let {
             if (it.exists()) {

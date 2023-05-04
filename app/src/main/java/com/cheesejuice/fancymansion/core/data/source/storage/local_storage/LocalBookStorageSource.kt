@@ -14,6 +14,10 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalBookStorageSource @Inject constructor(private val storageDao : LocalBookStorageDao) : BookStorageSource{
+
+    /**
+     * Init
+     */
     override suspend fun initRootDir(remove : Boolean) = storageDao.initRootDir(remove)
 
     override suspend fun initUserDir(userId : String, remove : Boolean) = storageDao.initUserDir(userId, remove)
@@ -21,7 +25,9 @@ class LocalBookStorageSource @Inject constructor(private val storageDao : LocalB
     override suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean)
     = storageDao.initBookDir(userId, readMode, bookId, remove)
 
-
+    /**
+     * Make File
+     */
     override suspend fun makeConfigFile(config : ConfigEntity)
     = storageDao.makeConfigFile(config.asData())
 
@@ -34,7 +40,9 @@ class LocalBookStorageSource @Inject constructor(private val storageDao : LocalB
     override suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
     = storageDao.makeImageFromResource(userId, readMode, bookId, imageName, resourceId)
 
-
+    /**
+     * Get Object
+     */
     override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
     = storageDao.getConfigFromFile(userId, readMode, bookId)?.asEntity()
 

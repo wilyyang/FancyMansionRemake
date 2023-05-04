@@ -12,7 +12,7 @@ class ReadBookUseCase @Inject constructor(
 ) {
 
     /**
-     * Make Sampe
+     * Make Sample
      */
     // make Sample
     suspend fun makeSample(userId : String, readMode: ReadMode, bookId : String) {
@@ -73,34 +73,34 @@ class ReadBookUseCase @Inject constructor(
     /**
      * ReadData From Room
      */
-    suspend fun getReadData(userId : String, config: ConfigEntity, initBook: Boolean): ReadData {
-        if(!bookRepository.isUserDataExist(userId)){
-            bookRepository.insertUserData(UserData(userId = userId))
+    suspend fun getReadData(userId : String, config: ConfigEntity, initBook: Boolean): ReadEntity {
+        if(!bookRepository.isUserEntityExist(userId)){
+            bookRepository.insertUserEntity(UserEntity(userId = userId))
         }
 
         if(initBook){
-            bookRepository.deleteReadDataFromId(userId, config.readMode, config.bookId)
+            bookRepository.deleteReadEntityFromId(userId, config.readMode, config.bookId)
         }
 
-        val readData = bookRepository.getReadData(userId = userId, readMode = config.readMode, bookId = config.bookId)?:let{
-            val newReadData = ReadData(
+        val readData = bookRepository.getReadEntity(userId = userId, readMode = config.readMode, bookId = config.bookId)?:let{
+            val newReadEntity = ReadEntity(
                 userId = userId, readMode = config.readMode, bookId = config.bookId,
                 savePage = config.defaultStartPageId
             )
-            bookRepository.deleteReadCountFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
-            bookRepository.insertReadData(readData = newReadData)
-            newReadData
+            bookRepository.deleteCountEntityFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
+            bookRepository.insertReadEntity(readEntity = newReadEntity)
+            newReadEntity
         }
         return readData
     }
 
     suspend fun visitReadElement(userId : String, readMode: String, bookId : String, elementId : Long, isStartPage : Boolean = false) {
-        if(bookRepository.isReadCountExist(userId, readMode, bookId, elementId)){
+        if(bookRepository.isCountEntityExist(userId, readMode, bookId, elementId)){
             if(!isStartPage){
-                bookRepository.incrementReadCount(userId, readMode, bookId, elementId)
+                bookRepository.incrementCountEntity(userId, readMode, bookId, elementId)
             }
         } else {
-            bookRepository.insertReadCount(ReadCount(userId, readMode, bookId, elementId, 1))
+            bookRepository.insertCountEntity(CountEntity(userId, readMode, bookId, elementId, 1))
         }
     }
 
