@@ -1,6 +1,8 @@
 package com.cheesejuice.fancymansion.core.data.source.database
 
-import com.cheesejuice.fancymansion.core.entity.book.*
+import com.cheesejuice.fancymansion.core.entity.user.CountEntity
+import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
+import com.cheesejuice.fancymansion.core.entity.user.UserEntity
 
 interface UserDatabaseSource {
     /**

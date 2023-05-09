@@ -1,14 +1,17 @@
 package com.cheesejuice.fancymansion.feature.readbook.readpage
 
 import androidx.compose.runtime.mutableStateOf
+import com.cheesejuice.fancymansion.core.common.INIT_ID
 import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.fancymansion.core.domain.ReadBookUseCase
 import com.cheesejuice.fancymansion.core.entity.book.ChoiceItemEntity
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
-import com.cheesejuice.fancymansion.core.entity.book.InitEntity
 import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
+import com.cheesejuice.fancymansion.core.entity.book.PageContentEntity
+import com.cheesejuice.fancymansion.core.entity.book.PageEntity
+import com.cheesejuice.fancymansion.core.entity.book.PageLogicEntity
 import com.cheesejuice.fancymansion.core.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
@@ -27,7 +30,7 @@ class ReadPageViewModel @Inject constructor(
     private lateinit var config : ConfigEntity
     private lateinit var logic : LogicEntity
 
-    val page = mutableStateOf(InitEntity.page)
+    val page = mutableStateOf(PageEntity(content = PageContentEntity(pageId = INIT_ID, pageTitle = "", question = ""), logic = PageLogicEntity(pageId = INIT_ID, pageTitle = "")))
 
     init {
         launchWithLoading{

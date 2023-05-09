@@ -5,6 +5,9 @@ import com.cheesejuice.fancymansion.core.common.*
 import com.cheesejuice.fancymansion.core.common.sample.Sample
 import com.cheesejuice.fancymansion.core.data.repository.BookRepository
 import com.cheesejuice.fancymansion.core.entity.book.*
+import com.cheesejuice.fancymansion.core.entity.user.CountEntity
+import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
+import com.cheesejuice.fancymansion.core.entity.user.UserEntity
 import javax.inject.Inject
 
 class ReadBookUseCase @Inject constructor(

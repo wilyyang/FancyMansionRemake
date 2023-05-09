@@ -8,9 +8,9 @@ import com.cheesejuice.fancymansion.core.data.source.storage.di.LocalBookStorage
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
 import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
 import com.cheesejuice.fancymansion.core.entity.book.PageContentEntity
-import com.cheesejuice.fancymansion.core.entity.book.CountEntity
-import com.cheesejuice.fancymansion.core.entity.book.ReadEntity
-import com.cheesejuice.fancymansion.core.entity.book.UserEntity
+import com.cheesejuice.fancymansion.core.entity.user.CountEntity
+import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
+import com.cheesejuice.fancymansion.core.entity.user.UserEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
