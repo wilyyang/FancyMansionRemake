@@ -1,10 +1,10 @@
-package com.cheesejuice.fancymansion.core.data.source.storage.local_storage.dao
+package com.cheesejuice.fancymansion.core.data.source.local_storage.app_external.dao
 
 import android.content.Context
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.util.tryBooleanScope
 import com.cheesejuice.fancymansion.core.common.util.tryNullableScope
-import com.cheesejuice.fancymansion.core.data.source.storage.model.*
+import com.cheesejuice.fancymansion.core.data.source.local_storage.model.*
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalBookStorageDao @Inject internal constructor(
+class AppExternalStorageDao @Inject internal constructor(
     @ApplicationContext private val context : Context
 ) {
     private val dirRoot = File(context.getExternalFilesDir(null), dirRootName)

@@ -1,10 +1,10 @@
 package com.cheesejuice.fancymansion.core.data.repository
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.core.data.source.database.UserDatabaseSource
-import com.cheesejuice.fancymansion.core.data.source.database.di.RoomUserDatabase
-import com.cheesejuice.fancymansion.core.data.source.storage.BookStorageSource
-import com.cheesejuice.fancymansion.core.data.source.storage.di.LocalBookStorage
+import com.cheesejuice.fancymansion.core.data.source.local_database.LocalDatabaseSource
+import com.cheesejuice.fancymansion.core.data.source.local_database.di.RoomDatabase
+import com.cheesejuice.fancymansion.core.data.source.local_storage.LocalStorageSource
+import com.cheesejuice.fancymansion.core.data.source.local_storage.di.AppExternalStorage
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
 import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
 import com.cheesejuice.fancymansion.core.entity.book.PageContentEntity
@@ -16,8 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class BookRepository @Inject constructor(
-    @LocalBookStorage private val storageSource : BookStorageSource,
-    @RoomUserDatabase private val databaseSource : UserDatabaseSource
+    @AppExternalStorage private val storageSource : LocalStorageSource,
+    @RoomDatabase private val databaseSource : LocalDatabaseSource
 ) {
     /**
      * File IO

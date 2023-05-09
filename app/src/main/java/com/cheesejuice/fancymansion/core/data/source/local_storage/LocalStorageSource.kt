@@ -1,10 +1,10 @@
-package com.cheesejuice.fancymansion.core.data.source.storage
+package com.cheesejuice.fancymansion.core.data.source.local_storage
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.entity.book.*
 import java.io.File
 
-interface BookStorageSource {
+interface LocalStorageSource {
     /**
      * Init
      */

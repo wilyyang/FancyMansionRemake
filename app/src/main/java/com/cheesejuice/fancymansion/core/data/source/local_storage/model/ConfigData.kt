@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.core.data.source.storage.model
+package com.cheesejuice.fancymansion.core.data.source.local_storage.model
 
 import com.cheesejuice.fancymansion.core.common.DEFAULT_END_PAGE_ID
 import com.cheesejuice.fancymansion.core.common.DEFAULT_START_PAGE_ID

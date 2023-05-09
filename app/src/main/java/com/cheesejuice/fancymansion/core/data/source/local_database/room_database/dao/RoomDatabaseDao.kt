@@ -1,10 +1,10 @@
-package com.cheesejuice.fancymansion.core.data.source.database.room_database.dao
+package com.cheesejuice.fancymansion.core.data.source.local_database.room_database.dao
 
 import androidx.room.*
-import com.cheesejuice.fancymansion.core.data.source.database.model.*
+import com.cheesejuice.fancymansion.core.data.source.local_database.model.*
 
 @Dao
-interface RoomUserDatabaseDao {
+interface RoomDatabaseDao {
     /**
      * UserDataDao
      */
