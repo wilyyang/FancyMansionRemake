@@ -5,7 +5,13 @@ import com.cheesejuice.fancymansion.core.common.INIT_ID
 import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
-import com.cheesejuice.fancymansion.core.domain.ReadBookUseCase
+import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookConfigFromFile
+import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookLogicFromFile
+import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookPageFromFile
+import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseMakeSample
+import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseDecideRoute
+import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseGetReadRecord
+import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseRecordReadElement
 import com.cheesejuice.fancymansion.core.entity.book.ChoiceItemEntity
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
 import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
@@ -20,9 +26,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReadPageViewModel @Inject constructor(
-    private val readBookUseCase : ReadBookUseCase
-) : BaseViewModel()
-{
+    private val useCaseMakeSample : UseCaseMakeSample,
+    private val useCaseGetBookConfigFromFile : UseCaseGetBookConfigFromFile,
+    private val useCaseGetBookLogicFromFile : UseCaseGetBookLogicFromFile,
+    private val useCaseGetBookPageFromFile : UseCaseGetBookPageFromFile,
+
+    private val useCaseDecideRoute : UseCaseDecideRoute,
+    private val useCaseGetReadRecord : UseCaseGetReadRecord,
+    private val useCaseRecordReadElement : UseCaseRecordReadElement,
+) : BaseViewModel() {
     private val userId = LOCAL_USER_ID
     private val readMode = ReadMode.edit
     private val bookId = SAMPLE_BOOK_ID
@@ -30,45 +42,53 @@ class ReadPageViewModel @Inject constructor(
     private lateinit var config : ConfigEntity
     private lateinit var logic : LogicEntity
 
-    val page = mutableStateOf(PageEntity(content = PageContentEntity(pageId = INIT_ID, pageTitle = "", question = ""), logic = PageLogicEntity(pageId = INIT_ID, pageTitle = "")))
+    val page = mutableStateOf(
+        PageEntity(
+            content = PageContentEntity(pageId = INIT_ID, pageTitle = "", question = ""),
+            logic = PageLogicEntity(pageId = INIT_ID, pageTitle = "")
+        )
+    )
 
     init {
-        launchWithLoading{
+        launchWithLoading {
             // make file
-            readBookUseCase.makeSample(userId = userId, readMode = readMode, bookId = bookId)
+            useCaseMakeSample(userId = userId, readMode = readMode, bookId = bookId)
 
             // get file
-            val configLocal = readBookUseCase.getConfig(userId = userId, readMode = readMode, bookId = bookId)
-            val logicLocal = readBookUseCase.getLogic(userId = userId, readMode = readMode, bookId = bookId)
-            if(configLocal != null && logicLocal != null){
+            val configLocal = useCaseGetBookConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
+            val logicLocal = useCaseGetBookLogicFromFile(userId = userId, readMode = readMode, bookId = bookId)
+            if (configLocal != null && logicLocal != null) {
                 config = configLocal
                 logic = logicLocal
-                val readData = readBookUseCase.getReadData(userId = userId, config = config, initBook = initBook)
+                val readData = useCaseGetReadRecord(userId = userId, config = config, initBook = initBook)
                 movePageFromId(readData.savePage, isStartPage = true)
             } else {
-                cancel(message = "[$bookId Book] config is ${if(configLocal == null) "" else "not"} null, " +
-                    "logic is ${if(logicLocal == null) "" else "not"} null")
+                cancel(
+                    message = "[$bookId Book] config is ${if (configLocal == null) "" else "not"} null, " +
+                        "logic is ${if (logicLocal == null) "" else "not"} null"
+                )
             }
         }
     }
 
-    fun onClickChoiceItem(choice: ChoiceItemEntity){
+    fun onClickChoiceItem(choice : ChoiceItemEntity) {
         launchWithLoading {
-            readBookUseCase.visitReadElement(userId = userId, readMode = readMode.name, bookId = bookId, elementId = choice.choiceId)
-            val nextPageId = readBookUseCase.decideRoute(userId = userId, readMode = readMode.name, bookId = bookId, choice = choice)
+            useCaseRecordReadElement(userId = userId, readMode = readMode.name, bookId = bookId, elementId = choice.choiceId)
+            val nextPageId = useCaseDecideRoute(userId = userId, readMode = readMode.name, bookId = bookId, choice = choice)
             movePageFromId(nextPageId)
         }
     }
 
-    private suspend fun movePageFromId(pageId : Long, isStartPage : Boolean = false){
+    private suspend fun movePageFromId(pageId : Long, isStartPage : Boolean = false) {
         delay(300)
-        val page = readBookUseCase.getPage(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId, logic = logic)
-        if(page != null){
+        val page = useCaseGetBookPageFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId, logic = logic)
+        if (page != null) {
             this@ReadPageViewModel.page.value = page
-            readBookUseCase.visitReadElement(
+            useCaseRecordReadElement(
                 userId = userId, readMode = readMode.name, bookId = bookId, elementId = pageId,
-                isStartPage = isStartPage)
-        }else{
+                isStartPage = isStartPage
+            )
+        } else {
             cancel(message = "[$bookId Book] page[$pageId] is null")
         }
     }
