@@ -4,6 +4,7 @@ import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.core.common.*
 import com.cheesejuice.fancymansion.core.common.sample.Sample
 import com.cheesejuice.fancymansion.core.data.repository.BookRepository
+import com.cheesejuice.fancymansion.core.data.repository.UserRepository
 import com.cheesejuice.fancymansion.core.entity.book.*
 import com.cheesejuice.fancymansion.core.entity.user.CountEntity
 import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
@@ -11,6 +12,7 @@ import com.cheesejuice.fancymansion.core.entity.user.UserEntity
 import javax.inject.Inject
 
 class ReadBookUseCase @Inject constructor(
+    private val userRepository : UserRepository,
     private val bookRepository : BookRepository
 ) {
 
@@ -77,33 +79,33 @@ class ReadBookUseCase @Inject constructor(
      * ReadData From Room
      */
     suspend fun getReadData(userId : String, config: ConfigEntity, initBook: Boolean): ReadEntity {
-        if(!bookRepository.isUserEntityExist(userId)){
-            bookRepository.insertUserEntity(UserEntity(userId = userId))
+        if(!userRepository.isUserEntityExist(userId)){
+            userRepository.insertUserEntity(UserEntity(userId = userId))
         }
 
         if(initBook){
-            bookRepository.deleteReadEntityFromId(userId, config.readMode, config.bookId)
+            userRepository.deleteReadEntityFromId(userId, config.readMode, config.bookId)
         }
 
-        val readData = bookRepository.getReadEntity(userId = userId, readMode = config.readMode, bookId = config.bookId)?:let{
+        val readData = userRepository.getReadEntity(userId = userId, readMode = config.readMode, bookId = config.bookId)?:let{
             val newReadEntity = ReadEntity(
                 userId = userId, readMode = config.readMode, bookId = config.bookId,
                 savePage = config.defaultStartPageId
             )
-            bookRepository.deleteCountEntityFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
-            bookRepository.insertReadEntity(readEntity = newReadEntity)
+            userRepository.deleteCountEntityFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
+            userRepository.insertReadEntity(readEntity = newReadEntity)
             newReadEntity
         }
         return readData
     }
 
     suspend fun visitReadElement(userId : String, readMode: String, bookId : String, elementId : Long, isStartPage : Boolean = false) {
-        if(bookRepository.isCountEntityExist(userId, readMode, bookId, elementId)){
+        if(userRepository.isCountEntityExist(userId, readMode, bookId, elementId)){
             if(!isStartPage){
-                bookRepository.incrementCountEntity(userId, readMode, bookId, elementId)
+                userRepository.incrementCountEntity(userId, readMode, bookId, elementId)
             }
         } else {
-            bookRepository.insertCountEntity(CountEntity(userId, readMode, bookId, elementId, 1))
+            userRepository.insertCountEntity(CountEntity(userId, readMode, bookId, elementId, 1))
         }
     }
 
@@ -142,11 +144,11 @@ class ReadBookUseCase @Inject constructor(
 
     private suspend fun checkCondition(userId: String, readMode : String, bookId: String, condition: ConditionEntity): Boolean =
         condition.run{
-            val targetCount1 = bookRepository.getElementCount(userId, readMode, bookId, targetId1)?:0
+            val targetCount1 = userRepository.getElementCount(userId, readMode, bookId, targetId1)?:0
             val targetCount2 = if (targetId2 == NOT_ASSIGN_ID) {
                 targetCount
             } else {
-                bookRepository.getElementCount(userId, readMode, bookId, this.targetId2)?:0
+                userRepository.getElementCount(userId, readMode, bookId, this.targetId2)?:0
             }
 
             if(targetCount2 != NOT_ASSIGN_COUNT){
