@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppExternalStorageDao @Inject internal constructor(
+class AppStorageDao @Inject internal constructor(
     @ApplicationContext private val context : Context
 ) {
     private val dirRoot = File(context.getExternalFilesDir(null), dirRootName)

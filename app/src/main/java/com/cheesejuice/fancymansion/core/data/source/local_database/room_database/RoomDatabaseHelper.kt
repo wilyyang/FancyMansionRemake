@@ -14,7 +14,7 @@ import com.cheesejuice.fancymansion.core.data.source.local_database.model.*
         CountData::class
     ]
 )
-abstract class RoomDatabaseImpl : RoomDatabase() {
+abstract class RoomDatabaseHelper : RoomDatabase() {
 
     abstract fun databaseDao() : RoomDatabaseDao
 }

@@ -1,7 +1,7 @@
 package com.cheesejuice.fancymansion.core.data.source.local_storage.app_external
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.core.data.source.local_storage.LocalStorageSource
+import com.cheesejuice.fancymansion.core.data.source.local_storage.BookLocalStorageSource
 import com.cheesejuice.fancymansion.core.data.source.local_storage.app_external.dao.*
 import com.cheesejuice.fancymansion.core.data.source.local_storage.model.asData
 import com.cheesejuice.fancymansion.core.data.source.local_storage.model.asEntity
@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppExternalStorageSource @Inject constructor(private val storageDao : AppExternalStorageDao) : LocalStorageSource{
+class BookAppStorageSource @Inject constructor(private val storageDao : AppStorageDao) : BookLocalStorageSource{
 
     /**
      * Init

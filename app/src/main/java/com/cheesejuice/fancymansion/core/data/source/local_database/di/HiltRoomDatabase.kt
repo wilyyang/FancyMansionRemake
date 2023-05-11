@@ -2,7 +2,7 @@ package com.cheesejuice.fancymansion.core.data.source.local_database.di
 
 import android.content.Context
 import androidx.room.Room
-import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.RoomDatabaseImpl
+import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.RoomDatabaseHelper
 import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.dao.RoomDatabaseDao
 import dagger.Module
 import dagger.Provides
@@ -16,12 +16,12 @@ import javax.inject.Singleton
 class HiltRoomDatabase {
     @Singleton
     @Provides
-    fun provideRoomDatabaseImpl(
+    fun provideRoomDatabaseHelper(
         @ApplicationContext context : Context
-    ) = Room.databaseBuilder(context, RoomDatabaseImpl::class.java, "main").build()
+    ) = Room.databaseBuilder(context, RoomDatabaseHelper::class.java, "main").build()
 
     @Singleton
     @Provides
-    fun provideRoomDatabaseDao(databaseImpl : RoomDatabaseImpl) : RoomDatabaseDao
-    = databaseImpl.databaseDao()
+    fun provideRoomDatabaseDao(databaseHelper : RoomDatabaseHelper) : RoomDatabaseDao
+    = databaseHelper.databaseDao()
 }

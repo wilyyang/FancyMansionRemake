@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.core.data.source.local_database.room_database
 
-import com.cheesejuice.fancymansion.core.data.source.local_database.LocalDatabaseSource
+import com.cheesejuice.fancymansion.core.data.source.local_database.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.core.data.source.local_database.model.asData
 import com.cheesejuice.fancymansion.core.data.source.local_database.model.asEntity
 import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.dao.RoomDatabaseDao
@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RoomDatabaseSource @Inject constructor(private val databaseDao : RoomDatabaseDao) : LocalDatabaseSource {
+class RecordRoomDatabaseSource @Inject constructor(private val databaseDao : RoomDatabaseDao) : RecordLocalDatabaseSource {
 
     /**
      * User

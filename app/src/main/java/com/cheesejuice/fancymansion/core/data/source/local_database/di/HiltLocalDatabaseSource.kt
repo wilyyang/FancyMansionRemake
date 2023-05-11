@@ -1,7 +1,7 @@
 package com.cheesejuice.fancymansion.core.data.source.local_database.di
 
-import com.cheesejuice.fancymansion.core.data.source.local_database.LocalDatabaseSource
-import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.RoomDatabaseSource
+import com.cheesejuice.fancymansion.core.data.source.local_database.RecordLocalDatabaseSource
+import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.RecordRoomDatabaseSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,8 +13,8 @@ annotation class RoomDatabase
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class HiltLocalDatabaseSource {
+abstract class HiltRecordLocalDatabaseSource {
     @Binds
     @RoomDatabase
-    abstract fun bindRoomDatabaseSource(databaseSource : RoomDatabaseSource): LocalDatabaseSource
+    abstract fun bindRecordRoomDatabaseSource(recordRoomDatabaseSource : RecordRoomDatabaseSource): RecordLocalDatabaseSource
 }

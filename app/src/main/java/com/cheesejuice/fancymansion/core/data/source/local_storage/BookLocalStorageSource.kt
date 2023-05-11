@@ -4,7 +4,7 @@ import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.entity.book.*
 import java.io.File
 
-interface LocalStorageSource {
+interface BookLocalStorageSource {
     /**
      * Init
      */
