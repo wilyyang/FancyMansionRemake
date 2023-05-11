@@ -8,6 +8,7 @@ import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookConfigFromFile
 import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookLogicFromFile
 import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookPageFromFile
+import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseInitLocalDir
 import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseMakeSample
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseDecideRoute
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseGetReadRecord
@@ -26,6 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReadPageViewModel @Inject constructor(
+    private val useCaseInitLocalDir : UseCaseInitLocalDir,
     private val useCaseMakeSample : UseCaseMakeSample,
     private val useCaseGetBookConfigFromFile : UseCaseGetBookConfigFromFile,
     private val useCaseGetBookLogicFromFile : UseCaseGetBookLogicFromFile,
@@ -52,7 +54,8 @@ class ReadPageViewModel @Inject constructor(
     init {
         launchWithLoading {
             // make file
-            useCaseMakeSample(userId = userId, readMode = readMode, bookId = bookId)
+            useCaseInitLocalDir()
+            useCaseMakeSample()
 
             // get file
             val configLocal = useCaseGetBookConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)

@@ -1,7 +1,9 @@
 package com.cheesejuice.fancymansion.core.domain.library.file
 
 import com.cheesejuice.fancymansion.R
+import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
+import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.core.common.sample.Sample
 import com.cheesejuice.fancymansion.core.data.repository.BookRepository
@@ -15,10 +17,12 @@ class UseCaseMakeSample @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
     private val bookRepository : BookRepository
 ) {
-    suspend operator fun invoke(userId : String, readMode: ReadMode, bookId : String) = withContext(dispatcher) {
+    suspend operator fun invoke() = withContext(dispatcher) {
         bookRepository.run {
-            initRootDir()
-            initUserDir(userId)
+            val userId = LOCAL_USER_ID
+            val readMode = ReadMode.edit
+            val bookId = SAMPLE_BOOK_ID
+
             initBookDir(userId, readMode, bookId)
 
             makeConfigFile(Sample.book.config)
