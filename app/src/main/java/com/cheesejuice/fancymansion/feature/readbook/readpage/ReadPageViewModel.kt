@@ -5,11 +5,11 @@ import com.cheesejuice.fancymansion.core.common.INIT_ID
 import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
-import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookConfigFromFile
-import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookLogicFromFile
-import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseGetBookPageFromFile
-import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseInitLocalDir
-import com.cheesejuice.fancymansion.core.domain.library.file.UseCaseMakeSample
+import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseGetBookConfigFromFile
+import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseGetBookLogicFromFile
+import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseGetBookPageFromFile
+import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseInitLocalDir
+import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseMakeSample
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseDecideRoute
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseGetReadRecord
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseRecordReadElement

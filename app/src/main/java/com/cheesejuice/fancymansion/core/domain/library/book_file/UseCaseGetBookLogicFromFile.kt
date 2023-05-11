@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.core.domain.library.file
+package com.cheesejuice.fancymansion.core.domain.library.book_file
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
@@ -9,11 +9,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class UseCaseGetBookConfigFromFile @Inject constructor(
+class UseCaseGetBookLogicFromFile @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
     private val bookRepository : BookRepository
 ) {
     suspend operator fun invoke(userId : String, readMode: ReadMode, bookId : String) = withContext(dispatcher) {
-        bookRepository.getConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
+        bookRepository.getLogicFromFile(userId = userId, readMode = readMode, bookId = bookId)
     }
 }

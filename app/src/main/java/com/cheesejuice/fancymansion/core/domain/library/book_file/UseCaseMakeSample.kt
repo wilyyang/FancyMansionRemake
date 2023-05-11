@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.core.domain.library.file
+package com.cheesejuice.fancymansion.core.domain.library.book_file
 
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
@@ -31,10 +31,17 @@ class UseCaseMakeSample @Inject constructor(
             for(pageContent in Sample.book.pageContents){
                 makePageFile(pageContent, userId, readMode, bookId)
             }
-            val array = arrayOf("image_1.gif", "image_2.gif", "image_3.gif", "image_4.gif", "image_5.gif", "image_6.gif", "fish_cat.jpg", "game_end.jpg")
-            val arrayId = arrayOf(R.raw.image_1, R.raw.image_2, R.raw.image_3, R.raw.image_4, R.raw.image_5, R.raw.image_6, R.raw.fish_cat, R.raw.game_end)
-            array.forEachIndexed { index, imageName ->
-                bookRepository.makeImageFromResource(userId, readMode, bookId, imageName, arrayId[index])
+            val array = arrayOf(
+                "image_1.gif" to R.raw.image_1,
+                "image_2.gif" to R.raw.image_2,
+                "image_3.gif" to R.raw.image_3,
+                "image_4.gif" to R.raw.image_4,
+                "image_5.gif" to R.raw.image_5,
+                "image_6.gif" to R.raw.image_6,
+                "fish_cat.jpg" to R.raw.fish_cat,
+                "game_end.jpg" to R.raw.game_end)
+            array.forEach {
+                bookRepository.makeImageFromResource(userId, readMode, bookId, it.first, it.second)
             }
         }
     }
