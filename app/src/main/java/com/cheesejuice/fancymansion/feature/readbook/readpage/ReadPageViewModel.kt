@@ -11,7 +11,7 @@ import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseGetBook
 import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseInitLocalDir
 import com.cheesejuice.fancymansion.core.domain.library.book_file.UseCaseMakeSample
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseDecideRoute
-import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseGetReadRecord
+import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseInitReadRecord
 import com.cheesejuice.fancymansion.core.domain.library.record.UseCaseRecordReadElement
 import com.cheesejuice.fancymansion.core.entity.book.ChoiceItemEntity
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
@@ -34,7 +34,7 @@ class ReadPageViewModel @Inject constructor(
     private val useCaseGetBookPageFromFile : UseCaseGetBookPageFromFile,
 
     private val useCaseDecideRoute : UseCaseDecideRoute,
-    private val useCaseGetReadRecord : UseCaseGetReadRecord,
+    private val useCaseInitReadRecord : UseCaseInitReadRecord,
     private val useCaseRecordReadElement : UseCaseRecordReadElement,
 ) : BaseViewModel() {
     private val userId = LOCAL_USER_ID
@@ -63,7 +63,7 @@ class ReadPageViewModel @Inject constructor(
             if (configLocal != null && logicLocal != null) {
                 config = configLocal
                 logic = logicLocal
-                val readData = useCaseGetReadRecord(userId = userId, config = config, initBook = initBook)
+                val readData = useCaseInitReadRecord(userId = userId, config = config, initBook = initBook)
                 movePageFromId(readData.savePage, isStartPage = true)
             } else {
                 cancel(
