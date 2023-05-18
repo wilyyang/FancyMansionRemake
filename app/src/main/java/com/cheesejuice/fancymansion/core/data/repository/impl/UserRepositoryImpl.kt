@@ -18,27 +18,27 @@ class UserRepositoryImpl @Inject constructor(
      * Room Database
      */
     override suspend fun insertUserEntity(userEntity : UserEntity) : Long
-    = recordDatabaseSource.insertUserEntity(userEntity)
+    = recordDatabaseSource.insertUserInfo(userEntity)
     override suspend fun isUserEntityExist(userId : String) : Boolean
-    = recordDatabaseSource.isUserEntityExist(userId)
+    = recordDatabaseSource.isUserInfoExist(userId)
 
     override suspend fun insertReadEntity(readEntity : ReadEntity) : Long
-    = recordDatabaseSource.insertReadEntity(readEntity)
+    = recordDatabaseSource.insertReadRecord(readEntity)
     override suspend fun getReadEntity(userId : String, readMode : String, bookId : String) : ReadEntity?
-    = recordDatabaseSource.getReadEntity(userId, readMode, bookId)
+    = recordDatabaseSource.getReadRecord(userId, readMode, bookId)
     override suspend fun updateReadEntity(readEntity : ReadEntity)
-    = recordDatabaseSource.updateReadEntity(readEntity)
+    = recordDatabaseSource.updateReadRecord(readEntity)
     override suspend fun deleteReadEntityFromId(userId : String, readMode : String, bookId : String)
-    = recordDatabaseSource.deleteReadEntityFromId(userId, readMode, bookId)
+    = recordDatabaseSource.deleteReadRecordFromId(userId, readMode, bookId)
 
     override suspend fun insertCountEntity(countEntity : CountEntity) : Long
-    = recordDatabaseSource.insertCountEntity(countEntity)
+    = recordDatabaseSource.insertCountRecord(countEntity)
     override suspend fun isCountEntityExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
-    = recordDatabaseSource.isCountEntityExist(userId, readMode, bookId, elementId)
+    = recordDatabaseSource.isCountRecordExist(userId, readMode, bookId, elementId)
     override suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long) : Int?
     = recordDatabaseSource.getElementCount(userId, readMode, bookId, elementId)
     override suspend fun incrementCountEntity(userId : String, readMode : String, bookId : String, elementId : Long)
-    = recordDatabaseSource.incrementCountEntity(userId, readMode, bookId, elementId)
+    = recordDatabaseSource.incrementCountRecord(userId, readMode, bookId, elementId)
     override suspend fun deleteCountEntityFromBookId(userId : String, readMode : String, bookId : String)
-    = recordDatabaseSource.deleteCountEntityFromBookId(userId, readMode, bookId)
+    = recordDatabaseSource.deleteCountRecordFromBookId(userId, readMode, bookId)
 }

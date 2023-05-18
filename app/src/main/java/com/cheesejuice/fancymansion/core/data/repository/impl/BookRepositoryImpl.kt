@@ -31,18 +31,18 @@ class BookRepositoryImpl @Inject constructor(
     override suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
     = bookStorageSource.makeLogicFile(logic, userId, readMode, bookId)
     override suspend fun makePageFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
-    = bookStorageSource.makePageFile(page, userId, readMode, bookId)
+    = bookStorageSource.makePageContentFile(page, userId, readMode, bookId)
     override suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
-    = bookStorageSource.makeImageFromResource(userId, readMode, bookId, imageName, resourceId)
+    = bookStorageSource.makeImageFileFromResource(userId, readMode, bookId, imageName, resourceId)
 
     override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
     = bookStorageSource.getConfigFromFile(userId, readMode, bookId)
     override suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
-    = bookStorageSource.getCoverFromFile(userId, readMode, bookId, image)
+    = bookStorageSource.getCoverImageFromFile(userId, readMode, bookId, image)
     override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
     = bookStorageSource.getLogicFromFile(userId, readMode, bookId)
     override suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
-    = bookStorageSource.getPageFromFile(userId, readMode, bookId, pageId)
+    = bookStorageSource.getPageContentFromFile(userId, readMode, bookId, pageId)
     override suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = bookStorageSource.getImageFromFile(userId, readMode, bookId, image)
 }
