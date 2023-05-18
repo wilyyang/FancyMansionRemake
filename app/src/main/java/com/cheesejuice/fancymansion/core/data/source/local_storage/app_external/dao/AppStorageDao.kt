@@ -90,14 +90,14 @@ class AppStorageDao @Inject internal constructor(
         } ?: false
     }
 
-    suspend fun makePageFile(page : PageContentData, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
-        filePage(dirRoot, userId, readMode, bookId, page.pageId)?.let {
+    suspend fun makePageFile(pageContent : PageContentData, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
+        filePage(dirRoot, userId, readMode, bookId, pageContent.pageId)?.let {
             if (it.exists()) {
                 it.delete()
             }
 
             FileOutputStream(it).use { stream ->
-                stream.write(Gson().toJson(page).toByteArray())
+                stream.write(Gson().toJson(pageContent).toByteArray())
             }
             it.exists()
         } ?: false

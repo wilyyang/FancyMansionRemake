@@ -9,11 +9,11 @@ data class ChoiceItemData(
     val routes : List<RouteData> = listOf()
 )
 
-fun ChoiceItemData.asEntity() = ChoiceItemEntity(
+fun ChoiceItemData.asMapper() = ChoiceItemEntity(
     choiceId = choiceId,
     title = title,
-    showConditions = showConditions.map { it.asEntity() }.toMutableList(),
-    routes = routes.map { it.asEntity() }.toMutableList()
+    showConditions = showConditions.map { it.asMapper() }.toMutableList(),
+    routes = routes.map { it.asMapper() }.toMutableList()
 )
 
 fun ChoiceItemEntity.asData() = ChoiceItemData(

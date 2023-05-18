@@ -10,7 +10,7 @@ data class PageContentData(
     val question : String
 )
 
-fun PageContentData.asEntity() = PageContentEntity(
+fun PageContentData.asMapper() = PageContentEntity(
     pageId = pageId,
     pageTitle = pageTitle,
     pageImage = pageImage,

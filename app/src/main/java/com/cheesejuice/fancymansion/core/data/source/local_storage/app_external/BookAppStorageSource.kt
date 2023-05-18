@@ -4,7 +4,7 @@ import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.data.source.local_storage.BookLocalStorageSource
 import com.cheesejuice.fancymansion.core.data.source.local_storage.app_external.dao.*
 import com.cheesejuice.fancymansion.core.data.source.local_storage.model.asData
-import com.cheesejuice.fancymansion.core.data.source.local_storage.model.asEntity
+import com.cheesejuice.fancymansion.core.data.source.local_storage.model.asMapper
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
 import com.cheesejuice.fancymansion.core.entity.book.LogicEntity
 import com.cheesejuice.fancymansion.core.entity.book.PageContentEntity
@@ -44,17 +44,17 @@ class BookAppStorageSource @Inject constructor(private val storageDao : AppStora
      * Get Object
      */
     override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
-    = storageDao.getConfigFromFile(userId, readMode, bookId)?.asEntity()
+    = storageDao.getConfigFromFile(userId, readMode, bookId)?.asMapper()
 
     override suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = storageDao.getCoverFromFile(userId, readMode, bookId, image)
 
     override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
-    = storageDao.getLogicFromFile(userId, readMode, bookId)?.asEntity()
+    = storageDao.getLogicFromFile(userId, readMode, bookId)?.asMapper()
 
 
     override suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
-    = storageDao.getPageFromFile(userId, readMode, bookId, pageId)?.asEntity()
+    = storageDao.getPageFromFile(userId, readMode, bookId, pageId)?.asMapper()
 
     override suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = storageDao.getImageFromFile(userId, readMode, bookId, image)

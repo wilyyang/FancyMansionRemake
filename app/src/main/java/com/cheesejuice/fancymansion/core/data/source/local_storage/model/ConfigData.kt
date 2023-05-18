@@ -33,7 +33,7 @@ data class ConfigData(
     val report : Int = 0
 )
 
-fun ConfigData.asEntity() = ConfigEntity(
+fun ConfigData.asMapper() = ConfigEntity(
     bookId = bookId,
 
     version = version,

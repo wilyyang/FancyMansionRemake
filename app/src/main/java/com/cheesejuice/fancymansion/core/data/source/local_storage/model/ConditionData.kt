@@ -15,7 +15,7 @@ data class ConditionData(
     val nextRelation : String = Relation.OR.name
 )
 
-fun ConditionData.asEntity() = ConditionEntity(
+fun ConditionData.asMapper() = ConditionEntity(
     conditionId = conditionId,
     targetId1 = targetId1,
     targetId2 = targetId2,

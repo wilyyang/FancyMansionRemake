@@ -11,7 +11,7 @@ interface RoomDatabaseDao {
 
     // Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserData(userData: UserInfoData) : Long
+    suspend fun insertUserData(userInfo: UserInfoData) : Long
 
     // Get
     @Query("SELECT EXISTS(SELECT * FROM UserData WHERE userId = :userId)")
@@ -21,11 +21,11 @@ interface RoomDatabaseDao {
 
     // Update
     @Update
-    suspend fun updateUserData(userData: UserInfoData)
+    suspend fun updateUserData(userInfo: UserInfoData)
 
     // Delete
     @Delete
-    suspend fun deleteUserData(userData: UserInfoData)
+    suspend fun deleteUserData(userInfo: UserInfoData)
     @Query("DELETE FROM UserData WHERE userId = :userId")
     suspend fun deleteUserDataFromId(userId : String)
 
@@ -36,7 +36,7 @@ interface RoomDatabaseDao {
 
     // Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReadData(readData: ReadRecordData) : Long
+    suspend fun insertReadData(readRecord: ReadRecordData) : Long
 
     // Get
     @Query("SELECT EXISTS(SELECT * FROM ReadData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId)")
@@ -46,11 +46,11 @@ interface RoomDatabaseDao {
 
     // Update
     @Update
-    suspend fun updateReadData(readData: ReadRecordData)
+    suspend fun updateReadData(readRecord: ReadRecordData)
 
     // Delete
     @Delete
-    suspend fun deleteReadData(readData: ReadRecordData)
+    suspend fun deleteReadData(readRecord: ReadRecordData)
     @Query("DELETE FROM ReadData WHERE userId = :userId")
     suspend fun deleteReadDataFromUserId(userId : String)
     @Query("DELETE FROM ReadData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
@@ -62,7 +62,7 @@ interface RoomDatabaseDao {
 
     // Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCountData(countData: CountRecordData) : Long
+    suspend fun insertCountData(countRecord: CountRecordData) : Long
 
     // Get
     @Query("SELECT EXISTS(SELECT * FROM CountData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId)")
@@ -76,13 +76,13 @@ interface RoomDatabaseDao {
 
     // Update
     @Update
-    suspend fun updateCountData(countData: CountRecordData)
+    suspend fun updateCountData(countRecord: CountRecordData)
     @Query("UPDATE CountData SET count = count + 1 WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
     suspend fun incrementCountData(userId : String, readMode : String, bookId : String, elementId : Long)
 
     // Delete
     @Delete
-    suspend fun deleteCountData(countData: CountRecordData)
+    suspend fun deleteCountData(countRecord: CountRecordData)
     @Query("DELETE FROM CountData WHERE userId = :userId")
     suspend fun deleteCountDataFromUserId(userId : String)
     @Query("DELETE FROM CountData WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")

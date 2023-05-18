@@ -9,10 +9,10 @@ data class RouteData(
     val routeConditions : List<ConditionData> = listOf()
 )
 
-fun RouteData.asEntity() = RouteEntity(
+fun RouteData.asMapper() = RouteEntity(
     routeId = routeId,
     routePageId = routePageId,
-    routeConditions = routeConditions.map { it.asEntity() }.toMutableList()
+    routeConditions = routeConditions.map { it.asMapper() }.toMutableList()
 )
 
 fun RouteEntity.asData() = RouteData(

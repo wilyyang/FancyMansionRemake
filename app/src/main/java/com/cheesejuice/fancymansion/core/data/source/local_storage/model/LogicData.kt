@@ -7,9 +7,9 @@ data class LogicData(
     var logics : List<PageLogicData> = listOf()
 )
 
-fun LogicData.asEntity() = LogicEntity(
+fun LogicData.asMapper() = LogicEntity(
     bookId = bookId,
-    logics = logics.map { it.asEntity() }.toMutableList()
+    logics = logics.map { it.asMapper() }.toMutableList()
 )
 
 fun LogicEntity.asData() = LogicData(

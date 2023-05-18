@@ -10,11 +10,11 @@ data class PageLogicData(
     val choiceItems : List<ChoiceItemData> = listOf()
 )
 
-fun PageLogicData.asEntity() = PageLogicEntity(
+fun PageLogicData.asMapper() = PageLogicEntity(
     pageId = pageId,
     pageTitle = pageTitle,
     type = type,
-    choiceItems = choiceItems.map { it.asEntity() }.toMutableList()
+    choiceItems = choiceItems.map { it.asMapper() }.toMutableList()
 )
 
 fun PageLogicEntity.asData() = PageLogicData(
