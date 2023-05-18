@@ -9,57 +9,56 @@ interface RecordLocalDatabaseSource {
      * User
      */
     // Insert
-    suspend fun insertUserEntity(userEntity: UserEntity) : Long
+    suspend fun insertUserInfo(userInfo : UserEntity) : Long
 
     // Get
-    suspend fun isUserEntityExist(userId : String) : Boolean
-    suspend fun getUserEntity(userId : String): UserEntity?
+    suspend fun isUserInfoExist(userId : String) : Boolean
+    suspend fun getUserInfo(userId : String) : UserEntity?
 
     // Update
-    suspend fun updateUserEntity(userEntity: UserEntity)
+    suspend fun updateUserInfo(userInfo : UserEntity)
 
     // Delete
-    suspend fun deleteUserEntity(userEntity: UserEntity)
-    suspend fun deleteUserEntityFromId(userId : String)
-
+    suspend fun deleteUserInfo(userInfo : UserEntity)
+    suspend fun deleteUserInfoFromId(userId : String)
 
     /**
      * Read
      */
     // Insert
-    suspend fun insertReadEntity(readEntity: ReadEntity) : Long
+    suspend fun insertReadRecord(readRecord : ReadEntity) : Long
 
     // Get
-    suspend fun isReadEntityExist(userId : String, readMode : String, bookId : String) : Boolean
-    suspend fun getReadEntity(userId : String, readMode : String, bookId : String): ReadEntity?
+    suspend fun isReadRecordExist(userId : String, readMode : String, bookId : String) : Boolean
+    suspend fun getReadRecord(userId : String, readMode : String, bookId : String) : ReadEntity?
 
     // Update
-    suspend fun updateReadEntity(readEntity: ReadEntity)
+    suspend fun updateReadRecord(readRecord : ReadEntity)
 
     // Delete
-    suspend fun deleteReadEntity(readEntity: ReadEntity)
-    suspend fun deleteReadEntityFromUserId(userId : String)
-    suspend fun deleteReadEntityFromId(userId : String, readMode : String, bookId : String)
+    suspend fun deleteReadRecord(readRecord : ReadEntity)
+    suspend fun deleteReadRecordFromUserId(userId : String)
+    suspend fun deleteReadRecordFromId(userId : String, readMode : String, bookId : String)
 
     /**
      * Count
      */
     // Insert
-    suspend fun insertCountEntity(countEntity: CountEntity) : Long
+    suspend fun insertCountRecord(countRecord : CountEntity) : Long
 
     // Get
-    suspend fun isCountEntityExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
-    suspend fun getCountEntity(userId : String, readMode : String, bookId : String, elementId : Long): CountEntity?
-    suspend fun getCountEntityList(userId : String, readMode : String, bookId : String): List<CountEntity>
-    suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long): Int?
+    suspend fun isCountRecordExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
+    suspend fun getCountRecord(userId : String, readMode : String, bookId : String, elementId : Long) : CountEntity?
+    suspend fun getCountRecordList(userId : String, readMode : String, bookId : String) : List<CountEntity>
+    suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long) : Int?
 
     // Update
-    suspend fun updateCountEntity(countEntity: CountEntity)
-    suspend fun incrementCountEntity(userId : String, readMode : String, bookId : String, elementId : Long)
+    suspend fun updateCountRecord(countRecord : CountEntity)
+    suspend fun incrementCountRecord(userId : String, readMode : String, bookId : String, elementId : Long)
 
     // Delete
-    suspend fun deleteCountEntity(countEntity: CountEntity)
-    suspend fun deleteCountEntityFromUserId(userId : String)
-    suspend fun deleteCountEntityFromBookId(userId : String, readMode : String, bookId : String)
-    suspend fun deleteCountEntityFromId(userId : String, readMode : String, bookId : String, elementId : Long)
+    suspend fun deleteCountRecord(countRecord : CountEntity)
+    suspend fun deleteCountRecordFromUserId(userId : String)
+    suspend fun deleteCountRecordFromBookId(userId : String, readMode : String, bookId : String)
+    suspend fun deleteCountRecordFromId(userId : String, readMode : String, bookId : String, elementId : Long)
 }

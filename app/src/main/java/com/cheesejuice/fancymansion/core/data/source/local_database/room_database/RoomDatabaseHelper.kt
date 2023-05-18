@@ -58,7 +58,7 @@ abstract class RoomDatabaseHelper : RoomDatabase() {
         }
 
         suspend fun initMain(databaseDao : RoomDatabaseDao) {
-            databaseDao.insertUserData(UserEntity(userId = LOCAL_USER_ID).asData())
+            databaseDao.insertUserInfo(UserEntity(userId = LOCAL_USER_ID).asData())
         }
     }
 }

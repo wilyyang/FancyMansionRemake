@@ -90,7 +90,7 @@ class AppStorageDao @Inject internal constructor(
         } ?: false
     }
 
-    suspend fun makePageFile(pageContent : PageContentData, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
+    suspend fun makePageContentFile(pageContent : PageContentData, userId : String, readMode : ReadMode, bookId : String) = tryBooleanScope {
         filePage(dirRoot, userId, readMode, bookId, pageContent.pageId)?.let {
             if (it.exists()) {
                 it.delete()
@@ -103,7 +103,7 @@ class AppStorageDao @Inject internal constructor(
         } ?: false
     }
 
-    suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int) {
+    suspend fun makeImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int) {
         fileMediaImage(dirRoot, userId, readMode, bookId, imageName)?.let { file ->
             val inputStream : InputStream = context.resources.openRawResource(resourceId)
             val outputStream = FileOutputStream(file)
@@ -135,7 +135,7 @@ class AppStorageDao @Inject internal constructor(
         }
     }
 
-    suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File? = tryNullableScope {
+    suspend fun getCoverImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File? = tryNullableScope {
         fileCover(dirRoot, userId, readMode, bookId, image)
     }
 
@@ -149,7 +149,7 @@ class AppStorageDao @Inject internal constructor(
             }
         }
     }
-    suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentData? = tryNullableScope {
+    suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentData? = tryNullableScope {
         filePage(dirRoot, userId, readMode, bookId, pageId)?.let {
             if (it.exists()) {
                 val pageJson = FileInputStream(it).bufferedReader().use { stream -> stream.readText() }

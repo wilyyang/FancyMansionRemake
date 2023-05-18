@@ -11,23 +11,23 @@ interface RoomDatabaseDao {
 
     // Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserData(userInfo: UserInfoData) : Long
+    suspend fun insertUserInfo(userInfo: UserInfoData) : Long
 
     // Get
     @Query("SELECT EXISTS(SELECT * FROM UserInfo WHERE userId = :userId)")
-    suspend fun isUserDataExist(userId : String) : Boolean
+    suspend fun isUserInfoExist(userId : String) : Boolean
     @Query("SELECT * FROM UserInfo WHERE userId = :userId")
-    suspend fun getUserData(userId : String): UserInfoData?
+    suspend fun getUserInfo(userId : String): UserInfoData?
 
     // Update
     @Update
-    suspend fun updateUserData(userInfo: UserInfoData)
+    suspend fun updateUserInfo(userInfo: UserInfoData)
 
     // Delete
     @Delete
-    suspend fun deleteUserData(userInfo: UserInfoData)
+    suspend fun deleteUserInfo(userInfo: UserInfoData)
     @Query("DELETE FROM UserInfo WHERE userId = :userId")
-    suspend fun deleteUserDataFromId(userId : String)
+    suspend fun deleteUserInfoFromId(userId : String)
 
 
     /**
@@ -36,25 +36,25 @@ interface RoomDatabaseDao {
 
     // Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReadData(readRecord: ReadRecordData) : Long
+    suspend fun insertReadRecord(readRecord: ReadRecordData) : Long
 
     // Get
     @Query("SELECT EXISTS(SELECT * FROM ReadRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId)")
-    suspend fun isReadDataExist(userId : String, readMode : String, bookId : String) : Boolean
+    suspend fun isReadRecordExist(userId : String, readMode : String, bookId : String) : Boolean
     @Query("SELECT * FROM ReadRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
-    suspend fun getReadData(userId : String, readMode : String, bookId : String): ReadRecordData?
+    suspend fun getReadRecord(userId : String, readMode : String, bookId : String): ReadRecordData?
 
     // Update
     @Update
-    suspend fun updateReadData(readRecord: ReadRecordData)
+    suspend fun updateReadRecord(readRecord: ReadRecordData)
 
     // Delete
     @Delete
-    suspend fun deleteReadData(readRecord: ReadRecordData)
+    suspend fun deleteReadRecord(readRecord: ReadRecordData)
     @Query("DELETE FROM ReadRecord WHERE userId = :userId")
-    suspend fun deleteReadDataFromUserId(userId : String)
+    suspend fun deleteReadRecordFromUserId(userId : String)
     @Query("DELETE FROM ReadRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
-    suspend fun deleteReadDataFromId(userId : String, readMode : String, bookId : String)
+    suspend fun deleteReadRecordFromId(userId : String, readMode : String, bookId : String)
 
     /**
      * CountRecordDao
@@ -62,31 +62,31 @@ interface RoomDatabaseDao {
 
     // Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCountData(countRecord: CountRecordData) : Long
+    suspend fun insertCountRecord(countRecord: CountRecordData) : Long
 
     // Get
     @Query("SELECT EXISTS(SELECT * FROM CountRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId)")
-    suspend fun isCountDataExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
+    suspend fun isCountRecordExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
     @Query("SELECT * FROM CountRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
-    suspend fun getCountData(userId : String, readMode : String, bookId : String, elementId : Long): CountRecordData?
+    suspend fun getCountRecord(userId : String, readMode : String, bookId : String, elementId : Long): CountRecordData?
     @Query("SELECT * FROM CountRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
-    suspend fun getCountDataList(userId : String, readMode : String, bookId : String): List<CountRecordData>
+    suspend fun getCountRecordList(userId : String, readMode : String, bookId : String): List<CountRecordData>
     @Query("SELECT count FROM CountRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
     suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long): Int?
 
     // Update
     @Update
-    suspend fun updateCountData(countRecord: CountRecordData)
+    suspend fun updateCountRecord(countRecord: CountRecordData)
     @Query("UPDATE CountRecord SET count = count + 1 WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
-    suspend fun incrementCountData(userId : String, readMode : String, bookId : String, elementId : Long)
+    suspend fun incrementCountRecord(userId : String, readMode : String, bookId : String, elementId : Long)
 
     // Delete
     @Delete
-    suspend fun deleteCountData(countRecord: CountRecordData)
+    suspend fun deleteCountRecord(countRecord: CountRecordData)
     @Query("DELETE FROM CountRecord WHERE userId = :userId")
-    suspend fun deleteCountDataFromUserId(userId : String)
+    suspend fun deleteCountRecordFromUserId(userId : String)
     @Query("DELETE FROM CountRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
-    suspend fun deleteCountDataFromBookId(userId : String, readMode : String, bookId : String)
+    suspend fun deleteCountRecordFromBookId(userId : String, readMode : String, bookId : String)
     @Query("DELETE FROM CountRecord WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId AND elementId = :elementId")
-    suspend fun deleteCountDataFromId(userId : String, readMode : String, bookId : String, elementId : Long)
+    suspend fun deleteCountRecordFromId(userId : String, readMode : String, bookId : String, elementId : Long)
 }
