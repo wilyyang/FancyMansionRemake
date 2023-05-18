@@ -32,8 +32,8 @@ import com.cheesejuice.fancymansion.core.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.core.ui.theme.dividerAlpha
 import com.cheesejuice.fancymansion.core.ui.theme.onTextAlpha
 import com.cheesejuice.fancymansion.core.ui.theme.typography
-import com.cheesejuice.fancymansion.data.repository.mapper.book.ChoiceItemEntity
-import com.cheesejuice.fancymansion.data.repository.mapper.book.PageEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemEntity
+import com.cheesejuice.fancymansion.data.mapper.book.PageEntity
 import java.io.File
 
 @Composable

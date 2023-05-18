@@ -1,11 +1,11 @@
 package com.cheesejuice.fancymansion.data.repository.di
 
-import com.cheesejuice.fancymansion.data.repository.MakeBookRepository
-import com.cheesejuice.fancymansion.data.repository.ReadBookRepository
-import com.cheesejuice.fancymansion.data.repository.UserRepository
-import com.cheesejuice.fancymansion.data.repository.impl.MakeBookRepositoryImpl
-import com.cheesejuice.fancymansion.data.repository.impl.ReadBookRepositoryImpl
-import com.cheesejuice.fancymansion.data.repository.impl.UserRepositoryImpl
+import com.cheesejuice.fancymansion.domain.interfaceRepository.MakeBookRepository
+import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
+import com.cheesejuice.fancymansion.domain.interfaceRepository.UserRepository
+import com.cheesejuice.fancymansion.data.repository.MakeBookRepositoryImpl
+import com.cheesejuice.fancymansion.data.repository.ReadBookRepositoryImpl
+import com.cheesejuice.fancymansion.data.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

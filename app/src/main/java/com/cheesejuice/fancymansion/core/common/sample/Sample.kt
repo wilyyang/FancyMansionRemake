@@ -2,7 +2,7 @@ package com.cheesejuice.fancymansion.core.common.sample
 
 import com.cheesejuice.fancymansion.core.common.*
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.data.repository.mapper.book.*
+import com.cheesejuice.fancymansion.data.mapper.book.*
 
 object Sample {
     private const val bookId = SAMPLE_BOOK_ID
