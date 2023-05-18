@@ -6,7 +6,7 @@ import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.core.common.sample.Sample
-import com.cheesejuice.fancymansion.core.data.repository.BookRepository
+import com.cheesejuice.fancymansion.core.data.repository.MakeBookRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -15,10 +15,10 @@ import javax.inject.Inject
 @ViewModelScoped
 class UseCaseMakeSample @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
-    private val bookRepository : BookRepository
+    private val makeBookRepository : MakeBookRepository
 ) {
     suspend operator fun invoke() = withContext(dispatcher) {
-        bookRepository.run {
+        makeBookRepository.run {
             val userId = LOCAL_USER_ID
             val readMode = ReadMode.edit
             val bookId = SAMPLE_BOOK_ID
@@ -28,7 +28,7 @@ class UseCaseMakeSample @Inject constructor(
             makeConfigFile(Sample.book.config)
             makeLogicFile(Sample.book.logic, userId, readMode, bookId)
 
-            for(pageContent in Sample.book.pageContents){
+            for (pageContent in Sample.book.pageContents) {
                 makePageFile(pageContent, userId, readMode, bookId)
             }
             val array = arrayOf(
@@ -39,9 +39,10 @@ class UseCaseMakeSample @Inject constructor(
                 "image_5.gif" to R.raw.image_5,
                 "image_6.gif" to R.raw.image_6,
                 "fish_cat.jpg" to R.raw.fish_cat,
-                "game_end.jpg" to R.raw.game_end)
+                "game_end.jpg" to R.raw.game_end
+            )
             array.forEach {
-                bookRepository.makeImageFromResource(userId, readMode, bookId, it.first, it.second)
+                makeBookRepository.makeImageFromResource(userId, readMode, bookId, it.first, it.second)
             }
         }
     }

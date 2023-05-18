@@ -1,7 +1,8 @@
 package com.cheesejuice.fancymansion.core.data.repository.impl
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.core.data.repository.BookRepository
+import com.cheesejuice.fancymansion.core.data.repository.MakeBookRepository
+import com.cheesejuice.fancymansion.core.data.repository.ReadBookRepository
 import com.cheesejuice.fancymansion.core.data.source.local_storage.BookLocalStorageSource
 import com.cheesejuice.fancymansion.core.data.source.local_storage.di.AppStorage
 import com.cheesejuice.fancymansion.core.entity.book.ConfigEntity
@@ -12,9 +13,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BookRepositoryImpl @Inject constructor(
+class MakeBookRepositoryImpl @Inject constructor(
     @AppStorage private val bookStorageSource : BookLocalStorageSource
-) : BookRepository {
+) : MakeBookRepository {
 
     /**
      * App External Storage IO
@@ -34,15 +35,4 @@ class BookRepositoryImpl @Inject constructor(
     = bookStorageSource.makePageContentFile(page, userId, readMode, bookId)
     override suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
     = bookStorageSource.makeImageFileFromResource(userId, readMode, bookId, imageName, resourceId)
-
-    override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
-    = bookStorageSource.getConfigFromFile(userId, readMode, bookId)
-    override suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
-    = bookStorageSource.getCoverImageFromFile(userId, readMode, bookId, image)
-    override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
-    = bookStorageSource.getLogicFromFile(userId, readMode, bookId)
-    override suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
-    = bookStorageSource.getPageContentFromFile(userId, readMode, bookId, pageId)
-    override suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
-    = bookStorageSource.getImageFromFile(userId, readMode, bookId, image)
 }

@@ -13,7 +13,7 @@ class UseCaseDecideRoute @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
     private val useCaseCheckConditions : UseCaseCheckConditions
 ) {
-    suspend operator fun invoke(userId : String, readMode: String, bookId : String, choice : ChoiceItemEntity) = withContext(dispatcher) {
+    suspend operator fun invoke(userId : String, readMode : String, bookId : String, choice : ChoiceItemEntity) = withContext(dispatcher) {
         choice.routes.find { route ->
             useCaseCheckConditions(userId, readMode, bookId, route.routeConditions)
         }?.routePageId ?: DEFAULT_END_PAGE_ID
