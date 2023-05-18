@@ -5,6 +5,7 @@ import androidx.room.ForeignKey
 import com.cheesejuice.fancymansion.core.entity.user.CountEntity
 
 @Entity(
+    tableName = "CountRecord",
     primaryKeys = ["userId", "readMode", "bookId", "elementId"],
     foreignKeys = [
         ForeignKey(

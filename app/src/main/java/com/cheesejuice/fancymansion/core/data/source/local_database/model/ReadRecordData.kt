@@ -5,6 +5,7 @@ import androidx.room.ForeignKey
 import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
 
 @Entity(
+    tableName = "ReadRecord",
     primaryKeys = ["userId", "readMode", "bookId"],
     foreignKeys = [
         ForeignKey(
