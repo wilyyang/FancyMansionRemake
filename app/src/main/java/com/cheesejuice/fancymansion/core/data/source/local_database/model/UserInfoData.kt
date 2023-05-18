@@ -5,15 +5,14 @@ import androidx.room.PrimaryKey
 import com.cheesejuice.fancymansion.core.entity.user.UserEntity
 
 @Entity
-data class UserData(
+data class UserInfoData(
     @PrimaryKey val userId : String
 )
 
-fun UserData.asEntity() = UserEntity(
+fun UserInfoData.asMapper() = UserEntity(
     userId = userId
 )
 
-fun UserEntity.asData() = UserData(
+fun UserEntity.asData() = UserInfoData(
     userId = userId
 )
-

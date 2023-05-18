@@ -8,28 +8,28 @@ import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
     primaryKeys = ["userId", "readMode", "bookId"],
     foreignKeys = [
         ForeignKey(
-            entity = UserData::class,
+            entity = UserInfoData::class,
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class ReadData(
+data class ReadRecordData(
     val userId : String,
     val readMode : String,
     val bookId : String,
     val savePage : Long
 )
 
-fun ReadData.asEntity() = ReadEntity(
+fun ReadRecordData.asMapper() = ReadEntity(
     userId = userId,
     readMode = readMode,
     bookId = bookId,
     savePage = savePage
 )
 
-fun ReadEntity.asData() = ReadData(
+fun ReadEntity.asData() = ReadRecordData(
     userId = userId,
     readMode = readMode,
     bookId = bookId,

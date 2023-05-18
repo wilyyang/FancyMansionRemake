@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
-import com.cheesejuice.fancymansion.core.data.source.local_database.model.CountData
-import com.cheesejuice.fancymansion.core.data.source.local_database.model.ReadData
-import com.cheesejuice.fancymansion.core.data.source.local_database.model.UserData
+import com.cheesejuice.fancymansion.core.data.source.local_database.model.CountRecordData
+import com.cheesejuice.fancymansion.core.data.source.local_database.model.ReadRecordData
+import com.cheesejuice.fancymansion.core.data.source.local_database.model.UserInfoData
 import com.cheesejuice.fancymansion.core.data.source.local_database.model.asData
 import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.dao.RoomDatabaseDao
 import com.cheesejuice.fancymansion.core.entity.user.UserEntity
@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
     version = 1,
     exportSchema = true,
     entities = [
-        UserData::class,
-        ReadData::class,
-        CountData::class
+        UserInfoData::class,
+        ReadRecordData::class,
+        CountRecordData::class
     ]
 )
 abstract class RoomDatabaseHelper : RoomDatabase() {

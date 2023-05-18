@@ -8,14 +8,14 @@ import com.cheesejuice.fancymansion.core.entity.user.CountEntity
     primaryKeys = ["userId", "readMode", "bookId", "elementId"],
     foreignKeys = [
         ForeignKey(
-            entity = ReadData::class,
+            entity = ReadRecordData::class,
             parentColumns = ["userId", "readMode", "bookId"],
             childColumns = ["userId", "readMode", "bookId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class CountData(
+data class CountRecordData(
     val userId : String,
     val readMode : String,
     val bookId : String,
@@ -23,7 +23,7 @@ data class CountData(
     val count : Int = 0
 )
 
-fun CountData.asEntity() = CountEntity(
+fun CountRecordData.asMapper() = CountEntity(
     userId = userId,
     readMode = readMode,
     bookId = bookId,
@@ -31,7 +31,7 @@ fun CountData.asEntity() = CountEntity(
     count = count
 )
 
-fun CountEntity.asData() = CountData(
+fun CountEntity.asData() = CountRecordData(
     userId = userId,
     readMode = readMode,
     bookId = bookId,

@@ -2,7 +2,7 @@ package com.cheesejuice.fancymansion.core.data.source.local_database.room_databa
 
 import com.cheesejuice.fancymansion.core.data.source.local_database.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.core.data.source.local_database.model.asData
-import com.cheesejuice.fancymansion.core.data.source.local_database.model.asEntity
+import com.cheesejuice.fancymansion.core.data.source.local_database.model.asMapper
 import com.cheesejuice.fancymansion.core.data.source.local_database.room_database.dao.RoomDatabaseDao
 import com.cheesejuice.fancymansion.core.entity.user.CountEntity
 import com.cheesejuice.fancymansion.core.entity.user.ReadEntity
@@ -25,7 +25,7 @@ class RecordRoomDatabaseSource @Inject constructor(private val databaseDao : Roo
     = databaseDao.isUserDataExist(userId)
 
     override suspend fun getUserEntity(userId : String): UserEntity?
-    = databaseDao.getUserData(userId)?.asEntity()
+    = databaseDao.getUserData(userId)?.asMapper()
 
     // Update
     override suspend fun updateUserEntity(userEntity: UserEntity)
@@ -51,7 +51,7 @@ class RecordRoomDatabaseSource @Inject constructor(private val databaseDao : Roo
     = databaseDao.isReadDataExist(userId, readMode, bookId)
 
     override suspend fun getReadEntity(userId : String, readMode : String, bookId : String): ReadEntity?
-    = databaseDao.getReadData(userId, readMode, bookId)?.asEntity()
+    = databaseDao.getReadData(userId, readMode, bookId)?.asMapper()
 
     // Update
     override suspend fun updateReadEntity(readEntity: ReadEntity)
@@ -79,10 +79,10 @@ class RecordRoomDatabaseSource @Inject constructor(private val databaseDao : Roo
     = databaseDao.isCountDataExist(userId, readMode, bookId, elementId)
 
     override suspend fun getCountEntity(userId : String, readMode : String, bookId : String, elementId : Long): CountEntity?
-    = databaseDao.getCountData(userId, readMode, bookId, elementId)?.asEntity()
+    = databaseDao.getCountData(userId, readMode, bookId, elementId)?.asMapper()
 
     override suspend fun getCountEntityList(userId : String, readMode : String, bookId : String): List<CountEntity>
-    = databaseDao.getCountDataList(userId, readMode, bookId).map { it.asEntity() }
+    = databaseDao.getCountDataList(userId, readMode, bookId).map { it.asMapper() }
 
     override suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long): Int?
     = databaseDao.getElementCount(userId, readMode, bookId, elementId)
