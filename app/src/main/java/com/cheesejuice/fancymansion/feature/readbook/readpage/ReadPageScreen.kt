@@ -22,8 +22,6 @@ import androidx.navigation.NavController
 import com.cheesejuice.fancymansion.core.common.PageType
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.core.common.sample.Sample
-import com.cheesejuice.fancymansion.core.entity.book.ChoiceItemEntity
-import com.cheesejuice.fancymansion.core.entity.book.PageEntity
 import com.cheesejuice.fancymansion.core.ui.base.BaseScreen
 import com.cheesejuice.fancymansion.core.ui.base.EmptyState
 import com.cheesejuice.fancymansion.core.ui.base.LoadingState
@@ -34,6 +32,8 @@ import com.cheesejuice.fancymansion.core.ui.theme.colorScheme
 import com.cheesejuice.fancymansion.core.ui.theme.dividerAlpha
 import com.cheesejuice.fancymansion.core.ui.theme.onTextAlpha
 import com.cheesejuice.fancymansion.core.ui.theme.typography
+import com.cheesejuice.fancymansion.data.repository.mapper.book.ChoiceItemEntity
+import com.cheesejuice.fancymansion.data.repository.mapper.book.PageEntity
 import java.io.File
 
 @Composable

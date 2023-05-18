@@ -1,0 +1,26 @@
+package com.cheesejuice.fancymansion.data.repository.di
+
+import com.cheesejuice.fancymansion.data.repository.MakeBookRepository
+import com.cheesejuice.fancymansion.data.repository.ReadBookRepository
+import com.cheesejuice.fancymansion.data.repository.UserRepository
+import com.cheesejuice.fancymansion.data.repository.impl.MakeBookRepositoryImpl
+import com.cheesejuice.fancymansion.data.repository.impl.ReadBookRepositoryImpl
+import com.cheesejuice.fancymansion.data.repository.impl.UserRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface HiltRepository {
+
+    @Binds
+    fun bindMakeBookRepository(repository: MakeBookRepositoryImpl): MakeBookRepository
+
+    @Binds
+    fun bindReadBookRepository(repository: ReadBookRepositoryImpl): ReadBookRepository
+
+    @Binds
+    fun bindUserRepository(repository: UserRepositoryImpl): UserRepository
+}
