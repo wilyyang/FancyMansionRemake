@@ -1,0 +1,10 @@
+apply from: "$rootDir/gradle/_library.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
+
+android {
+    namespace 'com.cheesejuice.core.common'
+}
+
+dependencies {
+
+}

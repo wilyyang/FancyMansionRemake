@@ -1,7 +1,6 @@
 package com.cheesejuice.fancymansion.domain.usecase.library.record
 
-import com.cheesejuice.fancymansion.core.common.DEFAULT_END_PAGE_ID
-import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
+import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,6 +15,6 @@ class UseCaseDecideRoute @Inject constructor(
     suspend operator fun invoke(userId : String, readMode : String, bookId : String, choice : ChoiceItemMapper) = withContext(dispatcher) {
         choice.routes.find { route ->
             useCaseCheckConditions(userId, readMode, bookId, route.routeConditions)
-        }?.routePageId ?: DEFAULT_END_PAGE_ID
+        }?.routePageId ?: com.cheesejuice.core.common.DEFAULT_END_PAGE_ID
     }
 }

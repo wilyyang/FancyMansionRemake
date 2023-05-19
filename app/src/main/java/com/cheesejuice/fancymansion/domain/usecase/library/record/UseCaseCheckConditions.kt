@@ -1,10 +1,6 @@
 package com.cheesejuice.fancymansion.domain.usecase.library.record
 
-import com.cheesejuice.fancymansion.core.common.Comparison
-import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_COUNT
-import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_ID
-import com.cheesejuice.fancymansion.core.common.Relation
-import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
+import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
 import com.cheesejuice.fancymansion.data.mapper.book.ConditionMapper
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -20,7 +16,7 @@ class UseCaseCheckConditions @Inject constructor(
     suspend operator fun invoke(userId : String, readMode : String, bookId : String, conditions : List<ConditionMapper>) =
         withContext(dispatcher) {
             var relationResult = true
-            var nextRelation = Relation.AND
+            var nextRelation = com.cheesejuice.core.common.Relation.AND
             for (condition in conditions) {
                 // 현재 조건을 검사 한다
                 val conditionResult = checkCondition(userId, readMode, bookId, condition)
@@ -29,10 +25,10 @@ class UseCaseCheckConditions @Inject constructor(
                 relationResult = nextRelation.check(relationResult, conditionResult)
 
                 // 현재 조건으로부터 관계 연산자를 가져 온다
-                nextRelation = Relation.from(condition.nextRelation)
+                nextRelation = com.cheesejuice.core.common.Relation.from(condition.nextRelation)
 
                 // 관계 결과가 true 이고 다음 관계가 OR인 경우 최종 반환 한다
-                if (relationResult && nextRelation == Relation.OR) break
+                if (relationResult && nextRelation == com.cheesejuice.core.common.Relation.OR) break
             }
             relationResult
         }
@@ -40,14 +36,14 @@ class UseCaseCheckConditions @Inject constructor(
     private suspend fun checkCondition(userId : String, readMode : String, bookId : String, condition : ConditionMapper) : Boolean =
         condition.run {
             val targetCount1 = readBookRepository.getElementCount(userId, readMode, bookId, targetId1) ?: 0
-            val targetCount2 = if (targetId2 == NOT_ASSIGN_ID) {
+            val targetCount2 = if (targetId2 == com.cheesejuice.core.common.NOT_ASSIGN_ID) {
                 targetCount
             } else {
                 readBookRepository.getElementCount(userId, readMode, bookId, this.targetId2) ?: 0
             }
 
-            if (targetCount2 != NOT_ASSIGN_COUNT) {
-                Comparison.from(comparison).compare(targetCount1, targetCount2)
+            if (targetCount2 != com.cheesejuice.core.common.NOT_ASSIGN_COUNT) {
+                com.cheesejuice.core.common.Comparison.from(comparison).compare(targetCount1, targetCount2)
             } else {
                 false
             }

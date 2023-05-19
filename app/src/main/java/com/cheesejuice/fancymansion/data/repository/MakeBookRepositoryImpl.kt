@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.data.repository
 
-import com.cheesejuice.fancymansion.core.common.ReadMode
+import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.fancymansion.domain.interfaceRepository.MakeBookRepository
 import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper

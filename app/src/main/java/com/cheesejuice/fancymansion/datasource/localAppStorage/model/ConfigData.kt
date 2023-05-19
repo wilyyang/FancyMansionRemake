@@ -1,8 +1,8 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.model
 
-import com.cheesejuice.fancymansion.core.common.DEFAULT_END_PAGE_ID
-import com.cheesejuice.fancymansion.core.common.DEFAULT_START_PAGE_ID
-import com.cheesejuice.fancymansion.core.common.ReadMode
+import com.cheesejuice.core.common.DEFAULT_END_PAGE_ID
+import com.cheesejuice.core.common.DEFAULT_START_PAGE_ID
+import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 
 data class ConfigData(

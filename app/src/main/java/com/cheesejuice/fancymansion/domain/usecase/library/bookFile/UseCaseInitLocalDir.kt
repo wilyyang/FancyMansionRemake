@@ -1,7 +1,6 @@
 package com.cheesejuice.fancymansion.domain.usecase.library.bookFile
 
-import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
-import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
+import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.MakeBookRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,7 +15,7 @@ class UseCaseInitLocalDir @Inject constructor(
     suspend operator fun invoke() = withContext(dispatcher) {
         makeBookRepository.run {
             initRootDir()
-            initUserDir(userId = LOCAL_USER_ID)
+            initUserDir(userId = com.cheesejuice.core.common.LOCAL_USER_ID)
         }
     }
 }

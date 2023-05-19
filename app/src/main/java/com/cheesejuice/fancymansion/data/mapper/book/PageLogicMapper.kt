@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.data.mapper.book
 
-import com.cheesejuice.fancymansion.core.common.PageType
+import com.cheesejuice.core.common.PageType
 
 data class PageLogicMapper(
     val pageId : Long,

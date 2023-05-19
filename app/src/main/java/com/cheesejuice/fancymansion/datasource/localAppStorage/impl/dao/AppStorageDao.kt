@@ -1,9 +1,9 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.impl.dao
 
 import android.content.Context
-import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.core.common.util.tryBooleanScope
-import com.cheesejuice.fancymansion.core.common.util.tryNullableScope
+import com.cheesejuice.core.common.ReadMode
+import com.cheesejuice.core.common.util.tryBooleanScope
+import com.cheesejuice.core.common.util.tryNullableScope
 import com.cheesejuice.fancymansion.datasource.localAppStorage.model.*
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext

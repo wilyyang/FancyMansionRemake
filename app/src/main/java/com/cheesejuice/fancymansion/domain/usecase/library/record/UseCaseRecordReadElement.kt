@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.domain.usecase.library.record
 
-import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
+import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
 import com.cheesejuice.fancymansion.data.mapper.user.CountRecordMapper
 import dagger.hilt.android.scopes.ViewModelScoped

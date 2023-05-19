@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.impl
 
-import com.cheesejuice.fancymansion.core.common.ReadMode
+import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
 import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper

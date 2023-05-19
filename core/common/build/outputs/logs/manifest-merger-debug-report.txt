@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml:2:13-83
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml:2:13-83
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml:2:13-83
+	package
+		INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+		ADDED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml:2:13-83
+		INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+	xmlns:android
+		ADDED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml:2:23-81
+uses-sdk
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml reason: use-sdk injection requested
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+	android:targetSdkVersion
+		INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+		ADDED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+		INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+	android:minSdkVersion
+		INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+		ADDED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml
+		INJECTED from C:\individual\FancyMansionRemake\core\common\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest603582279348143319.xml

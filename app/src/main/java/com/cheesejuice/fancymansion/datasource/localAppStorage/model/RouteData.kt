@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.model
 
-import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_PAGE
+import com.cheesejuice.core.common.NOT_ASSIGN_PAGE
 import com.cheesejuice.fancymansion.data.mapper.book.RouteMapper
 
 data class RouteData(

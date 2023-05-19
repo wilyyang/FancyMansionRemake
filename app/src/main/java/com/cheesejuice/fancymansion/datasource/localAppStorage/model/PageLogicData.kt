@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.model
 
-import com.cheesejuice.fancymansion.core.common.PageType
+import com.cheesejuice.core.common.PageType
 import com.cheesejuice.fancymansion.data.mapper.book.PageLogicMapper
 
 data class PageLogicData(

@@ -1,9 +1,9 @@
 package com.cheesejuice.fancymansion.data.mapper.book
 
-import com.cheesejuice.fancymansion.core.common.Comparison
-import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_COUNT
-import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_ID
-import com.cheesejuice.fancymansion.core.common.Relation
+import com.cheesejuice.core.common.Comparison
+import com.cheesejuice.core.common.NOT_ASSIGN_COUNT
+import com.cheesejuice.core.common.NOT_ASSIGN_ID
+import com.cheesejuice.core.common.Relation
 
 data class ConditionMapper(
     val conditionId : Long,

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
+import com.cheesejuice.core.common.LOCAL_USER_ID
 import com.cheesejuice.fancymansion.data.mapper.user.UserInfoMapper
 import com.cheesejuice.fancymansion.datasource.localRoomDatabase.impl.dao.RoomDatabaseDao
 import com.cheesejuice.fancymansion.datasource.localRoomDatabase.model.*

@@ -19,21 +19,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.cheesejuice.fancymansion.core.common.PageType
+import com.cheesejuice.core.common.PageType
+import com.cheesejuice.core.ui.base.BaseScreen
+import com.cheesejuice.core.ui.base.EmptyState
+import com.cheesejuice.core.ui.base.LoadingState
+import com.cheesejuice.core.ui.component.BasicButton
+import com.cheesejuice.core.ui.component.BookImage
+import com.cheesejuice.core.ui.component.Label
+import com.cheesejuice.core.ui.theme.colorScheme
+import com.cheesejuice.core.ui.theme.dividerAlpha
+import com.cheesejuice.core.ui.theme.onTextAlpha
+import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.core.common.sample.Sample
-import com.cheesejuice.fancymansion.core.ui.base.BaseScreen
-import com.cheesejuice.fancymansion.core.ui.base.EmptyState
-import com.cheesejuice.fancymansion.core.ui.base.LoadingState
-import com.cheesejuice.fancymansion.core.ui.component.BasicButton
-import com.cheesejuice.fancymansion.core.ui.component.BookImage
-import com.cheesejuice.fancymansion.core.ui.component.Label
-import com.cheesejuice.fancymansion.core.ui.theme.colorScheme
-import com.cheesejuice.fancymansion.core.ui.theme.dividerAlpha
-import com.cheesejuice.fancymansion.core.ui.theme.onTextAlpha
-import com.cheesejuice.fancymansion.core.ui.theme.typography
 import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
 import com.cheesejuice.fancymansion.domain.entity.PageEntity
+import com.cheesejuice.fancymansion.domain.usecase.library.bookFile.sample.Sample
 import java.io.File
 
 @Composable
@@ -80,7 +80,7 @@ fun ReadPageScreenFrame(
 @Composable
 fun ReadPageScreenContent(
     pageImage : File? = null,
-    pageType : PageType,
+    pageType : com.cheesejuice.core.common.PageType,
     title : String,
     contentText : String,
     question : String,
@@ -110,7 +110,7 @@ fun ReadPageScreenContent(
             item {
                 Spacer(Modifier.height(20.dp))
                 Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                    if (pageType == PageType.END) {
+                    if (pageType == com.cheesejuice.core.common.PageType.END) {
                         Label(
                             modifier = Modifier.padding(bottom = 4.dp),
                             label = stringResource(id = R.string.page_type_end)

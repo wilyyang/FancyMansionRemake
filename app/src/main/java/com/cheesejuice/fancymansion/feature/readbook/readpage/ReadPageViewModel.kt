@@ -1,10 +1,11 @@
 package com.cheesejuice.fancymansion.feature.readbook.readpage
 
 import androidx.compose.runtime.mutableStateOf
-import com.cheesejuice.fancymansion.core.common.INIT_ID
-import com.cheesejuice.fancymansion.core.common.LOCAL_USER_ID
-import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.core.common.SAMPLE_BOOK_ID
+import com.cheesejuice.core.common.INIT_ID
+import com.cheesejuice.core.common.LOCAL_USER_ID
+import com.cheesejuice.core.common.ReadMode
+import com.cheesejuice.core.common.SAMPLE_BOOK_ID
+import com.cheesejuice.core.ui.base.BaseViewModel
 import com.cheesejuice.fancymansion.domain.usecase.library.bookFile.UseCaseGetBookConfigFromFile
 import com.cheesejuice.fancymansion.domain.usecase.library.bookFile.UseCaseGetBookLogicFromFile
 import com.cheesejuice.fancymansion.domain.usecase.library.bookFile.UseCaseGetBookPageFromFile
@@ -13,7 +14,6 @@ import com.cheesejuice.fancymansion.domain.usecase.library.bookFile.UseCaseMakeS
 import com.cheesejuice.fancymansion.domain.usecase.library.record.UseCaseDecideRoute
 import com.cheesejuice.fancymansion.domain.usecase.library.record.UseCaseInitReadRecord
 import com.cheesejuice.fancymansion.domain.usecase.library.record.UseCaseRecordReadElement
-import com.cheesejuice.fancymansion.core.ui.base.BaseViewModel
 import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
 import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
