@@ -4,14 +4,15 @@ import com.cheesejuice.fancymansion.domain.interfaceRepository.UserRepository
 import com.cheesejuice.fancymansion.data.mapper.user.UserInfoMapper
 import com.cheesejuice.fancymansion.data.interfaceDatasource.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.data.interfaceDatasource.UserPreferencesSource
-import com.cheesejuice.fancymansion.datasource.preferencesDatastore.di.DataStore
+import com.cheesejuice.fancymansion.di.diDatasource.DataStore
+import com.cheesejuice.fancymansion.di.diDatasource.RoomDatabase
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRepositoryImpl @Inject constructor(
     @DataStore private val userPreferencesSource : UserPreferencesSource,
-    @com.cheesejuice.fancymansion.datasource.localRoomDatabase.di.RoomDatabase private val recordDatabaseSource : RecordLocalDatabaseSource
+    @RoomDatabase private val recordDatabaseSource : RecordLocalDatabaseSource
 ) : UserRepository {
 
     override suspend fun updateUserId(userId : String){

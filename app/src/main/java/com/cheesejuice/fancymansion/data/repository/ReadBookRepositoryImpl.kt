@@ -9,7 +9,8 @@ import com.cheesejuice.fancymansion.data.mapper.user.CountRecordMapper
 import com.cheesejuice.fancymansion.data.mapper.user.ReadRecordMapper
 import com.cheesejuice.fancymansion.data.interfaceDatasource.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
-import com.cheesejuice.fancymansion.datasource.localAppStorage.di.AppStorage
+import com.cheesejuice.fancymansion.di.diDatasource.AppStorage
+import com.cheesejuice.fancymansion.di.diDatasource.RoomDatabase
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class ReadBookRepositoryImpl @Inject constructor(
     @AppStorage private val bookStorageSource : BookLocalStorageSource,
-    @com.cheesejuice.fancymansion.datasource.localRoomDatabase.di.RoomDatabase private val recordDatabaseSource : RecordLocalDatabaseSource
+    @RoomDatabase private val recordDatabaseSource : RecordLocalDatabaseSource
 ) : ReadBookRepository {
 
     override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigMapper?

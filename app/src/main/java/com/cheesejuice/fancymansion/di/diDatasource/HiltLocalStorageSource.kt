@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.datasource.localAppStorage.di
+package com.cheesejuice.fancymansion.di.diDatasource
 
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
 import com.cheesejuice.fancymansion.datasource.localAppStorage.impl.BookAppStorageSource

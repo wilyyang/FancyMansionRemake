@@ -6,7 +6,7 @@ import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
 import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
-import com.cheesejuice.fancymansion.datasource.localAppStorage.di.AppStorage
+import com.cheesejuice.fancymansion.di.diDatasource.AppStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.datasource.preferencesDatastore.di
+package com.cheesejuice.fancymansion.di.diDatasource
 
 import com.cheesejuice.fancymansion.data.interfaceDatasource.UserPreferencesSource
 import com.cheesejuice.fancymansion.datasource.preferencesDatastore.impl.UserDatastoreSource

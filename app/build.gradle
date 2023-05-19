@@ -1,5 +1,5 @@
 apply from: "$rootDir/gradle/_application.gradle"
-apply from: "$rootDir/gradle/di.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
 apply from: "$rootDir/gradle/compose.gradle"
 apply from: "$rootDir/gradle/crashlytics.gradle"
 apply from: "$rootDir/gradle/image.gradle"

@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.datasource.localRoomDatabase.di
+package com.cheesejuice.fancymansion.di.diDatasource
 
 import com.cheesejuice.fancymansion.data.interfaceDatasource.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.datasource.localRoomDatabase.impl.RecordRoomDatabaseSource

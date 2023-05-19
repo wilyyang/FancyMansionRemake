@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.data.repository.di
+package com.cheesejuice.fancymansion.di.diRepository
 
 import com.cheesejuice.fancymansion.domain.interfaceRepository.MakeBookRepository
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
