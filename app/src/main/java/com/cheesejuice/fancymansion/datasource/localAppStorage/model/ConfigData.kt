@@ -3,7 +3,7 @@ package com.cheesejuice.fancymansion.datasource.localAppStorage.model
 import com.cheesejuice.fancymansion.core.common.DEFAULT_END_PAGE_ID
 import com.cheesejuice.fancymansion.core.common.DEFAULT_START_PAGE_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 
 data class ConfigData(
     val bookId : String = "",
@@ -33,7 +33,7 @@ data class ConfigData(
     val report : Int = 0
 )
 
-fun ConfigData.asMapper() = ConfigEntity(
+fun ConfigData.asMapper() = ConfigMapper(
     bookId = bookId,
 
     version = version,
@@ -61,7 +61,7 @@ fun ConfigData.asMapper() = ConfigEntity(
     report = report
 )
 
-fun ConfigEntity.asData() = ConfigData(
+fun ConfigMapper.asData() = ConfigData(
     bookId = bookId,
 
     version = version,

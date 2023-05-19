@@ -1,9 +1,8 @@
 package com.cheesejuice.fancymansion.data.mapper.user
 
-data class CountEntity(
+data class ReadRecordMapper(
     val userId : String,
     val readMode : String,
     val bookId : String,
-    val elementId : Long,
-    val count : Int = 0
+    val savePage : Long
 )

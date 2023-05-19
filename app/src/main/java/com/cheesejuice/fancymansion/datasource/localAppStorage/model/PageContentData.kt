@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.model
 
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentEntity
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 
 data class PageContentData(
     val pageId : Long,
@@ -10,7 +10,7 @@ data class PageContentData(
     val question : String
 )
 
-fun PageContentData.asMapper() = PageContentEntity(
+fun PageContentData.asMapper() = PageContentMapper(
     pageId = pageId,
     pageTitle = pageTitle,
     pageImage = pageImage,
@@ -18,7 +18,7 @@ fun PageContentData.asMapper() = PageContentEntity(
     question = question
 )
 
-fun PageContentEntity.asData() = PageContentData(
+fun PageContentMapper.asData() = PageContentData(
     pageId = pageId,
     pageTitle = pageTitle,
     pageImage = pageImage,

@@ -14,12 +14,12 @@ import com.cheesejuice.fancymansion.domain.usecase.library.record.UseCaseDecideR
 import com.cheesejuice.fancymansion.domain.usecase.library.record.UseCaseInitReadRecord
 import com.cheesejuice.fancymansion.domain.usecase.library.record.UseCaseRecordReadElement
 import com.cheesejuice.fancymansion.core.ui.base.BaseViewModel
-import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemEntity
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigEntity
-import com.cheesejuice.fancymansion.data.mapper.book.LogicEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageLogicEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
+import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
+import com.cheesejuice.fancymansion.domain.entity.PageEntity
+import com.cheesejuice.fancymansion.data.mapper.book.PageLogicMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -41,13 +41,13 @@ class ReadPageViewModel @Inject constructor(
     private val readMode = ReadMode.edit
     private val bookId = SAMPLE_BOOK_ID
     private val initBook = true
-    private lateinit var config : ConfigEntity
-    private lateinit var logic : LogicEntity
+    private lateinit var config : ConfigMapper
+    private lateinit var logic : LogicMapper
 
     val page = mutableStateOf(
         PageEntity(
-            content = PageContentEntity(pageId = INIT_ID, pageTitle = "", question = ""),
-            logic = PageLogicEntity(pageId = INIT_ID, pageTitle = "")
+            content = PageContentMapper(pageId = INIT_ID, pageTitle = "", question = ""),
+            logic = PageLogicMapper(pageId = INIT_ID, pageTitle = "")
         )
     )
 
@@ -74,7 +74,7 @@ class ReadPageViewModel @Inject constructor(
         }
     }
 
-    fun onClickChoiceItem(choice : ChoiceItemEntity) {
+    fun onClickChoiceItem(choice : ChoiceItemMapper) {
         launchWithLoading {
             useCaseRecordReadElement(userId = userId, readMode = readMode.name, bookId = bookId, elementId = choice.choiceId)
             val nextPageId = useCaseDecideRoute(userId = userId, readMode = readMode.name, bookId = bookId, choice = choice)

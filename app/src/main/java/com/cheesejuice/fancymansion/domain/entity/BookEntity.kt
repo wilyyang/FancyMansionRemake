@@ -1,27 +1,31 @@
-package com.cheesejuice.fancymansion.data.mapper.book
+package com.cheesejuice.fancymansion.domain.entity
+
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
+import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 
 /**
  * # [BookEntity]
- * ## 1. [ConfigEntity]
+ * ## 1. [ConfigMapper]
  * ```
  * 책 관련 정보 { 출시, 계정, 작가, 커버, 평가 }
  * ```
- * ## 2. Page List { [PageContentEntity] }
+ * ## 2. Page List { [PageContentMapper] }
  * ```
  * 내용을 구성하는 페이지 목록
  * ```
- * ## 3. [LogicEntity]
+ * ## 3. [LogicMapper]
  * ```
  * 페이지 간 이동을 제어하는 로직
  * ㄴ 3.1 PageLogic List
  * ```
- * [PageLogicEntity] : 하나의 페이지가 가지는 선택지와 로직
+ * [PageLogicMapper] : 하나의 페이지가 가지는 선택지와 로직
  *
- * [ChoiceItemEntity] : 유저가 선택하는 선택지
+ * [ChoiceItemMapper] : 유저가 선택하는 선택지
  *
- * [RouteEntity] : 선택지를 통해 이동하는 다음 페이지 루트
+ * [RouteMapper] : 선택지를 통해 이동하는 다음 페이지 루트
  *
- * [ConditionEntity] : 선택지가 보여지는 여부나 루트를 결정하는 조건
+ * [ConditionMapper] : 선택지가 보여지는 여부나 루트를 결정하는 조건
  *
  * ```
  * PageLogic {
@@ -47,7 +51,7 @@ package com.cheesejuice.fancymansion.data.mapper.book
  * ```
  */
 data class BookEntity(
-    val config : ConfigEntity,
-    val pageContents : List<PageContentEntity>,
-    val logic : LogicEntity
+    val config : ConfigMapper,
+    val pageContents : List<PageContentMapper>,
+    val logic : LogicMapper
 )

@@ -2,7 +2,7 @@ package com.cheesejuice.fancymansion.datasource.localRoomDatabase.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.cheesejuice.fancymansion.data.mapper.user.ReadEntity
+import com.cheesejuice.fancymansion.data.mapper.user.ReadRecordMapper
 
 @Entity(
     tableName = "ReadRecord",
@@ -23,14 +23,14 @@ data class ReadRecordData(
     val savePage : Long
 )
 
-fun ReadRecordData.asMapper() = ReadEntity(
+fun ReadRecordData.asMapper() = ReadRecordMapper(
     userId = userId,
     readMode = readMode,
     bookId = bookId,
     savePage = savePage
 )
 
-fun ReadEntity.asData() = ReadRecordData(
+fun ReadRecordMapper.asData() = ReadRecordData(
     userId = userId,
     readMode = readMode,
     bookId = bookId,

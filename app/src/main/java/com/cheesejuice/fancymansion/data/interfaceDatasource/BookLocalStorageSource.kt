@@ -1,9 +1,9 @@
 package com.cheesejuice.fancymansion.data.interfaceDatasource
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigEntity
-import com.cheesejuice.fancymansion.data.mapper.book.LogicEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
+import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 import java.io.File
 
 interface BookLocalStorageSource {
@@ -19,24 +19,24 @@ interface BookLocalStorageSource {
     /**
      * Make File
      */
-    suspend fun makeConfigFile(config : ConfigEntity) : Boolean
+    suspend fun makeConfigFile(config : ConfigMapper) : Boolean
 
-    suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    suspend fun makeLogicFile(logic : LogicMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
 
-    suspend fun makePageContentFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    suspend fun makePageContentFile(page : PageContentMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
 
     suspend fun makeImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
 
     /**
      * Get Object
      */
-    suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
+    suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigMapper?
 
     suspend fun getCoverImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
 
-    suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
+    suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicMapper?
 
-    suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
+    suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentMapper?
 
     suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
 }

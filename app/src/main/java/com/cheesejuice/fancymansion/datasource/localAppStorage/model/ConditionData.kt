@@ -4,7 +4,7 @@ import com.cheesejuice.fancymansion.core.common.Comparison
 import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_COUNT
 import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_ID
 import com.cheesejuice.fancymansion.core.common.Relation
-import com.cheesejuice.fancymansion.data.mapper.book.ConditionEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConditionMapper
 
 data class ConditionData(
     val conditionId : Long,
@@ -15,7 +15,7 @@ data class ConditionData(
     val nextRelation : String = Relation.OR.name
 )
 
-fun ConditionData.asMapper() = ConditionEntity(
+fun ConditionData.asMapper() = ConditionMapper(
     conditionId = conditionId,
     targetId1 = targetId1,
     targetId2 = targetId2,
@@ -24,7 +24,7 @@ fun ConditionData.asMapper() = ConditionEntity(
     nextRelation = nextRelation
 )
 
-fun ConditionEntity.asData() = ConditionData(
+fun ConditionMapper.asData() = ConditionData(
     conditionId = conditionId,
     targetId1 = targetId1,
     targetId2 = targetId2,

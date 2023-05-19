@@ -1,7 +1,7 @@
 package com.cheesejuice.fancymansion.data.repository
 
 import com.cheesejuice.fancymansion.domain.interfaceRepository.UserRepository
-import com.cheesejuice.fancymansion.data.mapper.user.UserEntity
+import com.cheesejuice.fancymansion.data.mapper.user.UserInfoMapper
 import com.cheesejuice.fancymansion.data.interfaceDatasource.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.data.interfaceDatasource.UserPreferencesSource
 import com.cheesejuice.fancymansion.datasource.preferencesDatastore.di.DataStore
@@ -21,8 +21,8 @@ class UserRepositoryImpl @Inject constructor(
     /**
      * Room Database
      */
-    override suspend fun insertUserEntity(userEntity : UserEntity) : Long
-    = recordDatabaseSource.insertUserInfo(userEntity)
+    override suspend fun insertUserEntity(userInfoMapper : UserInfoMapper) : Long
+    = recordDatabaseSource.insertUserInfo(userInfoMapper)
     override suspend fun isUserEntityExist(userId : String) : Boolean
     = recordDatabaseSource.isUserInfoExist(userId)
 }

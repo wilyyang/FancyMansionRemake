@@ -2,17 +2,17 @@ package com.cheesejuice.fancymansion.datasource.localRoomDatabase.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.cheesejuice.fancymansion.data.mapper.user.UserEntity
+import com.cheesejuice.fancymansion.data.mapper.user.UserInfoMapper
 
 @Entity(tableName = "UserInfo")
 data class UserInfoData(
     @PrimaryKey val userId : String
 )
 
-fun UserInfoData.asMapper() = UserEntity(
+fun UserInfoData.asMapper() = UserInfoMapper(
     userId = userId
 )
 
-fun UserEntity.asData() = UserInfoData(
+fun UserInfoMapper.asData() = UserInfoData(
     userId = userId
 )

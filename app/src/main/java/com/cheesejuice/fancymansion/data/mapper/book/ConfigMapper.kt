@@ -4,7 +4,7 @@ import com.cheesejuice.fancymansion.core.common.DEFAULT_END_PAGE_ID
 import com.cheesejuice.fancymansion.core.common.DEFAULT_START_PAGE_ID
 import com.cheesejuice.fancymansion.core.common.ReadMode
 
-data class ConfigEntity(
+data class ConfigMapper(
     val bookId : String = "",
 
     val version : Long = 0L,

@@ -2,7 +2,7 @@ package com.cheesejuice.fancymansion.datasource.localRoomDatabase.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import com.cheesejuice.fancymansion.data.mapper.user.CountEntity
+import com.cheesejuice.fancymansion.data.mapper.user.CountRecordMapper
 
 @Entity(
     tableName = "CountRecord",
@@ -24,7 +24,7 @@ data class CountRecordData(
     val count : Int = 0
 )
 
-fun CountRecordData.asMapper() = CountEntity(
+fun CountRecordData.asMapper() = CountRecordMapper(
     userId = userId,
     readMode = readMode,
     bookId = bookId,
@@ -32,7 +32,7 @@ fun CountRecordData.asMapper() = CountEntity(
     count = count
 )
 
-fun CountEntity.asData() = CountRecordData(
+fun CountRecordMapper.asData() = CountRecordData(
     userId = userId,
     readMode = readMode,
     bookId = bookId,

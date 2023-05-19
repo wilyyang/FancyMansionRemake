@@ -2,9 +2,9 @@ package com.cheesejuice.fancymansion.data.repository
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.domain.interfaceRepository.MakeBookRepository
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigEntity
-import com.cheesejuice.fancymansion.data.mapper.book.LogicEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
+import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
 import com.cheesejuice.fancymansion.datasource.localAppStorage.di.AppStorage
 import javax.inject.Inject
@@ -25,11 +25,11 @@ class MakeBookRepositoryImpl @Inject constructor(
     override suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean) : Boolean
     = bookStorageSource.initBookDir(userId, readMode, bookId, remove)
 
-    override suspend fun makeConfigFile(config : ConfigEntity) : Boolean
+    override suspend fun makeConfigFile(config : ConfigMapper) : Boolean
     = bookStorageSource.makeConfigFile(config)
-    override suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    override suspend fun makeLogicFile(logic : LogicMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
     = bookStorageSource.makeLogicFile(logic, userId, readMode, bookId)
-    override suspend fun makePageFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    override suspend fun makePageFile(page : PageContentMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
     = bookStorageSource.makePageContentFile(page, userId, readMode, bookId)
     override suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
     = bookStorageSource.makeImageFileFromResource(userId, readMode, bookId, imageName, resourceId)

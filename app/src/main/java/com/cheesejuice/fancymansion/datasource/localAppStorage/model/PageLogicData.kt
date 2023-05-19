@@ -1,7 +1,7 @@
 package com.cheesejuice.fancymansion.datasource.localAppStorage.model
 
 import com.cheesejuice.fancymansion.core.common.PageType
-import com.cheesejuice.fancymansion.data.mapper.book.PageLogicEntity
+import com.cheesejuice.fancymansion.data.mapper.book.PageLogicMapper
 
 data class PageLogicData(
     val pageId : Long,
@@ -10,14 +10,14 @@ data class PageLogicData(
     val choiceItems : List<ChoiceItemData> = listOf()
 )
 
-fun PageLogicData.asMapper() = PageLogicEntity(
+fun PageLogicData.asMapper() = PageLogicMapper(
     pageId = pageId,
     pageTitle = pageTitle,
     type = type,
     choiceItems = choiceItems.map { it.asMapper() }.toMutableList()
 )
 
-fun PageLogicEntity.asData() = PageLogicData(
+fun PageLogicMapper.asData() = PageLogicData(
     pageId = pageId,
     pageTitle = pageTitle,
     type = type,

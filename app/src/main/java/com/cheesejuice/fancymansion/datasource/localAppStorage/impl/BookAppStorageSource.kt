@@ -2,9 +2,9 @@ package com.cheesejuice.fancymansion.datasource.localAppStorage.impl
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigEntity
-import com.cheesejuice.fancymansion.data.mapper.book.LogicEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
+import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 import com.cheesejuice.fancymansion.datasource.localAppStorage.impl.dao.AppStorageDao
 import com.cheesejuice.fancymansion.datasource.localAppStorage.model.asData
 import com.cheesejuice.fancymansion.datasource.localAppStorage.model.asMapper
@@ -28,12 +28,12 @@ class BookAppStorageSource @Inject constructor(private val storageDao : AppStora
     /**
      * Make File
      */
-    override suspend fun makeConfigFile(config : ConfigEntity) = storageDao.makeConfigFile(config.asData())
+    override suspend fun makeConfigFile(config : ConfigMapper) = storageDao.makeConfigFile(config.asData())
 
-    override suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) =
+    override suspend fun makeLogicFile(logic : LogicMapper, userId : String, readMode : ReadMode, bookId : String) =
         storageDao.makeLogicFile(logic.asData(), userId, readMode, bookId)
 
-    override suspend fun makePageContentFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) =
+    override suspend fun makePageContentFile(page : PageContentMapper, userId : String, readMode : ReadMode, bookId : String) =
         storageDao.makePageContentFile(page.asData(), userId, readMode, bookId)
 
     override suspend fun makeImageFileFromResource(
@@ -47,16 +47,16 @@ class BookAppStorageSource @Inject constructor(private val storageDao : AppStora
     /**
      * Get Object
      */
-    override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity? =
+    override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigMapper? =
         storageDao.getConfigFromFile(userId, readMode, bookId)?.asMapper()
 
     override suspend fun getCoverImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File? =
         storageDao.getCoverImageFromFile(userId, readMode, bookId, image)
 
-    override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity? =
+    override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicMapper? =
         storageDao.getLogicFromFile(userId, readMode, bookId)?.asMapper()
 
-    override suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity? =
+    override suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentMapper? =
         storageDao.getPageContentFromFile(userId, readMode, bookId, pageId)?.asMapper()
 
     override suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File? =

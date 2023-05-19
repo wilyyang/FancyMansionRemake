@@ -2,11 +2,11 @@ package com.cheesejuice.fancymansion.data.repository
 
 import com.cheesejuice.fancymansion.core.common.ReadMode
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigEntity
-import com.cheesejuice.fancymansion.data.mapper.book.LogicEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentEntity
-import com.cheesejuice.fancymansion.data.mapper.user.CountEntity
-import com.cheesejuice.fancymansion.data.mapper.user.ReadEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
+import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
+import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
+import com.cheesejuice.fancymansion.data.mapper.user.CountRecordMapper
+import com.cheesejuice.fancymansion.data.mapper.user.ReadRecordMapper
 import com.cheesejuice.fancymansion.data.interfaceDatasource.RecordLocalDatabaseSource
 import com.cheesejuice.fancymansion.data.interfaceDatasource.BookLocalStorageSource
 import com.cheesejuice.fancymansion.datasource.localAppStorage.di.AppStorage
@@ -20,28 +20,28 @@ class ReadBookRepositoryImpl @Inject constructor(
     @com.cheesejuice.fancymansion.datasource.localRoomDatabase.di.RoomDatabase private val recordDatabaseSource : RecordLocalDatabaseSource
 ) : ReadBookRepository {
 
-    override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
+    override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigMapper?
     = bookStorageSource.getConfigFromFile(userId, readMode, bookId)
     override suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = bookStorageSource.getCoverImageFromFile(userId, readMode, bookId, image)
-    override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
+    override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicMapper?
     = bookStorageSource.getLogicFromFile(userId, readMode, bookId)
-    override suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
+    override suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentMapper?
     = bookStorageSource.getPageContentFromFile(userId, readMode, bookId, pageId)
     override suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = bookStorageSource.getImageFromFile(userId, readMode, bookId, image)
 
-    override suspend fun insertReadEntity(readEntity : ReadEntity) : Long
-        = recordDatabaseSource.insertReadRecord(readEntity)
-    override suspend fun getReadEntity(userId : String, readMode : String, bookId : String) : ReadEntity?
+    override suspend fun insertReadEntity(readRecordMapper : ReadRecordMapper) : Long
+        = recordDatabaseSource.insertReadRecord(readRecordMapper)
+    override suspend fun getReadEntity(userId : String, readMode : String, bookId : String) : ReadRecordMapper?
         = recordDatabaseSource.getReadRecord(userId, readMode, bookId)
-    override suspend fun updateReadEntity(readEntity : ReadEntity)
-        = recordDatabaseSource.updateReadRecord(readEntity)
+    override suspend fun updateReadEntity(readRecordMapper : ReadRecordMapper)
+        = recordDatabaseSource.updateReadRecord(readRecordMapper)
     override suspend fun deleteReadEntityFromId(userId : String, readMode : String, bookId : String)
         = recordDatabaseSource.deleteReadRecordFromId(userId, readMode, bookId)
 
-    override suspend fun insertCountEntity(countEntity : CountEntity) : Long
-        = recordDatabaseSource.insertCountRecord(countEntity)
+    override suspend fun insertCountEntity(countRecordMapper : CountRecordMapper) : Long
+        = recordDatabaseSource.insertCountRecord(countRecordMapper)
     override suspend fun isCountEntityExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
         = recordDatabaseSource.isCountRecordExist(userId, readMode, bookId, elementId)
     override suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long) : Int?

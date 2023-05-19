@@ -2,7 +2,7 @@ package com.cheesejuice.fancymansion.domain.usecase.library.record
 
 import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
-import com.cheesejuice.fancymansion.data.mapper.user.CountEntity
+import com.cheesejuice.fancymansion.data.mapper.user.CountRecordMapper
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ class UseCaseRecordReadElement @Inject constructor(
                     readBookRepository.incrementCountEntity(userId, readMode, bookId, elementId)
                 }
             } else {
-                readBookRepository.insertCountEntity(CountEntity(userId, readMode, bookId, elementId, 1))
+                readBookRepository.insertCountEntity(CountRecordMapper(userId, readMode, bookId, elementId, 1))
             }
             Unit
         }

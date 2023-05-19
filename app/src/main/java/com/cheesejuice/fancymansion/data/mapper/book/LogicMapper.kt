@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.data.mapper.book
 
-data class LogicEntity(
+data class LogicMapper(
     val bookId : String,
-    val logics : List<PageLogicEntity> = listOf()
+    val logics : List<PageLogicMapper> = listOf()
 )

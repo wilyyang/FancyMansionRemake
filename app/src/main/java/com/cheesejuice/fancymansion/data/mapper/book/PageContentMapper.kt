@@ -1,6 +1,6 @@
 package com.cheesejuice.fancymansion.data.mapper.book
 
-data class PageContentEntity(
+data class PageContentMapper(
     val pageId : Long,
     val pageTitle : String,
     val pageImage : String = "",

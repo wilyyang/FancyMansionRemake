@@ -6,7 +6,7 @@ import com.cheesejuice.fancymansion.core.common.NOT_ASSIGN_ID
 import com.cheesejuice.fancymansion.core.common.Relation
 import com.cheesejuice.fancymansion.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
-import com.cheesejuice.fancymansion.data.mapper.book.ConditionEntity
+import com.cheesejuice.fancymansion.data.mapper.book.ConditionMapper
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -17,7 +17,7 @@ class UseCaseCheckConditions @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
     private val readBookRepository : ReadBookRepository
 ) {
-    suspend operator fun invoke(userId : String, readMode : String, bookId : String, conditions : List<ConditionEntity>) =
+    suspend operator fun invoke(userId : String, readMode : String, bookId : String, conditions : List<ConditionMapper>) =
         withContext(dispatcher) {
             var relationResult = true
             var nextRelation = Relation.AND
@@ -37,7 +37,7 @@ class UseCaseCheckConditions @Inject constructor(
             relationResult
         }
 
-    private suspend fun checkCondition(userId : String, readMode : String, bookId : String, condition : ConditionEntity) : Boolean =
+    private suspend fun checkCondition(userId : String, readMode : String, bookId : String, condition : ConditionMapper) : Boolean =
         condition.run {
             val targetCount1 = readBookRepository.getElementCount(userId, readMode, bookId, targetId1) ?: 0
             val targetCount2 = if (targetId2 == NOT_ASSIGN_ID) {
