@@ -1,0 +1,17 @@
+android {
+    defaultConfig {
+        kapt {
+            arguments {
+                arg("room.incremental", "true")
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+    }
+}
+
+dependencies {
+    /** room **/
+    implementation "androidx.room:room-ktx:2.5.1"
+    implementation "androidx.room:room-runtime:2.5.1"
+    kapt "androidx.room:room-compiler:2.5.1"
+}
