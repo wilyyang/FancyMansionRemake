@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.domain.usecase.library.record
+package com.cheesejuice.fancymansion.domain.usecase.readBook
 
 import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper

@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.domain.usecase.library.bookFile.sample
+package com.cheesejuice.fancymansion.domain.usecase.makeBook.sample
 
 import com.cheesejuice.core.common.Comparison
 import com.cheesejuice.core.common.LOCAL_USER_ID
@@ -7,7 +7,7 @@ import com.cheesejuice.core.common.Relation
 import com.cheesejuice.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.data.mapper.book.*
-import com.cheesejuice.fancymansion.domain.entity.BookEntity
+import com.cheesejuice.fancymansion.domain.entity.book.BookEntity
 
 object Sample {
     private const val bookId = SAMPLE_BOOK_ID

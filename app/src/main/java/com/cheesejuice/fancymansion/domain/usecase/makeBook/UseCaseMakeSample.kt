@@ -1,7 +1,7 @@
-package com.cheesejuice.fancymansion.domain.usecase.library.bookFile
+package com.cheesejuice.fancymansion.domain.usecase.makeBook
 
 import com.cheesejuice.core.common.di.DispatcherIO
-import com.cheesejuice.fancymansion.domain.usecase.library.bookFile.sample.Sample
+import com.cheesejuice.fancymansion.domain.usecase.makeBook.sample.Sample
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.domain.interfaceRepository.MakeBookRepository
 import dagger.hilt.android.scopes.ViewModelScoped

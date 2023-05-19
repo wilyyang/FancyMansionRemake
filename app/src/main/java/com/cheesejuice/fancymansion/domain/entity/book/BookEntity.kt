@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.domain.entity
+package com.cheesejuice.fancymansion.domain.entity.book
 
 import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
