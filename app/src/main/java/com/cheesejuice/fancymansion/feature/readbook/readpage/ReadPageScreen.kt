@@ -31,7 +31,7 @@ import com.cheesejuice.core.ui.theme.dividerAlpha
 import com.cheesejuice.core.ui.theme.onTextAlpha
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.ChoiceItemEntity
 import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
 import com.cheesejuice.fancymansion.domain.usecase.makeBook.sample.Sample
 import java.io.File
@@ -57,7 +57,7 @@ fun ReadPageScreenFrame(
     loadingState : LoadingState? = null,
     emptyState : EmptyState? = null,
     page : PageEntity,
-    onClickChoiceItem : (ChoiceItemMapper) -> Unit = {}
+    onClickChoiceItem : (ChoiceItemEntity) -> Unit = {}
 ) {
     BaseScreen(
         loadingState = loadingState
@@ -84,8 +84,8 @@ fun ReadPageScreenContent(
     title : String,
     contentText : String,
     question : String,
-    choiceList : List<ChoiceItemMapper>,
-    onClickChoiceItem : (ChoiceItemMapper) -> Unit = {}
+    choiceList : List<ChoiceItemEntity>,
+    onClickChoiceItem : (ChoiceItemEntity) -> Unit = {}
 ) {
     val titleStyle : TextStyle = MaterialTheme.typography.headlineSmall
     val contentTextStyle : TextStyle = MaterialTheme.typography.bodyMedium
@@ -137,9 +137,9 @@ fun ReadPageScreenContent(
 
 @Composable
 fun ChoiceButton(
-    choice : ChoiceItemMapper,
+    choice : ChoiceItemEntity,
     textStyle : TextStyle,
-    onClickChoiceItem : (ChoiceItemMapper) -> Unit
+    onClickChoiceItem : (ChoiceItemEntity) -> Unit
 ) {
     BasicButton(
         modifier = Modifier

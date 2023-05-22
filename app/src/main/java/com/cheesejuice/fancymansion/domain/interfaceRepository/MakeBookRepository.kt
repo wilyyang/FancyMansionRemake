@@ -1,9 +1,9 @@
 package com.cheesejuice.fancymansion.domain.interfaceRepository
 
 import com.cheesejuice.core.common.ReadMode
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
-import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.LogicEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageContentEntity
 
 interface MakeBookRepository {
 
@@ -11,8 +11,8 @@ interface MakeBookRepository {
     suspend fun initUserDir(userId : String, remove : Boolean = false) : Boolean
     suspend fun initBookDir(userId : String, readMode : ReadMode, bookId : String, remove : Boolean = false) : Boolean
 
-    suspend fun makeConfigFile(config : ConfigMapper) : Boolean
-    suspend fun makeLogicFile(logic : LogicMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
-    suspend fun makePageFile(page : PageContentMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    suspend fun makeConfigFile(config : ConfigEntity) : Boolean
+    suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    suspend fun makePageFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
     suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
 }

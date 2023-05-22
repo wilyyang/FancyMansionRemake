@@ -6,6 +6,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.cheesejuice.core.common.LOCAL_USER_ID
 
 @ViewModelScoped
 class UseCaseInitLocalDir @Inject constructor(
@@ -15,7 +16,7 @@ class UseCaseInitLocalDir @Inject constructor(
     suspend operator fun invoke() = withContext(dispatcher) {
         makeBookRepository.run {
             initRootDir()
-            initUserDir(userId = com.cheesejuice.core.common.LOCAL_USER_ID)
+            initUserDir(userId = LOCAL_USER_ID)
         }
     }
 }

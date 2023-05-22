@@ -1,5 +1,6 @@
 package com.cheesejuice.fancymansion.domain.usecase.readBook
 
+import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -12,7 +13,7 @@ class UseCaseGetBookConfigFromFile @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
     private val readBookRepository : ReadBookRepository
 ) {
-    suspend operator fun invoke(userId : String, readMode : com.cheesejuice.core.common.ReadMode, bookId : String) = withContext(dispatcher) {
+    suspend operator fun invoke(userId : String, readMode : ReadMode, bookId : String) = withContext(dispatcher) {
         readBookRepository.getConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
     }
 }

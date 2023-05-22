@@ -6,6 +6,10 @@ import com.cheesejuice.core.common.LOCAL_USER_ID
 import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.core.ui.base.BaseViewModel
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.ChoiceItemEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.LogicEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageContentEntity
 import com.cheesejuice.fancymansion.domain.usecase.readBook.UseCaseGetBookConfigFromFile
 import com.cheesejuice.fancymansion.domain.usecase.readBook.UseCaseGetBookLogicFromFile
 import com.cheesejuice.fancymansion.domain.usecase.readBook.UseCaseGetBookPageFromFile
@@ -14,12 +18,8 @@ import com.cheesejuice.fancymansion.domain.usecase.makeBook.UseCaseMakeSample
 import com.cheesejuice.fancymansion.domain.usecase.readBook.UseCaseDecideRoute
 import com.cheesejuice.fancymansion.domain.usecase.readBook.UseCaseInitReadRecord
 import com.cheesejuice.fancymansion.domain.usecase.readBook.UseCaseRecordReadElement
-import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
-import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
-import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
-import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
 import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
-import com.cheesejuice.fancymansion.data.mapper.book.PageLogicMapper
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageLogicEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -41,13 +41,13 @@ class ReadPageViewModel @Inject constructor(
     private val readMode = ReadMode.edit
     private val bookId = SAMPLE_BOOK_ID
     private val initBook = true
-    private lateinit var config : ConfigMapper
-    private lateinit var logic : LogicMapper
+    private lateinit var config : ConfigEntity
+    private lateinit var logic : LogicEntity
 
     val page = mutableStateOf(
         PageEntity(
-            content = PageContentMapper(pageId = INIT_ID, pageTitle = "", question = ""),
-            logic = PageLogicMapper(pageId = INIT_ID, pageTitle = "")
+            content = PageContentEntity(pageId = INIT_ID, pageTitle = "", question = ""),
+            logic = PageLogicEntity(pageId = INIT_ID, pageTitle = "")
         )
     )
 
@@ -74,7 +74,7 @@ class ReadPageViewModel @Inject constructor(
         }
     }
 
-    fun onClickChoiceItem(choice : ChoiceItemMapper) {
+    fun onClickChoiceItem(choice : ChoiceItemEntity) {
         launchWithLoading {
             useCaseRecordReadElement(userId = userId, readMode = readMode.name, bookId = bookId, elementId = choice.choiceId)
             val nextPageId = useCaseDecideRoute(userId = userId, readMode = readMode.name, bookId = bookId, choice = choice)

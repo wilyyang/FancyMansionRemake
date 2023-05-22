@@ -1,9 +1,10 @@
 package com.cheesejuice.fancymansion.domain.usecase.readBook
 
 
+import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.common.di.DispatcherIO
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.LogicEntity
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
-import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
 import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,7 +17,7 @@ class UseCaseGetBookPageFromFile @Inject constructor(
     private val readBookRepository : ReadBookRepository,
     private val useCaseCheckConditions : UseCaseCheckConditions
 ) {
-    suspend operator fun invoke(userId : String, readMode : com.cheesejuice.core.common.ReadMode, bookId : String, pageId : Long, logic : LogicMapper? = null) =
+    suspend operator fun invoke(userId : String, readMode : ReadMode, bookId : String, pageId : Long, logic : LogicEntity? = null) =
         withContext(dispatcher) {
             val pageContent = readBookRepository.getPageFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId)
 

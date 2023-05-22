@@ -1,5 +1,8 @@
 package com.cheesejuice.fancymansion.domain.usecase.makeBook
 
+import com.cheesejuice.core.common.LOCAL_USER_ID
+import com.cheesejuice.core.common.ReadMode
+import com.cheesejuice.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.usecase.makeBook.sample.Sample
 import com.cheesejuice.fancymansion.R
@@ -16,9 +19,9 @@ class UseCaseMakeSample @Inject constructor(
 ) {
     suspend operator fun invoke() = withContext(dispatcher) {
         makeBookRepository.run {
-            val userId = com.cheesejuice.core.common.LOCAL_USER_ID
-            val readMode = com.cheesejuice.core.common.ReadMode.edit
-            val bookId = com.cheesejuice.core.common.SAMPLE_BOOK_ID
+            val userId = LOCAL_USER_ID
+            val readMode = ReadMode.edit
+            val bookId = SAMPLE_BOOK_ID
 
             initBookDir(userId, readMode, bookId)
 
