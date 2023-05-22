@@ -1,0 +1,13 @@
+apply from: "$rootDir/gradle/_library.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
+
+android {
+    namespace 'com.cheesejuice.di.injectDatasource'
+}
+
+dependencies {
+    implementation(project(":data:interfaceDatasource"))
+    implementation(project(":datasource:localRoomDatabase"))
+    implementation(project(":datasource:localAppStorage"))
+    implementation(project(":datasource:preferencesDatastore"))
+}
