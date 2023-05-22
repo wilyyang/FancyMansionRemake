@@ -32,7 +32,7 @@ import com.cheesejuice.core.ui.theme.onTextAlpha
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.fancymansion.R
 import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
-import com.cheesejuice.fancymansion.domain.entity.book.PageEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
 import com.cheesejuice.fancymansion.domain.usecase.makeBook.sample.Sample
 import java.io.File
 

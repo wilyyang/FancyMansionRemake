@@ -18,7 +18,7 @@ import com.cheesejuice.fancymansion.data.mapper.book.ChoiceItemMapper
 import com.cheesejuice.fancymansion.data.mapper.book.ConfigMapper
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
 import com.cheesejuice.fancymansion.data.mapper.book.PageContentMapper
-import com.cheesejuice.fancymansion.domain.entity.book.PageEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
 import com.cheesejuice.fancymansion.data.mapper.book.PageLogicMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel

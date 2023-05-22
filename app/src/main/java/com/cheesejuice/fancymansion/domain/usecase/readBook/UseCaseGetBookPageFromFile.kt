@@ -4,7 +4,7 @@ package com.cheesejuice.fancymansion.domain.usecase.readBook
 import com.cheesejuice.core.common.di.DispatcherIO
 import com.cheesejuice.fancymansion.domain.interfaceRepository.ReadBookRepository
 import com.cheesejuice.fancymansion.data.mapper.book.LogicMapper
-import com.cheesejuice.fancymansion.domain.entity.book.PageEntity
+import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
