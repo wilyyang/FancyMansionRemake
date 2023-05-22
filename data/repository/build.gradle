@@ -11,4 +11,6 @@ dependencies {
     implementation(project(":domain:interfaceRepository"))
     implementation(project(":data:mapper"))
     implementation(project(":data:interfaceDatasource"))
+
+    implementation(project(":di:injectDatasource"))
 }

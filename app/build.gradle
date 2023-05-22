@@ -4,10 +4,7 @@ apply from: "$rootDir/gradle/compose.gradle"
 apply from: "$rootDir/gradle/crashlytics.gradle"
 apply from: "$rootDir/gradle/image.gradle"
 apply from: "$rootDir/gradle/material.gradle"
-apply from: "$rootDir/gradle/roomDatabase.gradle"
-apply from: "$rootDir/gradle/datastore.gradle"
 apply from: "$rootDir/gradle/navigation.gradle"
-apply from: "$rootDir/gradle/json.gradle"
 apply from: "$rootDir/gradle/lifecycle.gradle"
 apply from: "$rootDir/gradle/testLocal.gradle"
 
@@ -55,4 +52,7 @@ dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
+
+    implementation(project(":domain:usecase"))
+    implementation(project(":domain:entity"))
 }

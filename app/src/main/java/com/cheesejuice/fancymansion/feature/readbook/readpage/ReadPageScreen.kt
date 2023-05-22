@@ -30,10 +30,10 @@ import com.cheesejuice.core.ui.theme.colorScheme
 import com.cheesejuice.core.ui.theme.dividerAlpha
 import com.cheesejuice.core.ui.theme.onTextAlpha
 import com.cheesejuice.core.ui.theme.typography
+import com.cheesejuice.domain.entity.readbook.book.ChoiceItemEntity
+import com.cheesejuice.domain.entity.readbook.book.PageEntity
+import com.cheesejuice.domain.usecase.makeBook.sample.Sample
 import com.cheesejuice.fancymansion.R
-import com.cheesejuice.fancymansion.domain.entity.readbook.book.ChoiceItemEntity
-import com.cheesejuice.fancymansion.domain.entity.readbook.book.PageEntity
-import com.cheesejuice.fancymansion.domain.usecase.makeBook.sample.Sample
 import java.io.File
 
 @Composable
