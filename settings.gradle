@@ -16,3 +16,6 @@ rootProject.name = "FancyMansion"
 include ':app'
 include ':core:common'
 include ':core:ui'
+include ':domain:entity'
+include ':domain:usecase'
+include ':domain:interfaceRepository'
