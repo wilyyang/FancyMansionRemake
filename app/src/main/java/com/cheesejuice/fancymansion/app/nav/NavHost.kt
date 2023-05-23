@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.cheesejuice.core.ui.theme.preview.TestScreenPreview
-import com.cheesejuice.fancymansion.feature.readbook.readpage.ReadPageScreenSetup
+import com.cheesejuice.feature.readBook.readPage.ReadPageScreenSetup
 
 @Composable
 fun FancyMansionNavHost(
@@ -23,9 +23,7 @@ fun FancyMansionNavHost(
         }
 
         composable(route = ReadPageScreen.route){
-            ReadPageScreenSetup(
-                navController = navController
-            )
+            ReadPageScreenSetup()
         }
     }
 }
