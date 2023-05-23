@@ -29,8 +29,8 @@ class MakeBookRepositoryImpl @Inject constructor(
     = bookStorageSource.makeConfigFile(config.asMapper())
     override suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
     = bookStorageSource.makeLogicFile(logic.asMapper(), userId, readMode, bookId)
-    override suspend fun makePageFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    override suspend fun makePageContentFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
     = bookStorageSource.makePageContentFile(page.asMapper(), userId, readMode, bookId)
-    override suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
+    override suspend fun makeImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
     = bookStorageSource.makeImageFileFromResource(userId, readMode, bookId, imageName, resourceId)
 }

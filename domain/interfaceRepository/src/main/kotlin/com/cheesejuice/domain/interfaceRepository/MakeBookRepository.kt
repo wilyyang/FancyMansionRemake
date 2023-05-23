@@ -13,6 +13,6 @@ interface MakeBookRepository {
 
     suspend fun makeConfigFile(config : ConfigEntity) : Boolean
     suspend fun makeLogicFile(logic : LogicEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
-    suspend fun makePageFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
-    suspend fun makeImageFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
+    suspend fun makePageContentFile(page : PageContentEntity, userId : String, readMode : ReadMode, bookId : String) : Boolean
+    suspend fun makeImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
 }

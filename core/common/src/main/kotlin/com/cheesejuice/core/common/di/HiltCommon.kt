@@ -21,9 +21,9 @@ annotation class DispatcherDefault
 object HiltCommon {
     @Provides
     @DispatcherIO
-    fun providesDispatcherIO(): CoroutineDispatcher = Dispatchers.IO
+    fun provideDispatcherIO(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @DispatcherDefault
-    fun providesDispatcherDefault(): CoroutineDispatcher = Dispatchers.Default
+    fun provideDispatcherDefault(): CoroutineDispatcher = Dispatchers.Default
 }

@@ -29,7 +29,7 @@ class UseCaseMakeSample @Inject constructor(
             makeLogicFile(Sample.book.logic, userId, readMode, bookId)
 
             for (pageContent in Sample.book.pageContents) {
-                makePageFile(pageContent, userId, readMode, bookId)
+                makePageContentFile(pageContent, userId, readMode, bookId)
             }
             val array = arrayOf(
                 "image_1.gif" to R.raw.image_1,
@@ -42,7 +42,7 @@ class UseCaseMakeSample @Inject constructor(
                 "game_end.jpg" to R.raw.game_end
             )
             array.forEach {
-                makeBookRepository.makeImageFromResource(userId, readMode, bookId, it.first, it.second)
+                makeBookRepository.makeImageFileFromResource(userId, readMode, bookId, it.first, it.second)
             }
         }
     }

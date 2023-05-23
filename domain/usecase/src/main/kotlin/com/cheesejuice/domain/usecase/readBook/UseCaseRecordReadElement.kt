@@ -15,12 +15,12 @@ class UseCaseRecordReadElement @Inject constructor(
 ) {
     suspend operator fun invoke(userId : String, readMode : String, bookId : String, elementId : Long, isStartPage : Boolean = false) =
         withContext(dispatcher) {
-            if (readBookRepository.isCountEntityExist(userId, readMode, bookId, elementId)) {
+            if (readBookRepository.isCountRecordExist(userId, readMode, bookId, elementId)) {
                 if (!isStartPage) {
-                    readBookRepository.incrementCountEntity(userId, readMode, bookId, elementId)
+                    readBookRepository.incrementCountRecord(userId, readMode, bookId, elementId)
                 }
             } else {
-                readBookRepository.insertCountEntity(CountRecordEntity(userId, readMode, bookId, elementId, 1))
+                readBookRepository.insertCountRecord(CountRecordEntity(userId, readMode, bookId, elementId, 1))
             }
             Unit
         }

@@ -18,24 +18,24 @@ class UseCaseInitReadRecord @Inject constructor(
     private val readBookRepository : ReadBookRepository
 ) {
     suspend operator fun invoke(userId : String, config : ConfigEntity, initBook : Boolean) = withContext(dispatcher) {
-        if (!userRepository.isUserEntityExist(userId)) {
+        if (!userRepository.isUserInfoExist(userId)) {
             userRepository.updateUserId(userId = userId)
-            userRepository.insertUserEntity(UserInfoEntity(userId = userId))
+            userRepository.insertUserInfo(UserInfoEntity(userId = userId))
         }
 
         readBookRepository.run {
             if (initBook) {
-                deleteReadEntityFromId(userId, config.readMode, config.bookId)
+                deleteReadRecordFromId(userId, config.readMode, config.bookId)
             }
 
-            getReadEntity(userId = userId, readMode = config.readMode, bookId = config.bookId) ?: let {
-                val newReadRecordMapper = ReadRecordEntity(
+            getReadRecord(userId = userId, readMode = config.readMode, bookId = config.bookId) ?: let {
+                val newReadRecord = ReadRecordEntity(
                     userId = userId, readMode = config.readMode, bookId = config.bookId,
                     savePage = config.defaultStartPageId
                 )
-                deleteCountEntityFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
-                insertReadEntity(readRecordMapper = newReadRecordMapper)
-                newReadRecordMapper
+                deleteCountRecordFromBookId(userId = userId, readMode = config.readMode, bookId = config.bookId)
+                insertReadRecord(readRecord = newReadRecord)
+                newReadRecord
             }
         }
     }

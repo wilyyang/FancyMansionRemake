@@ -21,8 +21,8 @@ class UserRepositoryImpl @Inject constructor(
     /**
      * Room Database
      */
-    override suspend fun insertUserEntity(userInfoMapper : UserInfoEntity) : Long
-    = recordDatabaseSource.insertUserInfo(userInfoMapper.asMapper())
-    override suspend fun isUserEntityExist(userId : String) : Boolean
+    override suspend fun insertUserInfo(userInfo : UserInfoEntity) : Long
+    = recordDatabaseSource.insertUserInfo(userInfo.asMapper())
+    override suspend fun isUserInfoExist(userId : String) : Boolean
     = recordDatabaseSource.isUserInfoExist(userId)
 }

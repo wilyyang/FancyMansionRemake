@@ -10,19 +10,19 @@ import java.io.File
 
 interface ReadBookRepository {
     suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
-    suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
+    suspend fun getCoverImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
-    suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
+    suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
     suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
 
-    suspend fun insertReadEntity(readRecordMapper : ReadRecordEntity) : Long
-    suspend fun getReadEntity(userId : String, readMode : String, bookId : String) : ReadRecordEntity?
-    suspend fun updateReadEntity(readRecordMapper : ReadRecordEntity)
-    suspend fun deleteReadEntityFromId(userId : String, readMode : String, bookId : String)
+    suspend fun insertReadRecord(readRecord : ReadRecordEntity) : Long
+    suspend fun getReadRecord(userId : String, readMode : String, bookId : String) : ReadRecordEntity?
+    suspend fun updateReadRecord(readRecord : ReadRecordEntity)
+    suspend fun deleteReadRecordFromId(userId : String, readMode : String, bookId : String)
 
-    suspend fun insertCountEntity(countRecordMapper : CountRecordEntity) : Long
-    suspend fun isCountEntityExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
+    suspend fun insertCountRecord(countRecord : CountRecordEntity) : Long
+    suspend fun isCountRecordExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
     suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long) : Int?
-    suspend fun incrementCountEntity(userId : String, readMode : String, bookId : String, elementId : Long)
-    suspend fun deleteCountEntityFromBookId(userId : String, readMode : String, bookId : String)
+    suspend fun incrementCountRecord(userId : String, readMode : String, bookId : String, elementId : Long)
+    suspend fun deleteCountRecordFromBookId(userId : String, readMode : String, bookId : String)
 }

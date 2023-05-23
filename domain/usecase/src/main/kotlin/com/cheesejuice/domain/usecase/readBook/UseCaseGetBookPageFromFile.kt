@@ -18,7 +18,7 @@ class UseCaseGetBookPageFromFile @Inject constructor(
 ) {
     suspend operator fun invoke(userId : String, readMode : ReadMode, bookId : String, pageId : Long, logic : LogicEntity? = null) =
         withContext(dispatcher) {
-            val pageContent = readBookRepository.getPageFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId)
+            val pageContent = readBookRepository.getPageContentFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId)
 
             val pageLogic =
                 (logic ?: readBookRepository.getLogicFromFile(userId = userId, readMode = readMode, bookId = bookId))?.let { logic ->

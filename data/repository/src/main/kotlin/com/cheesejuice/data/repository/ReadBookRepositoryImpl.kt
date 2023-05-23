@@ -24,32 +24,32 @@ class ReadBookRepositoryImpl @Inject constructor(
 
     override suspend fun getConfigFromFile(userId : String, readMode : ReadMode, bookId : String) : ConfigEntity?
     = bookStorageSource.getConfigFromFile(userId, readMode, bookId)?.asEntity()
-    override suspend fun getCoverFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
+    override suspend fun getCoverImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = bookStorageSource.getCoverImageFromFile(userId, readMode, bookId, image)
     override suspend fun getLogicFromFile(userId : String, readMode : ReadMode, bookId : String) : LogicEntity?
     = bookStorageSource.getLogicFromFile(userId, readMode, bookId)?.asEntity()
-    override suspend fun getPageFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
+    override suspend fun getPageContentFromFile(userId : String, readMode : ReadMode, bookId : String, pageId : Long) : PageContentEntity?
     = bookStorageSource.getPageContentFromFile(userId, readMode, bookId, pageId)?.asEntity()
     override suspend fun getImageFromFile(userId : String, readMode : ReadMode, bookId : String, image : String) : File?
     = bookStorageSource.getImageFromFile(userId, readMode, bookId, image)
 
-    override suspend fun insertReadEntity(readRecordMapper : ReadRecordEntity) : Long
-        = recordDatabaseSource.insertReadRecord(readRecordMapper.asMapper())
-    override suspend fun getReadEntity(userId : String, readMode : String, bookId : String) : ReadRecordEntity?
+    override suspend fun insertReadRecord(readRecord : ReadRecordEntity) : Long
+        = recordDatabaseSource.insertReadRecord(readRecord.asMapper())
+    override suspend fun getReadRecord(userId : String, readMode : String, bookId : String) : ReadRecordEntity?
         = recordDatabaseSource.getReadRecord(userId, readMode, bookId)?.asEntity()
-    override suspend fun updateReadEntity(readRecordMapper : ReadRecordEntity)
-        = recordDatabaseSource.updateReadRecord(readRecordMapper.asMapper())
-    override suspend fun deleteReadEntityFromId(userId : String, readMode : String, bookId : String)
+    override suspend fun updateReadRecord(readRecord : ReadRecordEntity)
+        = recordDatabaseSource.updateReadRecord(readRecord.asMapper())
+    override suspend fun deleteReadRecordFromId(userId : String, readMode : String, bookId : String)
         = recordDatabaseSource.deleteReadRecordFromId(userId, readMode, bookId)
 
-    override suspend fun insertCountEntity(countRecordMapper : CountRecordEntity) : Long
-        = recordDatabaseSource.insertCountRecord(countRecordMapper.asMapper())
-    override suspend fun isCountEntityExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
+    override suspend fun insertCountRecord(countRecord : CountRecordEntity) : Long
+        = recordDatabaseSource.insertCountRecord(countRecord.asMapper())
+    override suspend fun isCountRecordExist(userId : String, readMode : String, bookId : String, elementId : Long) : Boolean
         = recordDatabaseSource.isCountRecordExist(userId, readMode, bookId, elementId)
     override suspend fun getElementCount(userId : String, readMode : String, bookId : String, elementId : Long) : Int?
         = recordDatabaseSource.getElementCount(userId, readMode, bookId, elementId)
-    override suspend fun incrementCountEntity(userId : String, readMode : String, bookId : String, elementId : Long)
+    override suspend fun incrementCountRecord(userId : String, readMode : String, bookId : String, elementId : Long)
         = recordDatabaseSource.incrementCountRecord(userId, readMode, bookId, elementId)
-    override suspend fun deleteCountEntityFromBookId(userId : String, readMode : String, bookId : String)
+    override suspend fun deleteCountRecordFromBookId(userId : String, readMode : String, bookId : String)
         = recordDatabaseSource.deleteCountRecordFromBookId(userId, readMode, bookId)
 }
