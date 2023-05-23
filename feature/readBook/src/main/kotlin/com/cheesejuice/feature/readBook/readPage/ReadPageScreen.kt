@@ -13,11 +13,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.cheesejuice.core.common.PageType
 import com.cheesejuice.core.ui.base.BaseScreen
 import com.cheesejuice.core.ui.base.EmptyState
@@ -33,6 +33,7 @@ import com.cheesejuice.domain.entity.readbook.book.ChoiceItemEntity
 import com.cheesejuice.domain.entity.readbook.book.PageEntity
 import com.cheesejuice.domain.usecase.makeBook.sample.Sample
 import java.io.File
+import com.cheesejuice.core.common.R
 
 @Composable
 fun ReadPageScreenSetup(
@@ -110,7 +111,7 @@ fun ReadPageScreenContent(
                     if (pageType == com.cheesejuice.core.common.PageType.END) {
                         Label(
                             modifier = Modifier.padding(bottom = 4.dp),
-                            label = "엔딩"
+                            label = stringResource(id = R.string.page_type_end)
                         )
                     }
                     Text(text = title, style = titleStyle)
