@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.app
+package com.cheesejuice.fancymansion
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.cheesejuice.core.ui.theme.FancyMansionTheme
-import com.cheesejuice.fancymansion.app.nav.FancyMansionNavHost
+import com.cheesejuice.fancymansion.nav.FancyMansionNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

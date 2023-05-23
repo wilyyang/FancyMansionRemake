@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.app.nav
+package com.cheesejuice.fancymansion.nav
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable

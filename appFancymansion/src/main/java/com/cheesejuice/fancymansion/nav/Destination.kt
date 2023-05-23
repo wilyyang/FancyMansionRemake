@@ -1,4 +1,4 @@
-package com.cheesejuice.fancymansion.app.nav
+package com.cheesejuice.fancymansion.nav
 
 interface NavDestination {
     val route: String
