@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "FancyMansion"
-include ':appFancymansion'
+include ':appFancyMansion'
 include ':core:common'
 include ':core:ui'
 include ':domain:entity'
