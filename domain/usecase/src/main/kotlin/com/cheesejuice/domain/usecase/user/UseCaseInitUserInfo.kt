@@ -18,7 +18,7 @@ class UseCaseInitUserInfo @Inject constructor(
     suspend operator fun invoke(userId : String) = withContext(dispatcher) {
         userRepository.run {
             insertUserInfo(UserInfoEntity(userId = userId))
-            updateUserId(userId = userId)
+            updatePreferencesUserId(userId = userId)
         }
 
         makeBookRepository.run {

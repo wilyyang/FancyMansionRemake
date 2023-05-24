@@ -5,6 +5,7 @@ import com.cheesejuice.data.interfaceDatasource.UserPreferencesSource
 import com.cheesejuice.data.mapper.user.asMapper
 import com.cheesejuice.domain.entity.readbook.record.UserInfoEntity
 import com.cheesejuice.domain.interfaceRepository.UserRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,15 +15,17 @@ class UserRepositoryImpl @Inject constructor(
     private val recordDatabaseSource : RecordLocalDatabaseSource
 ) : UserRepository {
 
-    override suspend fun updateUserId(userId : String){
+    override fun getPreferencesUserIdFlow() : Flow<String> {
+        return userPreferencesSource.getUserIdFlow()
+    }
+
+    override suspend fun updatePreferencesUserId(userId : String) {
         userPreferencesSource.setUserId(userId)
     }
 
     /**
      * Room Database
      */
-    override suspend fun insertUserInfo(userInfo : UserInfoEntity) : Long
-    = recordDatabaseSource.insertUserInfo(userInfo.asMapper())
-    override suspend fun isUserInfoExist(userId : String) : Boolean
-    = recordDatabaseSource.isUserInfoExist(userId)
+    override suspend fun insertUserInfo(userInfo : UserInfoEntity) : Long = recordDatabaseSource.insertUserInfo(userInfo.asMapper())
+    override suspend fun isUserInfoExist(userId : String) : Boolean = recordDatabaseSource.isUserInfoExist(userId)
 }
