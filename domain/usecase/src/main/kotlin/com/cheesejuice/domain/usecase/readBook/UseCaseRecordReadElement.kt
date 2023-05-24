@@ -16,10 +16,12 @@ class UseCaseRecordReadElement @Inject constructor(
     suspend operator fun invoke(userId : String, readMode : String, bookId : String, elementId : Long, isStartPage : Boolean = false) =
         withContext(dispatcher) {
             if (readBookRepository.isCountRecordExist(userId, readMode, bookId, elementId)) {
+                // 레코드가 있으나 시작페이지일 경우, 이미 카운트되어 있으므로 증가시키지 않음
                 if (!isStartPage) {
                     readBookRepository.incrementCountRecord(userId, readMode, bookId, elementId)
                 }
             } else {
+                // 레코드가 없으면 카운트 1의 레코드 생성
                 readBookRepository.insertCountRecord(CountRecordEntity(userId, readMode, bookId, elementId, 1))
             }
             Unit

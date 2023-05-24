@@ -20,6 +20,7 @@ enum class ReadMode{
 const val NOT_ASSIGN_ID = -1L
 const val NOT_ASSIGN_PAGE = -1L
 const val NOT_ASSIGN_COUNT = -1
+const val NOT_ASSIGN_SAVE_PAGE = -2L
 
 const val INIT_BOOK_ID = "-1"
 const val INIT_ID = -1L
