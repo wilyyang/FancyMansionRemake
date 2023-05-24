@@ -12,8 +12,8 @@ import com.cheesejuice.domain.interfaceRepository.UserRepository
 @ViewModelScoped
 class UseCaseInitUserInfo @Inject constructor(
     @DispatcherIO private val dispatcher : CoroutineDispatcher,
-    private val makeBookRepository : MakeBookRepository,
-    private val userRepository : UserRepository
+    private val userRepository : UserRepository,
+    private val makeBookRepository : MakeBookRepository
 ) {
     suspend operator fun invoke(userId : String) = withContext(dispatcher) {
         userRepository.run {

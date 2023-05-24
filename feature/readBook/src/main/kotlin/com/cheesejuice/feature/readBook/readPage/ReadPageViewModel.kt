@@ -22,6 +22,7 @@ import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookPageFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetReadRecord
 import com.cheesejuice.domain.usecase.readBook.UseCaseInitReadRecord
 import com.cheesejuice.domain.usecase.readBook.UseCaseRecordReadElement
+import com.cheesejuice.domain.usecase.user.UseCaseGetUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -36,12 +37,13 @@ class ReadPageViewModel @Inject constructor(
     private val useCaseGetBookPageFromFile : UseCaseGetBookPageFromFile,
 
     private val useCaseInitReadRecord : UseCaseInitReadRecord,
+    private val useCaseGetUserId : UseCaseGetUserId,
     private val useCaseDecideRoute : UseCaseDecideRoute,
     private val useCaseGetReadRecord : UseCaseGetReadRecord,
     private val useCaseRecordReadElement : UseCaseRecordReadElement,
 ) : BaseViewModel() {
 
-    private val userId = LOCAL_USER_ID
+    private lateinit var userId : String
     private val readMode = ReadMode.edit
     private val bookId = SAMPLE_BOOK_ID
     private lateinit var config : ConfigEntity
@@ -57,9 +59,12 @@ class ReadPageViewModel @Inject constructor(
     init {
         launchWithLoading {
             // 임시 영역
-            useCaseInitUserInfo(userId = userId)
-            useCaseInitReadRecord(userId = userId, readMode = readMode.name, bookId = bookId, savePage = NOT_ASSIGN_SAVE_PAGE)
+            useCaseInitUserInfo(userId = LOCAL_USER_ID)
             useCaseMakeSample()
+
+            // User Id
+            userId = useCaseGetUserId()
+            useCaseInitReadRecord(userId = userId, readMode = readMode.name, bookId = bookId, savePage = NOT_ASSIGN_SAVE_PAGE)
 
             // get file
             val configLocal = useCaseGetBookConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
