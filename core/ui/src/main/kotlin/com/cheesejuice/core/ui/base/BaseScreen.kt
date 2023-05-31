@@ -8,12 +8,9 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import com.cheesejuice.core.common.throwable.ThrowableManager
 import com.cheesejuice.core.ui.R
 import com.cheesejuice.core.ui.base.frame.TopBar
 import com.cheesejuice.core.ui.dialog.ErrorDialog
@@ -35,7 +32,7 @@ fun BaseScreen(
     drawerContent : @Composable () -> Unit,
 
     // ui state
-    loadingState : LoadingState? = null,
+    loadState : LoadState,
 
     content : @Composable (paddingValues : PaddingValues) -> Unit
 ) {
@@ -65,7 +62,7 @@ fun BaseScreen(
             )
         })
 
-    CommonStateProcess(loadingState)
+    CommonStateProcess(loadState)
 }
 
 @Composable
@@ -80,7 +77,7 @@ fun BaseScreen(
     actions : @Composable (RowScope.() -> Unit)? = null,
 
     // ui state
-    loadingState : LoadingState? = null,
+    loadState : LoadState,
 
     content : @Composable (paddingValues : PaddingValues) -> Unit
 ) {
@@ -96,28 +93,28 @@ fun BaseScreen(
         content = content
     )
 
-    CommonStateProcess(loadingState)
+    CommonStateProcess(loadState)
 }
 
 @Composable
 fun CommonStateProcess(
-    loadingState : LoadingState? = null
+    loadState : LoadState
 ) {
-    if(loadingState != null){
-        Loading(
-            loadingMessage = loadingState.message,
-            onDismiss = loadingState.onDismiss
-        )
-    }
-
-    val errorState by ThrowableManager.errorState.collectAsState()
-    errorState?.let {
-        ErrorDialog(
-            title = it.title,
-            errorMessage = it.message,
-            onConfirm = it.onConfirm,
-            onDismiss = it.onDismiss
-        )
+    when(loadState){
+        is LoadState.Loading -> {
+            Loading(
+                loadingMessage = loadState.message
+            )
+        }
+        is LoadState.ErrorDialog -> {
+            ErrorDialog(
+                title = loadState.title,
+                errorMessage = loadState.message,
+                onConfirm = loadState.onConfirm,
+                onDismiss = loadState.onDismiss
+            )
+        }
+        else -> {}
     }
 }
 
