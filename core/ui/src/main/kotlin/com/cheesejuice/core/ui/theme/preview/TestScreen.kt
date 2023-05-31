@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.core.ui.R
 import com.cheesejuice.core.ui.base.BaseScreen
-import com.cheesejuice.core.ui.base.LoadingState
+import com.cheesejuice.core.ui.base.LoadState
 import com.cheesejuice.core.ui.base.frame.MainDrawer
 import com.cheesejuice.core.ui.base.frame.MenuType
 import com.cheesejuice.core.ui.component.BasicButton
@@ -49,13 +49,13 @@ fun TestScreenPreview(){
         colorScheme = colorScheme,
         typography = typography
     ){
-        TestScreenBasicButton()
+        TestScreenFrame()
     }
 }
 
 @Composable
 fun TestScreenFrame(
-    loadingState: LoadingState? = null,
+    loadState: LoadState = LoadState.Idle,
     menu1Click : ()->Unit = {},
     menu2Click : ()->Unit = {},
     menu3Click : ()->Unit = {},
@@ -89,7 +89,7 @@ fun TestScreenFrame(
             )
             MainDrawer(menuItems = menuList)
         },
-        loadingState = loadingState
+        loadState  = loadState
     ) {
         TestScreenContent(
             onClickBottom = {

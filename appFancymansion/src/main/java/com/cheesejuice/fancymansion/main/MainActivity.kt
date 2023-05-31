@@ -1,12 +1,10 @@
-package com.cheesejuice.fancymansion
+package com.cheesejuice.fancymansion.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.rememberNavController
 import com.cheesejuice.core.ui.theme.FancyMansionTheme
-import com.cheesejuice.fancymansion.nav.FancyMansionNavHost
+import com.cheesejuice.fancymansion.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -14,14 +12,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FancyMansionApp()
+            FancyMansionTheme {
+                AppNavigation()
+            }
         }
-    }
-}
-@Composable
-fun FancyMansionApp(){
-    FancyMansionTheme {
-        val navController = rememberNavController()
-        FancyMansionNavHost(navController = navController)
     }
 }
