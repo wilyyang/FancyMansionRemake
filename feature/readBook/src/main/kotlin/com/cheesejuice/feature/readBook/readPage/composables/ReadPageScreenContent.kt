@@ -99,7 +99,7 @@ fun ChoiceButton(
         textStyle = textStyle,
         textColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = onTextAlpha),
         onClick = { onChoiceItemClicked(choice) },
-        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 15.dp),
+        contentPadding = PaddingValues(horizontal = 15.dp, vertical = 15.dp),
         contentArrangement = Arrangement.Start
     )
 }
