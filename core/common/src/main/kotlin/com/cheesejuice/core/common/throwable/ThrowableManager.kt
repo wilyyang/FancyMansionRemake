@@ -2,20 +2,16 @@ package com.cheesejuice.core.common.throwable
 
 import com.cheesejuice.core.common.log.Log
 import com.cheesejuice.core.common.log.LogType
-import com.cheesejuice.core.common.resource.StringResource
 
-sealed class ErrorType {
-    object Log : ErrorType()
-    data class Dialog(val title : String, val message : String) : ErrorType()
+sealed class ShowErrorType(val throwable : Throwable) {
+    class Log(throwable : Throwable) : ShowErrorType(throwable)
+    class Dialog(throwable : Throwable) : ShowErrorType(throwable)
 }
 
 object ThrowableManager {
-    fun sendError(throwable : Throwable) : ErrorType {
+    fun handleError(throwable : Throwable) : ShowErrorType {
         throwable.printStackTrace()
         Log.send(throwable.message, type = LogType.E)
-        return ErrorType.Dialog(
-            title = StringResource.error_title,
-            message = throwable.message ?: StringResource.error_empty_message
-        )
+        return ShowErrorType.Dialog(throwable = throwable)
     }
 }

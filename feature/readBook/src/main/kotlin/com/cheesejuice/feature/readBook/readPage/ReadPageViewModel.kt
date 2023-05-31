@@ -4,7 +4,10 @@ import com.cheesejuice.core.common.LOCAL_USER_ID
 import com.cheesejuice.core.common.NOT_ASSIGN_SAVE_PAGE
 import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.common.SAMPLE_BOOK_ID
+import com.cheesejuice.core.common.resource.StringResource
+import com.cheesejuice.core.common.throwable.ShowErrorType
 import com.cheesejuice.core.ui.base.BaseViewModel
+import com.cheesejuice.core.ui.base.LoadState
 import com.cheesejuice.domain.entity.readbook.book.ChoiceItemEntity
 import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
 import com.cheesejuice.domain.entity.readbook.book.LogicEntity
@@ -19,8 +22,11 @@ import com.cheesejuice.domain.usecase.readBook.UseCaseRecordReadElement
 import com.cheesejuice.domain.usecase.user.UseCaseGetUserId
 import com.cheesejuice.domain.usecase.user.UseCaseInitUserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
+
+class FileNotFoundCancellationException(override val message : String? = null) : CancellationException()
 
 @HiltViewModel
 class ReadPageViewModel @Inject constructor(
@@ -79,8 +85,10 @@ class ReadPageViewModel @Inject constructor(
                 movePageFromId(movePageId, isStartPage = true)
             } else {
                 cancel(
-                    message = "[$bookId Book] config is ${if (configLocal == null) "" else "not"} null, " +
-                        "logic is ${if (logicLocal == null) "" else "not"} null"
+                    cause = FileNotFoundCancellationException(
+                        message = "[$bookId Book] config is ${if (configLocal == null) "" else "not"} null, " +
+                            "logic is ${if (logicLocal == null) "" else "not"} null"
+                    )
                 )
             }
         }
@@ -102,6 +110,27 @@ class ReadPageViewModel @Inject constructor(
             )
             setState { copy(page = it) }
         } ?: {
-            cancel(message = "[$bookId Book] page[$pageId] is null")
+            cancel(cause = FileNotFoundCancellationException(message = "[$bookId Book] page[$pageId] is null"))
         }
+
+    override fun showErrorResult(result : ShowErrorType) {
+        when(result.throwable){
+            is FileNotFoundCancellationException -> {
+                setLoadState(
+                    LoadState.ErrorDialog(
+                        title = "Book 파일을 찾을 수 없습니다.",
+                        message = result.throwable.message ?: StringResource.error_empty_message,
+                        onConfirm = {
+                            setEffect { ReadPageContract.Effect.Navigation.Back }
+                        },
+                        onDismiss = {
+                            setEffect { ReadPageContract.Effect.Navigation.Back }
+                        }
+                    ))
+            }
+            else -> {
+                super.showErrorResult(result)
+            }
+        }
+    }
 }

@@ -9,7 +9,7 @@ inline fun tryBooleanScope(block : () -> Boolean) : Boolean {
     return try {
         block()
     } catch (exception : Exception) {
-        ThrowableManager.sendError(exception)
+        ThrowableManager.handleError(exception)
         false
     }
 }
@@ -18,7 +18,7 @@ inline fun <R> tryNullableScope(block : () -> R?) : R? {
     return try {
         block()
     } catch (exception : Exception) {
-        ThrowableManager.sendError(exception)
+        ThrowableManager.handleError(exception)
         null
     }
 }

@@ -5,7 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cheesejuice.core.common.throwable.ErrorType
+import com.cheesejuice.core.common.resource.StringResource
+import com.cheesejuice.core.common.throwable.ShowErrorType
 import com.cheesejuice.core.common.throwable.ThrowableManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -35,16 +36,7 @@ abstract class BaseViewModel<UiState : ViewState, Event : ViewEvent, Effect : Vi
 
     override val coroutineContext: CoroutineContext
         get() = viewModelScope.coroutineContext + CoroutineExceptionHandler { _, throwable ->
-
-            when(val result = ThrowableManager.sendError(throwable)){
-                is ErrorType.Dialog -> {
-                    _loadState.value = LoadState.ErrorDialog(
-                        title = result.title,
-                        message = result.message
-                    )
-                }
-                else -> {}
-            }
+            sendError(throwable)
         }
 
     /**
@@ -95,6 +87,10 @@ abstract class BaseViewModel<UiState : ViewState, Event : ViewEvent, Effect : Vi
         _uiState.value = newState
     }
 
+    protected fun setLoadState(loadState : LoadState) {
+        _loadState.value = loadState
+    }
+
     fun setEvent(event : Event) {
         launch { _event.emit(event) }
     }
@@ -121,6 +117,40 @@ abstract class BaseViewModel<UiState : ViewState, Event : ViewEvent, Effect : Vi
                         block.invoke(this)
                     }
                 }
+                _loadState.value = LoadState.Idle
+            }
+        }.apply {
+            invokeOnCompletion { cause : Throwable? ->
+                cause?.also {
+                    sendError(cause)
+                }
+            }
+        }
+    }
+
+    /**
+     * 에러 처리
+     */
+    private fun sendError(throwable : Throwable){
+        val result = ThrowableManager.handleError(throwable)
+        showErrorResult(result)
+    }
+
+    protected open fun showErrorResult(result : ShowErrorType){
+        when(result){
+            is ShowErrorType.Dialog -> {
+                _loadState.value = LoadState.ErrorDialog(
+                    title = StringResource.error_title,
+                    message = result.throwable.message ?: StringResource.error_empty_message,
+                    onConfirm = {
+                        _loadState.value = LoadState.Idle
+                    },
+                    onDismiss = {
+                        _loadState.value = LoadState.Idle
+                    }
+                )
+            }
+            else -> {
                 _loadState.value = LoadState.Idle
             }
         }
