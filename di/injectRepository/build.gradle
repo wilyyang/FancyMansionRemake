@@ -1,0 +1,11 @@
+apply from: "$rootDir/gradle/_library.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
+
+android {
+    namespace 'com.cheesejuice.di.injectRepository'
+}
+
+dependencies {
+    implementation(project(":domain:interfaceRepository"))
+    implementation(project(":data:repository"))
+}

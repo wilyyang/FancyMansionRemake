@@ -1,0 +1,12 @@
+apply from: "$rootDir/gradle/_library.gradle"
+apply from: "$rootDir/gradle/material.gradle"
+apply from: "$rootDir/gradle/compose.gradle"
+apply from: "$rootDir/gradle/image.gradle"
+
+android {
+    namespace 'com.cheesejuice.core.ui'
+}
+
+dependencies {
+    implementation(project(":core:common"))
+}

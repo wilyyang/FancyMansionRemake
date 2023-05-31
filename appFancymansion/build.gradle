@@ -1,0 +1,52 @@
+apply from: "$rootDir/gradle/_application.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
+apply from: "$rootDir/gradle/compose.gradle"
+apply from: "$rootDir/gradle/material.gradle"
+apply from: "$rootDir/gradle/navigation.gradle"
+apply from: "$rootDir/gradle/testLocal.gradle"
+
+def date = new Date()
+def formattedDate = date.format('yyMMdd')
+def code = formattedDate.toInteger() * 100
+
+android {
+    namespace 'com.cheesejuice.fancymansion'
+
+    defaultConfig {
+        applicationId "com.cheesejuice.fancymansion"
+        versionCode code
+        versionName "0.0.1"
+        archivesBaseName = "FANCY_MANSION_${versionName}_$versionCode"
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:readBook"))
+}

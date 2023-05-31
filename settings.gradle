@@ -13,4 +13,18 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "FancyMansion"
-include ':app'
+include ':appFancyMansion'
+include ':core:common'
+include ':core:ui'
+include ':domain:entity'
+include ':domain:usecase'
+include ':domain:interfaceRepository'
+include ':data:interfaceDatasource'
+include ':data:mapper'
+include ':data:repository'
+include ':datasource:localAppStorage'
+include ':datasource:localRoomDatabase'
+include ':datasource:preferencesDatastore'
+include ':di:injectDatasource'
+include ':di:injectRepository'
+include ':feature:readBook'

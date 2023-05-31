@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">TestScreen</string>
-    <string name="login">로그인</string>
-    <string name="local">로컬로 시작</string>
-
-    <string name="page_type_end">엔딩</string>
-</resources>

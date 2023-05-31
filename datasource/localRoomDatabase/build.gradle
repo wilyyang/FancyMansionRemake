@@ -1,0 +1,13 @@
+apply from: "$rootDir/gradle/_library.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
+apply from: "$rootDir/gradle/roomDatabase.gradle"
+
+android {
+    namespace 'com.cheesejuice.datasource.localRoomDatabase'
+}
+
+dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":data:mapper"))
+    implementation(project(":data:interfaceDatasource"))
+}
