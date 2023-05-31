@@ -5,6 +5,7 @@ import com.cheesejuice.core.common.NOT_ASSIGN_SAVE_PAGE
 import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.core.common.resource.StringResource
+import com.cheesejuice.core.common.throwable.FileNotFoundCancellationException
 import com.cheesejuice.core.common.throwable.ShowErrorType
 import com.cheesejuice.core.ui.base.BaseViewModel
 import com.cheesejuice.core.ui.base.LoadState
@@ -26,7 +27,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
-class FileNotFoundCancellationException(override val message : String? = null) : CancellationException()
 
 @HiltViewModel
 class ReadPageViewModel @Inject constructor(
