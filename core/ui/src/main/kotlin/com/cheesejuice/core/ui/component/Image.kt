@@ -38,7 +38,7 @@ fun BookImage(
             )
         }
     } else {
-        painterResource(id = R.drawable.ic_launcher_background)
+        painterResource(id = R.drawable.il_default_image)
     }
 
     Image(

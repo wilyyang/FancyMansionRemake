@@ -52,7 +52,7 @@ fun MainDrawer(
         ) {
             ButtonIconFixed(
                 modifier = Modifier.size(48.dp),
-                idIcon = R.drawable.settings_24px
+                idIcon = R.drawable.ic_settings_24px
             ){
                 onClickSetting()
             }
@@ -67,8 +67,8 @@ fun MainDrawer(
             val context = LocalContext.current
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = userInfo.userPhoto ?: R.drawable.person_24px,
-                    placeholder = painterResource(id = R.drawable.ic_launcher_foreground)
+                    model = userInfo.userPhoto ?: R.drawable.ic_person_24px,
+                    placeholder = painterResource(id = R.drawable.il_default_image)
                 ),
                 contentDescription = "profile",
                 modifier = Modifier.size(52.dp).clip(CircleShape).clickable {},
@@ -98,7 +98,7 @@ fun MainDrawer(
                     Spacer(modifier = Modifier.padding(start = 8.dp))
                     Icon(
                         modifier = Modifier.size(24.dp),
-                        painter = painterResource(id = R.drawable.chevron_right_24px),
+                        painter = painterResource(id = R.drawable.ic_chevron_right_24px),
                         contentDescription = null
                     )
                 }

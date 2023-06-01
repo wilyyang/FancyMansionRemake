@@ -23,7 +23,7 @@ fun BaseScreen(
 
     // top bar
     title : String? = null,
-    idNavigationIcon : Int = R.drawable.menu_24px,
+    idNavigationIcon : Int = R.drawable.ic_menu_24px,
     onClickNavigation : (() -> Unit)? = null,
     actions : @Composable (RowScope.() -> Unit)? = null,
 

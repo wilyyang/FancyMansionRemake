@@ -31,7 +31,7 @@ fun TopBar(
             onClickNavigation?.also {
                 ButtonIconFixed(
                     modifier = Modifier.size(56.dp),
-                    idIcon = idNavigationIcon ?: R.drawable.chevron_left_24px,
+                    idIcon = idNavigationIcon ?: R.drawable.ic_chevron_left_24px,
                     onClick = it
                 )
             }

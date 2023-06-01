@@ -200,7 +200,7 @@ fun TextBox(
             if (rememberFocus.value) {
                 ButtonIconFixed(
                     modifier = Modifier.size(18.dp),
-                    idIcon = R.drawable.close_20px,
+                    idIcon = R.drawable.ic_close_20px,
                     onClick = {
                         onValueChange("")
                     }

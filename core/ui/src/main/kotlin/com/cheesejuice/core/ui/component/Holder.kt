@@ -142,7 +142,7 @@ fun BookHolder(
                         .clickable { expanded = !expanded }
                         .padding(12.dp)
                         .size(20.dp),
-                    painter = painterResource(id = R.drawable.more_vertical_20px),
+                    painter = painterResource(id = R.drawable.ic_more_vertical_20px),
                     contentDescription = "dropdown menu",
                     tint = MaterialTheme.colorScheme.onSurface
                 )

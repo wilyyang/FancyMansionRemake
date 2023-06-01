@@ -188,7 +188,7 @@ fun DropDown(
             textOverflow = TextOverflow.Ellipsis,
             textMaxLines = 1,
             iconPadding = 8.dp,
-            iconEnd = if (expanded) R.drawable.expand_less_20px else R.drawable.expand_more_20px,
+            iconEnd = if (expanded) R.drawable.ic_expand_less_20px else R.drawable.ic_expand_more_20px,
             isClickable = isClickable,
             backgroundColor = finalBackgroundColor,
             textColor = finalTextColor
