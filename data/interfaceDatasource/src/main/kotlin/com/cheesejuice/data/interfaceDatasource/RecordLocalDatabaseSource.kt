@@ -34,6 +34,7 @@ interface RecordLocalDatabaseSource {
 
     // Update
     suspend fun updateReadRecord(readRecord : ReadRecordMapper)
+    suspend fun updateReadRecordSavePage(userId : String, readMode : String, bookId : String, savePageId : Long)
 
     // Delete
     suspend fun deleteReadRecord(readRecord : ReadRecordMapper)

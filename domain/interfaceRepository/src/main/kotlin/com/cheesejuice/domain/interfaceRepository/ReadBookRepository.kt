@@ -18,6 +18,7 @@ interface ReadBookRepository {
     suspend fun insertReadRecord(readRecord : ReadRecordEntity) : Long
     suspend fun getReadRecord(userId : String, readMode : String, bookId : String) : ReadRecordEntity?
     suspend fun updateReadRecord(readRecord : ReadRecordEntity)
+    suspend fun updateReadRecordSavePage(userId : String, readMode : String, bookId : String, savePageId : Long)
     suspend fun deleteReadRecordFromId(userId : String, readMode : String, bookId : String)
 
     suspend fun insertCountRecord(countRecord : CountRecordEntity) : Long

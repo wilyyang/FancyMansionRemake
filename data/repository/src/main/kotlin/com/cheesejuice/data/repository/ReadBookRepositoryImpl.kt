@@ -39,6 +39,8 @@ class ReadBookRepositoryImpl @Inject constructor(
         = recordDatabaseSource.getReadRecord(userId, readMode, bookId)?.asEntity()
     override suspend fun updateReadRecord(readRecord : ReadRecordEntity)
         = recordDatabaseSource.updateReadRecord(readRecord.asMapper())
+    override suspend fun updateReadRecordSavePage(userId : String, readMode : String, bookId : String, savePageId : Long)
+        = recordDatabaseSource.updateReadRecordSavePage(userId, readMode, bookId, savePageId)
     override suspend fun deleteReadRecordFromId(userId : String, readMode : String, bookId : String)
         = recordDatabaseSource.deleteReadRecordFromId(userId, readMode, bookId)
 

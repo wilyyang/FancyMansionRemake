@@ -48,6 +48,9 @@ class RecordRoomDatabaseSource @Inject constructor(private val databaseDao : Roo
     // Update
     override suspend fun updateReadRecord(readRecord : ReadRecordMapper) = databaseDao.updateReadRecord(readRecord.asData())
 
+    override suspend fun updateReadRecordSavePage(userId : String, readMode : String, bookId : String, savePageId : Long)
+    = databaseDao.updateReadRecordSavePage(userId, readMode, bookId, savePageId)
+
     // Delete
     override suspend fun deleteReadRecord(readRecord : ReadRecordMapper) = databaseDao.deleteReadRecord(readRecord.asData())
 

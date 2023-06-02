@@ -49,6 +49,8 @@ interface RoomDatabaseDao {
     // Update
     @Update
     suspend fun updateReadRecord(readRecord: ReadRecordData)
+    @Query("UPDATE ReadRecord SET savePage = :savePageId WHERE userId = :userId AND readMode = :readMode AND bookId = :bookId")
+    suspend fun updateReadRecordSavePage(userId : String, readMode : String, bookId : String, savePageId : Long)
 
     // Delete
     @Delete
