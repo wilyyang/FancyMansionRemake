@@ -1,52 +1,42 @@
 package com.cheesejuice.feature.readBook.readPage
 
-import com.cheesejuice.core.common.LOCAL_USER_ID
-import com.cheesejuice.core.common.NOT_ASSIGN_SAVE_PAGE
+import androidx.lifecycle.SavedStateHandle
 import com.cheesejuice.core.common.ReadMode
-import com.cheesejuice.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.core.common.resource.StringResource
 import com.cheesejuice.core.common.throwable.FileNotFoundCancellationException
 import com.cheesejuice.core.common.throwable.ShowErrorType
 import com.cheesejuice.core.ui.base.BaseViewModel
 import com.cheesejuice.core.ui.base.LoadState
 import com.cheesejuice.domain.entity.readbook.book.ChoiceItemEntity
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
 import com.cheesejuice.domain.entity.readbook.book.LogicEntity
-import com.cheesejuice.domain.usecase.makeBook.UseCaseMakeSample
 import com.cheesejuice.domain.usecase.readBook.UseCaseDecideRoute
-import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookConfigFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookLogicFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookPageFromFile
-import com.cheesejuice.domain.usecase.readBook.UseCaseGetReadRecord
-import com.cheesejuice.domain.usecase.readBook.UseCaseInitReadRecord
 import com.cheesejuice.domain.usecase.readBook.UseCaseRecordReadElement
-import com.cheesejuice.domain.usecase.user.UseCaseGetUserId
-import com.cheesejuice.domain.usecase.user.UseCaseInitUserInfo
+import com.cheesejuice.domain.usecase.readBook.UseCaseRecordSavePageId
+import com.cheesejuice.feature.readBook.readPage.Navigation.Args.BOOK_ID
+import com.cheesejuice.feature.readBook.readPage.Navigation.Args.PAGE_ID
+import com.cheesejuice.feature.readBook.readPage.Navigation.Args.READ_MODE
+import com.cheesejuice.feature.readBook.readPage.Navigation.Args.USER_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
-
 
 @HiltViewModel
 class ReadPageViewModel @Inject constructor(
-    private val useCaseInitUserInfo : UseCaseInitUserInfo,
-    private val useCaseMakeSample : UseCaseMakeSample,
-    private val useCaseGetBookConfigFromFile : UseCaseGetBookConfigFromFile,
+    private val savedStateHandle : SavedStateHandle,
     private val useCaseGetBookLogicFromFile : UseCaseGetBookLogicFromFile,
     private val useCaseGetBookPageFromFile : UseCaseGetBookPageFromFile,
+    private val useCaseRecordSavePageId : UseCaseRecordSavePageId,
 
-    private val useCaseInitReadRecord : UseCaseInitReadRecord,
-    private val useCaseGetUserId : UseCaseGetUserId,
     private val useCaseDecideRoute : UseCaseDecideRoute,
-    private val useCaseGetReadRecord : UseCaseGetReadRecord,
     private val useCaseRecordReadElement : UseCaseRecordReadElement,
 ) : BaseViewModel<ReadPageContract.State, ReadPageContract.Event, ReadPageContract.Effect>()  {
 
     private lateinit var userId : String
-    private val readMode = ReadMode.edit
-    private val bookId = SAMPLE_BOOK_ID
-    private lateinit var config : ConfigEntity
+    private lateinit var readMode : ReadMode
+    private lateinit var bookId : String
     private lateinit var logic : LogicEntity
     override fun setInitialState() = ReadPageContract.State(page = null)
 
@@ -62,33 +52,20 @@ class ReadPageViewModel @Inject constructor(
 
     init {
         launchWithLoading {
-            // 임시 영역
-            useCaseInitUserInfo(userId = LOCAL_USER_ID)
-            useCaseMakeSample()
-
-            // User Id
-            userId = useCaseGetUserId()
-            useCaseInitReadRecord(userId = userId, readMode = readMode.name, bookId = bookId, savePage = NOT_ASSIGN_SAVE_PAGE)
-
-            // get config & logic
-            val configLocal = useCaseGetBookConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
+            // Get Data
+            userId = savedStateHandle[USER_ID]!!
+            readMode = ReadMode.from(savedStateHandle[READ_MODE]!!)
+            bookId = savedStateHandle[BOOK_ID]!!
+            val savePageId : Long = savedStateHandle[PAGE_ID]!!
             val logicLocal = useCaseGetBookLogicFromFile(userId = userId, readMode = readMode, bookId = bookId)
 
-            // get page
-            if (configLocal != null && logicLocal != null) {
-                config = configLocal
+            // Move Page
+            if (logicLocal != null) {
                 logic = logicLocal
-
-                val movePageId = useCaseGetReadRecord(userId = userId, config = config).let {
-                    if(it.savePage != NOT_ASSIGN_SAVE_PAGE) it.savePage else config.defaultStartPageId
-                }
-                movePageFromId(movePageId, isStartPage = true)
+                movePageFromId(savePageId, isStartPage = true)
             } else {
                 cancel(
-                    cause = FileNotFoundCancellationException(
-                        message = "[$bookId Book] config is ${if (configLocal == null) "" else "not"} null, " +
-                            "logic is ${if (logicLocal == null) "" else "not"} null"
-                    )
+                    cause = FileNotFoundCancellationException(message = "[$bookId Book] logic is null")
                 )
             }
         }
@@ -101,6 +78,7 @@ class ReadPageViewModel @Inject constructor(
 
     private suspend fun movePageFromId(pageId : Long, isStartPage : Boolean = false) =
         useCaseGetBookPageFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = pageId, logic = logic)?.let {
+            delay(300L)
             useCaseRecordReadElement(
                 userId = userId,
                 readMode = readMode.name,
@@ -108,6 +86,7 @@ class ReadPageViewModel @Inject constructor(
                 elementId = pageId,
                 isStartPage = isStartPage
             )
+            useCaseRecordSavePageId(userId = userId, readMode = readMode.name, bookId = bookId, savePageId = pageId)
             setState { copy(page = it) }
         } ?: {
             cancel(cause = FileNotFoundCancellationException(message = "[$bookId Book] page[$pageId] is null"))
@@ -118,7 +97,7 @@ class ReadPageViewModel @Inject constructor(
             is FileNotFoundCancellationException -> {
                 setLoadState(
                     LoadState.ErrorDialog(
-                        title = "Book 파일을 찾을 수 없습니다.",
+                        title = "Book 정보를 찾을 수 없습니다.",
                         message = result.throwable.message ?: StringResource.error_empty_message,
                         onConfirm = {
                             setEffect { ReadPageContract.Effect.Navigation.Back }
