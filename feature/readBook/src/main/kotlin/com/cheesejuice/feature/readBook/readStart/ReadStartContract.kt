@@ -12,7 +12,8 @@ class ReadStartContract {
         val config : ConfigEntity?,
         val coverImage : File?,
         val savePageId : Long,
-        val savePageTitle : String?
+        val savePageTitle : String?,
+        val emptyMessage : String?
     ) : ViewState
 
     sealed class Event : ViewEvent {

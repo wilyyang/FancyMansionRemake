@@ -57,7 +57,7 @@ fun ReadPageScreenFrame(
                     onEventSent = onEventSent
                 )
             } else {
-                ReadPageScreenEmpty(message = StringResource.empty_message_no_page)
+                ReadPageScreenEmpty(message = emptyMessage ?: StringResource.empty_message_no_data)
             }
         }
     }
@@ -78,7 +78,8 @@ fun ReadPageScreenPreview() {
                     content = Sample.book.pageContents[samplePageIdx],
                     logic = Sample.book.logic.logics[samplePageIdx],
                     image = File("")
-                )
+                ),
+                emptyMessage = null
             ),
             effectFlow = null,
             onEventSent = {},

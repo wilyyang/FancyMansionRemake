@@ -1,5 +1,6 @@
 package com.cheesejuice.feature.readBook.readStart
 
+import androidx.lifecycle.SavedStateHandle
 import com.cheesejuice.core.common.LOCAL_USER_ID
 import com.cheesejuice.core.common.NOT_ASSIGN_SAVE_PAGE
 import com.cheesejuice.core.common.ReadMode
@@ -9,11 +10,13 @@ import com.cheesejuice.core.common.throwable.FileNotFoundCancellationException
 import com.cheesejuice.core.common.throwable.ShowErrorType
 import com.cheesejuice.core.ui.base.BaseViewModel
 import com.cheesejuice.core.ui.base.LoadState
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
 import com.cheesejuice.domain.usecase.makeBook.UseCaseMakeSample
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookConfigFromFile
+import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookCoverImageFromFile
+import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookPageContentFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetReadRecord
 import com.cheesejuice.domain.usecase.readBook.UseCaseInitReadRecord
+import com.cheesejuice.domain.usecase.user.UseCaseCheckIsFirstExecute
 import com.cheesejuice.domain.usecase.user.UseCaseGetUserId
 import com.cheesejuice.domain.usecase.user.UseCaseInitUserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,53 +25,98 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReadStartViewModel @Inject constructor(
+    private val savedStateHandle : SavedStateHandle,
+    private val useCaseCheckIsFirstExecute : UseCaseCheckIsFirstExecute,
     private val useCaseInitUserInfo : UseCaseInitUserInfo,
     private val useCaseMakeSample : UseCaseMakeSample,
-    private val useCaseGetBookConfigFromFile : UseCaseGetBookConfigFromFile,
 
-    private val useCaseInitReadRecord : UseCaseInitReadRecord,
+    private val useCaseGetBookConfigFromFile : UseCaseGetBookConfigFromFile,
+    private val useCaseGetBookCoverImageFromFile : UseCaseGetBookCoverImageFromFile,
+    private val useCaseGetBookPageContentFromFile : UseCaseGetBookPageContentFromFile,
+
     private val useCaseGetUserId : UseCaseGetUserId,
+    private val useCaseInitReadRecord : UseCaseInitReadRecord,
     private val useCaseGetReadRecord : UseCaseGetReadRecord,
 ) : BaseViewModel<ReadStartContract.State, ReadStartContract.Event, ReadStartContract.Effect>()  {
 
     private lateinit var userId : String
-    private val readMode = ReadMode.edit
-    private val bookId = SAMPLE_BOOK_ID
-    private lateinit var config : ConfigEntity
-
-    override fun setInitialState() = ReadStartContract.State(config = null)
+    private lateinit var readMode : ReadMode
+    private lateinit var bookId : String
+    override fun setInitialState() = ReadStartContract.State(
+        config = null, coverImage = null, savePageId = NOT_ASSIGN_SAVE_PAGE,
+        savePageTitle = null, emptyMessage = StringResource.empty_message_load_data
+    )
 
     override fun handleEvents(event : ReadStartContract.Event) {
         when (event) {
-            is ReadStartContract.Event.ReadStartClicked -> {
-                setEffect { ReadStartContract.Effect.Navigation.ReadStart(config = event.config) }
+            is ReadStartContract.Event.ReadStartFirstPageClicked -> {
+                launchWithLoading {
+                    useCaseInitReadRecord(config = uiState.value.config!!)
+
+                    setEffect {
+                        ReadStartContract.Effect.Navigation.ReadStart(
+                            userId = userId,
+                            readMode = readMode,
+                            bookId = bookId,
+                            pageId = uiState.value.config!!.defaultStartPageId
+                        )
+                    }
+                }
             }
 
-            is ReadStartContract.Event.BackButtonClicked -> {
-                setEffect { ReadStartContract.Effect.Navigation.Back }
+            is ReadStartContract.Event.ReadStartSavePointClicked -> {
+                setEffect {
+                    ReadStartContract.Effect.Navigation.ReadStart(
+                        userId = userId,
+                        readMode = readMode,
+                        bookId = bookId,
+                        pageId = uiState.value.savePageId
+                    )
+                }
             }
-            else -> {}
         }
     }
 
     init {
         launchWithLoading {
             // 임시 영역
-            useCaseInitUserInfo(userId = LOCAL_USER_ID)
-            useCaseMakeSample()
+            if(!useCaseCheckIsFirstExecute()){
+                useCaseInitUserInfo(userId = LOCAL_USER_ID)
+                useCaseMakeSample()
+            }
 
-            // User Id
+            // Get Data
             userId = useCaseGetUserId()
-            useCaseInitReadRecord(userId = userId, readMode = readMode.name, bookId = bookId, savePage = NOT_ASSIGN_SAVE_PAGE)
+            readMode = ReadMode.edit
+            bookId = SAMPLE_BOOK_ID
 
-            // get config
             val configLocal = useCaseGetBookConfigFromFile(userId = userId, readMode = readMode, bookId = bookId)
+            val coverImage = configLocal?.let {
+                useCaseGetBookCoverImageFromFile(userId = userId, readMode = readMode, bookId = bookId, configLocal.coverImage)
+            }
+            val savePageId = configLocal?.let {
+                useCaseGetReadRecord(userId = userId, config = configLocal).savePage
+            }
+            val savePageTitle = if (savePageId != null && savePageId != NOT_ASSIGN_SAVE_PAGE) {
+                useCaseGetBookPageContentFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = savePageId)?.pageTitle
+            } else null
 
-            if (configLocal != null) {
-                config = configLocal
-                setState { copy(config = config) }
+            if (configLocal != null && coverImage != null && savePageId != null) {
+                setState {
+                    copy(
+                        config = configLocal, coverImage = coverImage, savePageId = savePageId, savePageTitle = savePageTitle,
+                        emptyMessage = null
+                    )
+                }
             } else {
-                cancel(cause = FileNotFoundCancellationException(message = "[$bookId Book] config is null"))
+                cancel(
+                    cause = FileNotFoundCancellationException(
+                        message = "[$bookId Book] Data not found, " +
+                            (if (configLocal == null) "Config is null, " else "") +
+                            (if (coverImage == null) "CoverImage is null, " else "") +
+                            (if (savePageId == null) "SavePageId is null" else "")
+                    )
+                )
             }
         }
     }
@@ -78,13 +126,13 @@ class ReadStartViewModel @Inject constructor(
             is FileNotFoundCancellationException -> {
                 setLoadState(
                     LoadState.ErrorDialog(
-                        title = "Book 파일을 찾을 수 없습니다.",
+                        title = "Book 정보를 찾을 수 없습니다.",
                         message = result.throwable.message ?: StringResource.error_empty_message,
                         onConfirm = {
-                            setEffect { ReadStartContract.Effect.Navigation.Back }
+                            /*TODO*/
                         },
                         onDismiss = {
-                            setEffect { ReadStartContract.Effect.Navigation.Back }
+                            /*TODO*/
                         }
                     ))
             }

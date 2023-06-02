@@ -38,7 +38,7 @@ class ReadPageViewModel @Inject constructor(
     private lateinit var readMode : ReadMode
     private lateinit var bookId : String
     private lateinit var logic : LogicEntity
-    override fun setInitialState() = ReadPageContract.State(page = null)
+    override fun setInitialState() = ReadPageContract.State(page = null, emptyMessage = StringResource.empty_message_load_data)
 
     override fun handleEvents(event : ReadPageContract.Event) {
         when (event) {
@@ -87,7 +87,7 @@ class ReadPageViewModel @Inject constructor(
                 isStartPage = isStartPage
             )
             useCaseRecordSavePageId(userId = userId, readMode = readMode.name, bookId = bookId, savePageId = pageId)
-            setState { copy(page = it) }
+            setState { copy(page = it, emptyMessage = null) }
         } ?: {
             cancel(cause = FileNotFoundCancellationException(message = "[$bookId Book] page[$pageId] is null"))
         }

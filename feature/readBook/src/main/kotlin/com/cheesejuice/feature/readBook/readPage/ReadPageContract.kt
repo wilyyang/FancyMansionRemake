@@ -8,7 +8,8 @@ import com.cheesejuice.domain.entity.readbook.book.PageEntity
 
 class ReadPageContract {
     data class State(
-        val page : PageEntity?
+        val page : PageEntity?,
+        val emptyMessage : String?
     ) : ViewState
 
     sealed class Event : ViewEvent {
