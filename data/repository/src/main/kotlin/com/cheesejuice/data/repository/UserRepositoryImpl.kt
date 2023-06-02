@@ -23,6 +23,13 @@ class UserRepositoryImpl @Inject constructor(
         userPreferencesSource.setUserId(userId)
     }
 
+    override suspend fun getIsFirstExecute() : Boolean {
+        return userPreferencesSource.getIsFirstExecute()
+    }
+    override suspend fun setIsFirstExecute(value : Boolean){
+        userPreferencesSource.setIsFirstExecute(value)
+    }
+
     /**
      * Room Database
      */

@@ -3,6 +3,7 @@ package com.cheesejuice.datasource.preferencesDatastore
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -34,6 +35,16 @@ class UserDatastoreSource @Inject constructor(
     override suspend fun setUserId(value : String){
         context.dataStore.edit { pref ->
             pref[keyUserId] = value
+        }
+    }
+
+    private val keyIsFirstExecute = booleanPreferencesKey("KEY_IS_FIRST_EXECUTE")
+
+    override suspend fun getIsFirstExecute() : Boolean = context.dataStore.data.first()[keyIsFirstExecute] ?: false
+
+    override suspend fun setIsFirstExecute(value : Boolean){
+        context.dataStore.edit { pref ->
+            pref[keyIsFirstExecute] = value
         }
     }
 }
