@@ -22,3 +22,16 @@ class ReadPageContract {
         }
     }
 }
+
+object Navigation {
+    object Args {
+        const val USER_ID = "user_id"
+        const val READ_MODE = "read_mode"
+        const val BOOK_ID = "book_id"
+        const val PAGE_ID = "page_id"
+    }
+
+    object Routes {
+        const val READ_PAGE = "read_page"
+    }
+}

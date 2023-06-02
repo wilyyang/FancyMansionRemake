@@ -16,7 +16,7 @@ class UseCaseGetReadRecord @Inject constructor(
     private val useCaseInitReadRecord : UseCaseInitReadRecord
 ) {
     suspend operator fun invoke(userId : String, config : ConfigEntity)
-    = invoke(userId = userId, readMode = config.readMode, bookId = config.bookId, savePage = config.defaultStartPageId)
+    = invoke(userId = userId, readMode = config.readMode, bookId = config.bookId)
 
     suspend operator fun invoke(userId : String, readMode : String, bookId : String, savePage : Long = NOT_ASSIGN_SAVE_PAGE) =
         withContext(dispatcher) {

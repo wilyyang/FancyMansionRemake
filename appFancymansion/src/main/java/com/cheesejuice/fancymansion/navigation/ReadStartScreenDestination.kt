@@ -15,9 +15,16 @@ fun ReadStartScreenDestination(navController: NavController) {
         loadState = viewModel.loadState.value,
         effectFlow = viewModel.effect,
         onEventSent = { event -> viewModel.setEvent(event) },
-        onNavigationRequested = { navigationEffect ->
-            if (navigationEffect is ReadStartContract.Effect.Navigation.Back) {
-                // navController.navigate(Navigation.Routes.THEME_PREVIEW)
+        onNavigationRequested = { effect ->
+            when (effect) {
+                is ReadStartContract.Effect.Navigation.ReadStart -> {
+                    navController.navigateReadPageScreen(
+                        userId = effect.userId,
+                        readMode = effect.readMode.name,
+                        bookId = effect.bookId,
+                        pageId = effect.pageId
+                    )
+                }
             }
         }
     )
