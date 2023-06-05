@@ -19,7 +19,7 @@ import com.cheesejuice.core.common.R
 import com.cheesejuice.core.ui.component.BasicButton
 import com.cheesejuice.core.ui.component.BookImage
 import com.cheesejuice.core.ui.component.Label
-import com.cheesejuice.core.ui.theme.dividerAlpha
+import com.cheesejuice.core.ui.theme.dividerColor
 import com.cheesejuice.core.ui.theme.onTextAlpha
 import com.cheesejuice.domain.entity.readbook.book.ChoiceItemEntity
 import com.cheesejuice.feature.readBook.readPage.ReadPageContract
@@ -48,7 +48,7 @@ fun ReadPageScreenContent(
                     .height(280.dp),
                 image = pageImage
             )
-            Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha))
+            Divider(color = dividerColor())
         }
         LazyColumn(
             modifier = Modifier
