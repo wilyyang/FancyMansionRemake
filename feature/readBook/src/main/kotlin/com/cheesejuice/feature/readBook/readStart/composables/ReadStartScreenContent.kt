@@ -31,20 +31,38 @@ fun ReadStartScreenContent(
     date : Long,
     savePageId : Long,
     savePageTitle : String?,
+    savePageImage : File?,
     onEventSent : (event : ReadStartContract.Event) -> Unit
 ) {
-    BookCoverContent(
-        coverImage = coverImage,
-        description = description,
-        title = title,
-        writer = writer,
-        email = email,
-        date = date
-    )
+    Column {
+        BookCoverContent(
+            modifier = Modifier.weight(1f),
+            coverImage = coverImage,
+            description = description,
+            title = title,
+            writer = writer,
+            email = email,
+            date = date
+        )
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(60.dp)) {
+            BookImage(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .border(border = BorderStroke(width = 1.dp, color = dividerColor())),
+                image = savePageImage
+            )
+        }
+    }
+
 }
 
 @Composable
 fun BookCoverContent(
+    modifier : Modifier,
     coverImage : File? = null,
     description : String,
     title : String,
@@ -53,12 +71,14 @@ fun BookCoverContent(
     date : Long
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
         item {
             Spacer(Modifier.height(50.dp))
 
-            Column(modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             horizontalAlignment = Alignment.CenterHorizontally) {
                 BookImage(
                     modifier = Modifier
@@ -99,6 +119,7 @@ fun ReadStartScreenContentPreview() {
             date = Sample.book.config.updateTime,
             savePageId = Sample.book.pageContents[2].pageId,
             savePageTitle = Sample.book.pageContents[2].pageTitle,
+            savePageImage = null,
             onEventSent = {}
         )
     }

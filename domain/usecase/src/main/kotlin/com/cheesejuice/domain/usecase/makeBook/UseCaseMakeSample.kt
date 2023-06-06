@@ -26,6 +26,7 @@ class UseCaseMakeSample @Inject constructor(
             initBookDir(userId, readMode, bookId)
 
             makeConfigFile(Sample.book.config)
+            makeCoverImageFileFromResource(userId, readMode, bookId, Sample.book.config.coverImage, R.raw.image_1)
             makeLogicFile(Sample.book.logic, userId, readMode, bookId)
 
             for (pageContent in Sample.book.pageContents) {
@@ -42,7 +43,7 @@ class UseCaseMakeSample @Inject constructor(
                 "game_end.jpg" to R.raw.game_end
             )
             array.forEach {
-                makeBookRepository.makeImageFileFromResource(userId, readMode, bookId, it.first, it.second)
+                makeImageFileFromResource(userId, readMode, bookId, it.first, it.second)
             }
         }
     }

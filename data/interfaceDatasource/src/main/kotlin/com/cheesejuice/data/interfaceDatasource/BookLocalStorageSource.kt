@@ -25,6 +25,8 @@ interface BookLocalStorageSource {
 
     suspend fun makePageContentFile(page : PageContentMapper, userId : String, readMode : ReadMode, bookId : String) : Boolean
 
+    suspend fun makeCoverImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
+
     suspend fun makeImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int)
 
     /**

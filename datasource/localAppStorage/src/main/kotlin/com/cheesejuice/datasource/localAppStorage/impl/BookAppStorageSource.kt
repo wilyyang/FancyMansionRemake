@@ -36,6 +36,14 @@ class BookAppStorageSource @Inject constructor(private val storageDao : AppStora
     override suspend fun makePageContentFile(page : PageContentMapper, userId : String, readMode : ReadMode, bookId : String) =
         storageDao.makePageContentFile(page.asData(), userId, readMode, bookId)
 
+    override suspend fun makeCoverImageFileFromResource(
+        userId : String,
+        readMode : ReadMode,
+        bookId : String,
+        imageName : String,
+        resourceId : Int
+    ) = storageDao.makeCoverImageFileFromResource(userId, readMode, bookId, imageName, resourceId)
+
     override suspend fun makeImageFileFromResource(
         userId : String,
         readMode : ReadMode,

@@ -24,6 +24,7 @@ fun BaseScreen(
     // top bar
     title : String? = null,
     idNavigationIcon : Int = R.drawable.ic_menu_24px,
+    topBarColor : Color? = null,
     onClickNavigation : (() -> Unit)? = null,
     actions : @Composable (RowScope.() -> Unit)? = null,
 
@@ -55,6 +56,7 @@ fun BaseScreen(
 
                 title = title,
                 idNavigationIcon = idNavigationIcon,
+                topBarColor = topBarColor,
                 onClickNavigation = onClickNavigation,
                 actions = actions,
 
@@ -73,6 +75,7 @@ fun BaseScreen(
     // top bar
     title : String? = null,
     idNavigationIcon : Int? = null,
+    topBarColor : Color? = null,
     onClickNavigation : (() -> Unit)? = null,
     actions : @Composable (RowScope.() -> Unit)? = null,
 
@@ -87,6 +90,7 @@ fun BaseScreen(
 
         title = title,
         idNavigationIcon = idNavigationIcon,
+        topBarColor = topBarColor,
         onClickNavigation = onClickNavigation,
         actions = actions,
 
@@ -126,6 +130,7 @@ fun BaseContent(
     // top bar
     title : String? = null,
     idNavigationIcon : Int? = null,
+    topBarColor : Color? = null,
     onClickNavigation : (() -> Unit)? = null,
     actions : @Composable (RowScope.() -> Unit)? = null,
 
@@ -140,6 +145,7 @@ fun BaseContent(
             TopBar(
                 title = title,
                 idNavigationIcon = idNavigationIcon,
+                topBarColor = topBarColor,
                 onClickNavigation = onClickNavigation,
                 actions = actions
             )

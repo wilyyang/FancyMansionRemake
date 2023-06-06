@@ -3,6 +3,7 @@ package com.cheesejuice.feature.readBook.readStart.composables
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.cheesejuice.core.common.resource.StringResource
 import com.cheesejuice.core.ui.base.BaseScreen
@@ -11,6 +12,7 @@ import com.cheesejuice.core.ui.base.SIDE_EFFECTS_KEY
 import com.cheesejuice.core.ui.theme.colorScheme
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.domain.usecase.makeBook.sample.Sample
+import com.cheesejuice.core.ui.R
 import com.cheesejuice.feature.readBook.readStart.ReadStartContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -35,12 +37,15 @@ fun ReadStartScreenFrame(
     }
 
     BaseScreen(
-        loadState = loadState
+        loadState = loadState,
+        topBarColor = Color.Transparent,
+        idNavigationIcon = R.drawable.ic_chevron_left_36px,
+        onClickNavigation = {}
     ) {
         uiState.run {
             if (config != null) {
                 ReadStartScreenContent(
-                    coverImage = null,
+                    coverImage = coverImage,
                     description = config.description,
                     title = config.title,
                     writer = config.writer,
@@ -48,6 +53,7 @@ fun ReadStartScreenFrame(
                     date = config.updateTime,
                     savePageId = uiState.savePageId,
                     savePageTitle = uiState.savePageTitle,
+                    savePageImage = uiState.savePageImage,
                     onEventSent = onEventSent
                 )
             }else{
@@ -71,6 +77,7 @@ fun ReadStartScreenPreview() {
                 coverImage = null,
                 savePageId = Sample.book.pageContents[2].pageId,
                 savePageTitle = Sample.book.pageContents[2].pageTitle,
+                savePageImage = null,
                 emptyMessage = null
             ),
             effectFlow = null,

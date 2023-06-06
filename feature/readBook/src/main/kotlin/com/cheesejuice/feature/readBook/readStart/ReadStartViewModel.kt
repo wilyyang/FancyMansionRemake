@@ -14,6 +14,7 @@ import com.cheesejuice.domain.usecase.makeBook.UseCaseMakeSample
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookConfigFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookCoverImageFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookPageContentFromFile
+import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookPageImageFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetReadRecord
 import com.cheesejuice.domain.usecase.readBook.UseCaseInitReadRecord
 import com.cheesejuice.domain.usecase.user.UseCaseCheckIsFirstExecute
@@ -33,6 +34,7 @@ class ReadStartViewModel @Inject constructor(
     private val useCaseGetBookConfigFromFile : UseCaseGetBookConfigFromFile,
     private val useCaseGetBookCoverImageFromFile : UseCaseGetBookCoverImageFromFile,
     private val useCaseGetBookPageContentFromFile : UseCaseGetBookPageContentFromFile,
+    private val useCaseGetBookPageImageFromFile : UseCaseGetBookPageImageFromFile,
 
     private val useCaseGetUserId : UseCaseGetUserId,
     private val useCaseInitReadRecord : UseCaseInitReadRecord,
@@ -43,8 +45,9 @@ class ReadStartViewModel @Inject constructor(
     private lateinit var readMode : ReadMode
     private lateinit var bookId : String
     override fun setInitialState() = ReadStartContract.State(
-        config = null, coverImage = null, savePageId = NOT_ASSIGN_SAVE_PAGE,
-        savePageTitle = null, emptyMessage = StringResource.empty_message_load_data
+        config = null, coverImage = null,
+        savePageId = NOT_ASSIGN_SAVE_PAGE, savePageTitle = null, savePageImage = null,
+        emptyMessage = StringResource.empty_message_load_data
     )
 
     override fun handleEvents(event : ReadStartContract.Event) {
@@ -97,14 +100,20 @@ class ReadStartViewModel @Inject constructor(
             val savePageId = configLocal?.let {
                 useCaseGetReadRecord(userId = userId, config = configLocal).savePage
             }
-            val savePageTitle = if (savePageId != null && savePageId != NOT_ASSIGN_SAVE_PAGE) {
-                useCaseGetBookPageContentFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = savePageId)?.pageTitle
+
+            val pageContent = if (savePageId != null && savePageId != NOT_ASSIGN_SAVE_PAGE) {
+                useCaseGetBookPageContentFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = savePageId)
             } else null
+
+            val savePageImage = pageContent?.let {
+                useCaseGetBookPageImageFromFile(userId = userId, readMode = readMode, bookId = bookId, image = pageContent.pageImage)
+            }
 
             if (configLocal != null && coverImage != null && savePageId != null) {
                 setState {
                     copy(
-                        config = configLocal, coverImage = coverImage, savePageId = savePageId, savePageTitle = savePageTitle,
+                        config = configLocal, coverImage = coverImage,
+                        savePageId = savePageId, savePageTitle = pageContent?.pageTitle, savePageImage = savePageImage,
                         emptyMessage = null
                     )
                 }

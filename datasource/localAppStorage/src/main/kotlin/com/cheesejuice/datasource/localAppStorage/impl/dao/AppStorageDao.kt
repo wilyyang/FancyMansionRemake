@@ -105,6 +105,26 @@ class AppStorageDao @Inject internal constructor(
         } ?: false
     }
 
+    suspend fun makeCoverImageFileFromResource(
+        userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int
+    ) {
+        fileCover(dirRoot, userId, readMode, bookId, imageName)?.let { file ->
+            val inputStream : InputStream = context.resources.openRawResource(resourceId)
+            val outputStream = FileOutputStream(file)
+            val buff = ByteArray(1024)
+
+            var read = 0
+            try {
+                while (inputStream.read(buff).also { read = it } > 0) {
+                    outputStream.write(buff, 0, read)
+                }
+            } finally {
+                inputStream.close()
+                outputStream.close()
+            }
+        }
+    }
+
     suspend fun makeImageFileFromResource(userId : String, readMode : ReadMode, bookId : String, imageName : String, resourceId : Int) {
         fileMediaImage(dirRoot, userId, readMode, bookId, imageName)?.let { file ->
             val inputStream : InputStream = context.resources.openRawResource(resourceId)

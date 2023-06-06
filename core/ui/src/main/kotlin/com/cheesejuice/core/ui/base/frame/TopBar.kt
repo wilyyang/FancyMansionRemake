@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.core.ui.component.ButtonIconFixed
@@ -16,6 +17,7 @@ import com.cheesejuice.core.ui.R
 fun TopBar(
     title: String? = null,
     idNavigationIcon: Int? = null,
+    topBarColor : Color? = null,
     onClickNavigation: (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
@@ -26,7 +28,7 @@ fun TopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
-                .background(MaterialTheme.colorScheme.surface)
+                .background(topBarColor ?: MaterialTheme.colorScheme.surface)
         ) {
             onClickNavigation?.also {
                 ButtonIconFixed(

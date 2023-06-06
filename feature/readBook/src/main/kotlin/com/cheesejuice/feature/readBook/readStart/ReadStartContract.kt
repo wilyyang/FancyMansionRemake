@@ -13,6 +13,7 @@ class ReadStartContract {
         val coverImage : File?,
         val savePageId : Long,
         val savePageTitle : String?,
+        val savePageImage : File?,
         val emptyMessage : String?
     ) : ViewState
 
