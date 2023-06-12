@@ -49,13 +49,13 @@ fun TestScreenPreview(){
         colorScheme = colorScheme,
         typography = typography
     ){
-        TestScreenFrame()
+        TestScreenContent()
     }
 }
 
 @Composable
 fun TestScreenFrame(
-    loadState: LoadState = LoadState.Idle,
+    loadState: LoadState = LoadState.Loading(message = "테스트 로딩중"),
     menu1Click : ()->Unit = {},
     menu2Click : ()->Unit = {},
     menu3Click : ()->Unit = {},

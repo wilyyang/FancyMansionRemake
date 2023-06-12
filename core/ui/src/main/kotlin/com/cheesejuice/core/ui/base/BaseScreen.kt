@@ -36,7 +36,10 @@ fun BaseScreen(
     loadState : LoadState,
 
     content : @Composable (paddingValues : PaddingValues) -> Unit
-) {
+)
+
+
+{
     ModalNavigationDrawer(
         // drawer
         drawerState = drawerState,

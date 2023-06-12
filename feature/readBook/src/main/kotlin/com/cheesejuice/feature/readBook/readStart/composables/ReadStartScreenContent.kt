@@ -1,9 +1,11 @@
 package com.cheesejuice.feature.readBook.readStart.composables
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -13,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cheesejuice.core.common.NOT_ASSIGN_SAVE_PAGE
 import com.cheesejuice.core.ui.component.BookImage
 import com.cheesejuice.core.ui.theme.colorScheme
 import com.cheesejuice.core.ui.theme.dividerColor
+import com.cheesejuice.core.ui.theme.dividerLightColor
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.domain.usecase.makeBook.sample.Sample
 import com.cheesejuice.feature.readBook.readStart.ReadStartContract
@@ -45,15 +49,13 @@ fun ReadStartScreenContent(
             date = date
         )
 
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(60.dp)) {
-            BookImage(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .border(border = BorderStroke(width = 1.dp, color = dividerColor())),
-                image = savePageImage
+        if(savePageId != NOT_ASSIGN_SAVE_PAGE && savePageTitle != null){
+            BottomPreviewSaveContent(
+                savePageId = savePageId,
+                savePageTitle = savePageTitle,
+                savePageImage = savePageImage,
+                onClickStartSavePage = {
+                }
             )
         }
     }
@@ -99,6 +101,59 @@ fun BookCoverContent(
                 Text(text = writer, style = MaterialTheme.typography.bodyLarge)
                 Text(text = "$email $date", style = MaterialTheme.typography.bodyLarge)
             }
+        }
+    }
+}
+
+@Composable
+fun BottomPreviewSaveContent(
+    savePageId : Long,
+    savePageTitle : String,
+    savePageImage : File?,
+    onClickStartSavePage : () -> Unit
+) {
+    Divider(color = dividerLightColor())
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp).background(color = MaterialTheme.colorScheme.surface)
+    ) {
+        BookImage(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(80.dp),
+            image = savePageImage
+        )
+        Divider(
+            color = dividerLightColor(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp)
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxHeight().weight(1f)
+                .padding(start = 10.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = savePageTitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text(text = "page : $savePageId", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+
+        Divider(
+            color = dividerLightColor(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(80.dp),
+        ){
+            Text(text = "여기부터 다시읽기", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
         }
     }
 }

@@ -10,9 +10,13 @@ import com.cheesejuice.core.ui.theme.*
 
 val disableAlpha = 0.38f
 val dividerAlpha = 0.38f
+val dividerLightAlpha = 0.19f
 val onTextAlpha = 0.76f
 @Composable
 fun dividerColor() = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha)
+
+@Composable
+fun dividerLightColor() = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerLightAlpha)
 
 private val LightColorScheme = lightColorScheme(
     primary = primary_40,

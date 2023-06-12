@@ -3,12 +3,15 @@ package com.cheesejuice.fancymansion.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.cheesejuice.core.ui.theme.preview.TestScreenFrame
 import com.cheesejuice.feature.readBook.readStart.ReadStartContract
 import com.cheesejuice.feature.readBook.readStart.ReadStartViewModel
 import com.cheesejuice.feature.readBook.readStart.composables.ReadStartScreenFrame
 
 @Composable
 fun ReadStartScreenDestination(navController: NavController) {
+    TestScreenFrame()
+/*
     val viewModel : ReadStartViewModel = hiltViewModel()
     ReadStartScreenFrame(
         uiState = viewModel.uiState.value,
@@ -27,5 +30,5 @@ fun ReadStartScreenDestination(navController: NavController) {
                 }
             }
         }
-    )
+    )*/
 }
