@@ -9,13 +9,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cheesejuice.core.ui.component.ButtonIconFixed
 import com.cheesejuice.core.ui.R
 
+val baseTopBarDp = 56.dp
+
 @Composable
 fun TopBar(
     title: String? = null,
+    height : Dp = baseTopBarDp,
     idNavigationIcon: Int? = null,
     topBarColor : Color? = null,
     onClickNavigation: (() -> Unit)? = null,
@@ -27,12 +31,12 @@ fun TopBar(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(height)
                 .background(topBarColor ?: MaterialTheme.colorScheme.surface)
         ) {
             onClickNavigation?.also {
                 ButtonIconFixed(
-                    modifier = Modifier.size(56.dp),
+                    modifier = Modifier.size(height),
                     idIcon = idNavigationIcon ?: R.drawable.ic_chevron_left_24px,
                     onClick = it
                 )
