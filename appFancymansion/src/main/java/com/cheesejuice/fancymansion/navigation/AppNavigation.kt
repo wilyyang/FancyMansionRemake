@@ -8,8 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.cheesejuice.core.ui.theme.preview.THEME_PREVIEW_ROUTE
-import com.cheesejuice.core.ui.theme.preview.ThemePreviewMaterialColor
 import com.cheesejuice.core.ui.theme.preview.ThemePreviewScreenFrame
+import com.cheesejuice.feature.makeBook.makeStart.Navigation.Routes.MAKE_START
 import com.cheesejuice.feature.readBook.readPage.Navigation.Args.BOOK_ID
 import com.cheesejuice.feature.readBook.readPage.Navigation.Args.PAGE_ID
 import com.cheesejuice.feature.readBook.readPage.Navigation.Args.READ_MODE
@@ -28,6 +28,10 @@ fun AppNavigation() {
 
         composable(route = THEME_PREVIEW_ROUTE) {
             ThemePreviewScreenFrame()
+        }
+
+        composable(route = MAKE_START) {
+            MakeStartScreenDestination(navController = navController)
         }
 
         composable(route = READ_START) {

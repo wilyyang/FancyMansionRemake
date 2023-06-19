@@ -1,0 +1,16 @@
+apply from: "$rootDir/gradle/_library.gradle"
+apply from: "$rootDir/gradle/material.gradle"
+apply from: "$rootDir/gradle/compose.gradle"
+apply from: "$rootDir/gradle/image.gradle"
+apply from: "$rootDir/gradle/hilt.gradle"
+
+android {
+    namespace 'com.cheesejuice.feature.makeBook'
+}
+
+dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":domain:usecase"))
+    implementation(project(":domain:entity"))
+}
