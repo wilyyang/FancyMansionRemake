@@ -38,7 +38,7 @@ fun ReadStartScreenFrame(
 
     BaseScreen(
         loadState = loadState,
-        topBarColor = Color.Transparent,
+        isOverlayTopBar = true,
         idNavigationIcon = R.drawable.ic_chevron_left_36px,
         onClickNavigation = {}
     ) {
@@ -49,6 +49,7 @@ fun ReadStartScreenFrame(
                     description = config.description,
                     title = config.title,
                     writer = config.writer,
+                    illustrator = config.illustrator,
                     email = config.email,
                     date = config.updateTime,
                     savePageId = uiState.savePageId,

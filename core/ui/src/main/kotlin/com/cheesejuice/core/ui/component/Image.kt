@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.ImageLoader
@@ -43,6 +44,7 @@ fun BookImage(
 
     Image(
         modifier = modifier,
+        contentScale = ContentScale.Crop,
         contentDescription = null,
         painter = painter
     )

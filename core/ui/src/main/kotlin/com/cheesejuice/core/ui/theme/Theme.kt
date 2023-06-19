@@ -12,6 +12,9 @@ val disableAlpha = 0.38f
 val dividerAlpha = 0.38f
 val dividerLightAlpha = 0.19f
 val onTextAlpha = 0.76f
+
+val subTextAlpha = 0.66f
+val lightTextAlpha = 0.48f
 @Composable
 fun dividerColor() = MaterialTheme.colorScheme.outlineVariant.copy(alpha = dividerAlpha)
 

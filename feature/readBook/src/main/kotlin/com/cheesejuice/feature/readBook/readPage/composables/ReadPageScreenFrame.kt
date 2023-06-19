@@ -43,6 +43,7 @@ fun ReadPageScreenFrame(
     })
 
     BaseScreen(
+        isOverlayTopBar = true,
         loadState = loadState
     ) {
         uiState.run {

@@ -1,5 +1,7 @@
 package com.cheesejuice.core.common
 
+import java.text.SimpleDateFormat
+
 enum class PageType{
     START, NORMAL, END;
 
@@ -32,6 +34,10 @@ const val DEFAULT_END_PAGE_ID = -1L
 const val SAMPLE_BOOK_ID = "12345"
 
 const val LOCAL_USER_ID = "local"
+
+const val DIGIT_PAGE_ID = 1_00_00_00_00L
+
+val monthDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
 enum class Comparison(
     val enName : String,
