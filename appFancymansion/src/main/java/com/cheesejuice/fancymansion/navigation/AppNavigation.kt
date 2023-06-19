@@ -23,7 +23,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = READ_START
+        startDestination = MAKE_START
     ) {
 
         composable(route = THEME_PREVIEW_ROUTE) {
