@@ -21,7 +21,11 @@ fun MakeStartScreenDestination(navController: NavController) {
         onNavigationRequested = { effect ->
             when (effect) {
                 is MakeStartContract.Effect.Navigation.NavigateReadStart -> {
-                    navController.navigate(READ_START)
+                    navController.navigateReadStartScreen(
+                        userId = effect.userId,
+                        readMode = effect.readMode.name,
+                        bookId = effect.bookId
+                    )
                 }
 
                 else -> {}

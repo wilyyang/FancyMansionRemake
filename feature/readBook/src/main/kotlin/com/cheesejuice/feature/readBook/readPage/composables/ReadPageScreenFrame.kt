@@ -31,8 +31,8 @@ fun ReadPageScreenFrame(
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effectFlow?.onEach { effect ->
             when (effect) {
-                ReadPageContract.Effect.Navigation.Back -> {
-                    onNavigationRequested(ReadPageContract.Effect.Navigation.Back)
+                is ReadPageContract.Effect.Navigation.Back -> {
+                    onNavigationRequested(effect)
                 }
             }
         }?.collect()

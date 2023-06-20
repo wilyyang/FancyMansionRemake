@@ -3,8 +3,6 @@ package com.cheesejuice.feature.makeBook.makeStart.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +15,6 @@ import com.cheesejuice.core.ui.base.SIDE_EFFECTS_KEY
 import com.cheesejuice.core.ui.theme.colorScheme
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.core.ui.R
-import com.cheesejuice.core.ui.base.frame.baseTopBarDp
 import com.cheesejuice.core.ui.component.ButtonIconFixed
 import com.cheesejuice.domain.entity.makebook.book.toEditable
 import com.cheesejuice.domain.usecase.makeBook.sample.Sample
@@ -59,7 +56,7 @@ fun MakeStartScreenFrame(
                     modifier = Modifier.fillMaxHeight(),
                     idIcon = R.drawable.ic_preview_play_24px,
                     onClick = {
-                        onEventSent(MakeStartContract.Event.NavigateReadStartClicked)
+                        onEventSent(MakeStartContract.Event.ReadStartPreviewClicked)
                     }
                 )
             }

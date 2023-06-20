@@ -1,18 +1,18 @@
 package com.cheesejuice.feature.readBook.readStart.composables
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.cheesejuice.core.common.resource.StringResource
+import com.cheesejuice.core.ui.R
 import com.cheesejuice.core.ui.base.BaseScreen
 import com.cheesejuice.core.ui.base.LoadState
 import com.cheesejuice.core.ui.base.SIDE_EFFECTS_KEY
 import com.cheesejuice.core.ui.theme.colorScheme
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.domain.usecase.makeBook.sample.Sample
-import com.cheesejuice.core.ui.R
 import com.cheesejuice.feature.readBook.readStart.ReadStartContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -29,18 +29,28 @@ fun ReadStartScreenFrame(
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effectFlow?.onEach { effect ->
             when (effect) {
-                is ReadStartContract.Effect.Navigation.ReadStart -> {
+                is ReadStartContract.Effect.Navigation.NavigateReadPage -> {
+                    onNavigationRequested(effect)
+                }
+
+                is ReadStartContract.Effect.Navigation.Back -> {
                     onNavigationRequested(effect)
                 }
             }
         }?.collect()
     }
 
+    BackHandler(onBack = {
+        onEventSent(ReadStartContract.Event.BackButtonClicked)
+    })
+
     BaseScreen(
         loadState = loadState,
         isOverlayTopBar = true,
         idNavigationIcon = R.drawable.ic_chevron_left_36px,
-        onClickNavigation = {}
+        onClickNavigation = {
+            onEventSent(ReadStartContract.Event.BackButtonClicked)
+        }
     ) {
         uiState.run {
             if (config != null) {

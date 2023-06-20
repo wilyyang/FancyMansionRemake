@@ -3,6 +3,7 @@ package com.cheesejuice.fancymansion.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.cheesejuice.feature.readBook.readPage.ReadPageContract
 import com.cheesejuice.feature.readBook.readStart.ReadStartContract
 import com.cheesejuice.feature.readBook.readStart.ReadStartViewModel
 import com.cheesejuice.feature.readBook.readStart.composables.ReadStartScreenFrame
@@ -17,13 +18,17 @@ fun ReadStartScreenDestination(navController: NavController) {
         onEventSent = { event -> viewModel.setEvent(event) },
         onNavigationRequested = { effect ->
             when (effect) {
-                is ReadStartContract.Effect.Navigation.ReadStart -> {
+                is ReadStartContract.Effect.Navigation.NavigateReadPage -> {
                     navController.navigateReadPageScreen(
                         userId = effect.userId,
                         readMode = effect.readMode.name,
                         bookId = effect.bookId,
                         pageId = effect.pageId
                     )
+                }
+
+                is ReadStartContract.Effect.Navigation.Back -> {
+                    navController.popBackStack()
                 }
             }
         }

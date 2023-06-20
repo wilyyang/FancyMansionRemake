@@ -1,6 +1,7 @@
 package com.cheesejuice.feature.makeBook.makeStart
 
 import androidx.lifecycle.SavedStateHandle
+import com.cheesejuice.core.common.LOCAL_USER_ID
 import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.common.SAMPLE_BOOK_ID
 import com.cheesejuice.core.common.resource.StringResource
@@ -14,6 +15,7 @@ import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookConfigFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookCoverImageFromFile
 import com.cheesejuice.domain.usecase.user.UseCaseCheckIsFirstExecute
 import com.cheesejuice.domain.usecase.user.UseCaseGetUserId
+import com.cheesejuice.domain.usecase.user.UseCaseInitUserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
@@ -21,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MakeStartViewModel @Inject constructor(
     private val savedStateHandle : SavedStateHandle,
+    private val useCaseInitUserInfo : UseCaseInitUserInfo,
     private val useCaseCheckIsFirstExecute : UseCaseCheckIsFirstExecute,
     private val useCaseMakeSample : UseCaseMakeSample,
 
@@ -41,10 +44,14 @@ class MakeStartViewModel @Inject constructor(
 
     override fun handleEvents(event : MakeStartContract.Event) {
         when (event) {
-            is MakeStartContract.Event.NavigateReadStartClicked -> {
+            is MakeStartContract.Event.ReadStartPreviewClicked -> {
                 launchWithLoading {
                     setEffect {
-                        MakeStartContract.Effect.Navigation.NavigateReadStart(userId = userId, readMode = readMode, bookId = bookId)
+                        MakeStartContract.Effect.Navigation.NavigateReadStart(
+                            userId = userId,
+                            readMode = readMode,
+                            bookId = bookId
+                        )
                     }
                 }
             }
@@ -56,9 +63,9 @@ class MakeStartViewModel @Inject constructor(
         launchWithLoading {
             // 임시 영역
             if(!useCaseCheckIsFirstExecute()){
+                useCaseInitUserInfo(userId = LOCAL_USER_ID)
                 useCaseMakeSample()
             }
-
             // Get Data
             userId = useCaseGetUserId()
             bookId = SAMPLE_BOOK_ID

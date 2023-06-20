@@ -15,7 +15,7 @@ class MakeStartContract {
     ) : ViewState
 
     sealed class Event : ViewEvent {
-        object NavigateReadStartClicked : Event()
+        object ReadStartPreviewClicked : Event()
     }
 
     sealed class Effect : ViewSideEffect {

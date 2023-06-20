@@ -34,7 +34,14 @@ fun AppNavigation() {
             MakeStartScreenDestination(navController = navController)
         }
 
-        composable(route = READ_START) {
+        composable(
+            route = "$READ_START/{$USER_ID}/{$READ_MODE}/{$BOOK_ID}",
+            arguments = listOf(
+                navArgument(USER_ID) { type = NavType.StringType },
+                navArgument(READ_MODE) { type = NavType.StringType },
+                navArgument(BOOK_ID) { type = NavType.StringType }
+            )
+        ) {
             ReadStartScreenDestination(navController = navController)
         }
 
@@ -50,6 +57,14 @@ fun AppNavigation() {
             ReadPageScreenDestination(navController = navController)
         }
     }
+}
+
+fun NavController.navigateReadStartScreen(
+    userId : String,
+    readMode : String,
+    bookId : String
+) {
+    navigate("${READ_START}/$userId/$readMode/$bookId")
 }
 
 fun NavController.navigateReadPageScreen(

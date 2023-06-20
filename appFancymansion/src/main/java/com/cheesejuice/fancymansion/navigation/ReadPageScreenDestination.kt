@@ -17,9 +17,7 @@ fun ReadPageScreenDestination(navController : NavController) {
         onEventSent = { event -> viewModel.setEvent(event) },
         onNavigationRequested = { effect ->
             if (effect is ReadPageContract.Effect.Navigation.Back) {
-                navController.navigate(route = READ_START){
-                    popUpTo(navController.graph.id)
-                }
+                navController.popBackStack()
             }
         },
     )

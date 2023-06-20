@@ -89,7 +89,7 @@ fun ReadStartScreenContent(
                     backgroundColor = primary_50,
                     contentPadding = PaddingValues(vertical = 16.dp, horizontal = 24.dp),
                     onClick = {
-                        onEventSent(ReadStartContract.Event.ReadStartFirstPageClicked)
+                        onEventSent(ReadStartContract.Event.ReadPageFirstClicked)
                     }
                 )
             }
@@ -102,7 +102,7 @@ fun ReadStartScreenContent(
                 savePageTitle = savePageTitle,
                 savePageImage = savePageImage,
                 onClickStartSavePage = {
-                    onEventSent(ReadStartContract.Event.ReadStartSavePointClicked)
+                    onEventSent(ReadStartContract.Event.ReadPageSavePointClicked)
                 }
             )
         }
