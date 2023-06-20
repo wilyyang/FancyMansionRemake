@@ -78,7 +78,7 @@ class MakeStartViewModel @Inject constructor(
             if (configLocal != null) {
                 setState {
                     copy(
-                        config = configLocal.toEditable(), coverImage = coverImage,
+                        config = configLocal, coverImage = coverImage,
                         emptyMessage = null
                     )
                 }

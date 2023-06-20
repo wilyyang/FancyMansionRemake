@@ -1,7 +1,7 @@
 package com.cheesejuice.domain.interfaceRepository
 
 import com.cheesejuice.core.common.ReadMode
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import com.cheesejuice.domain.entity.readbook.book.LogicEntity
 import com.cheesejuice.domain.entity.readbook.book.PageContentEntity
 

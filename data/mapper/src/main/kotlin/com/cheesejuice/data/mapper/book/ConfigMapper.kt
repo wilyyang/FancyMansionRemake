@@ -3,7 +3,7 @@ package com.cheesejuice.data.mapper.book
 import com.cheesejuice.core.common.DEFAULT_END_PAGE_ID
 import com.cheesejuice.core.common.DEFAULT_START_PAGE_ID
 import com.cheesejuice.core.common.ReadMode
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 
 data class ConfigMapper(
     val bookId : String = "",

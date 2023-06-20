@@ -4,7 +4,7 @@ import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.ui.base.ViewEvent
 import com.cheesejuice.core.ui.base.ViewSideEffect
 import com.cheesejuice.core.ui.base.ViewState
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import java.io.File
 
 class ReadStartContract {

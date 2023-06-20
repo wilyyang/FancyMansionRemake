@@ -1,4 +1,4 @@
-package com.cheesejuice.domain.entity.readbook.book
+package com.cheesejuice.domain.entity.book
 
 import com.cheesejuice.core.common.DEFAULT_END_PAGE_ID
 import com.cheesejuice.core.common.DEFAULT_START_PAGE_ID

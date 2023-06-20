@@ -6,7 +6,7 @@ import com.cheesejuice.data.interfaceDatasource.RecordLocalDatabaseSource
 import com.cheesejuice.data.mapper.book.asEntity
 import com.cheesejuice.data.mapper.user.asEntity
 import com.cheesejuice.data.mapper.user.asMapper
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import com.cheesejuice.domain.entity.readbook.book.LogicEntity
 import com.cheesejuice.domain.entity.readbook.book.PageContentEntity
 import com.cheesejuice.domain.entity.readbook.record.CountRecordEntity

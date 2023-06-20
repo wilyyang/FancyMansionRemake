@@ -3,7 +3,7 @@ package com.cheesejuice.data.repository
 import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.data.interfaceDatasource.BookLocalStorageSource
 import com.cheesejuice.data.mapper.book.asMapper
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import com.cheesejuice.domain.entity.readbook.book.LogicEntity
 import com.cheesejuice.domain.entity.readbook.book.PageContentEntity
 import com.cheesejuice.domain.interfaceRepository.MakeBookRepository

@@ -4,12 +4,12 @@ import com.cheesejuice.core.common.ReadMode
 import com.cheesejuice.core.ui.base.ViewEvent
 import com.cheesejuice.core.ui.base.ViewSideEffect
 import com.cheesejuice.core.ui.base.ViewState
-import com.cheesejuice.domain.entity.makebook.book.EditableConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import java.io.File
 
 class MakeStartContract {
     data class State(
-        val config : EditableConfigEntity?,
+        val config : ConfigEntity?,
         val coverImage : File?,
         val emptyMessage : String?
     ) : ViewState

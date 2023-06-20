@@ -5,6 +5,7 @@ import com.cheesejuice.core.common.LOCAL_USER_ID
 import com.cheesejuice.core.common.PageType
 import com.cheesejuice.core.common.Relation
 import com.cheesejuice.core.common.SAMPLE_BOOK_ID
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import com.cheesejuice.domain.entity.readbook.book.*
 
 object Sample {

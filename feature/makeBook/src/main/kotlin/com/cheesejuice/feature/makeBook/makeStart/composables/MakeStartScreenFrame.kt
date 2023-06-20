@@ -16,7 +16,6 @@ import com.cheesejuice.core.ui.theme.colorScheme
 import com.cheesejuice.core.ui.theme.typography
 import com.cheesejuice.core.ui.R
 import com.cheesejuice.core.ui.component.ButtonIconFixed
-import com.cheesejuice.domain.entity.makebook.book.toEditable
 import com.cheesejuice.domain.usecase.makeBook.sample.Sample
 import com.cheesejuice.feature.makeBook.makeStart.MakeStartContract
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +46,7 @@ fun MakeStartScreenFrame(
         loadState = loadState,
         isOverlayTopBar = true,
         idNavigationIcon = R.drawable.ic_chevron_left_36px,
+        onClickNavigation = {},
         actions = {
             Row(
                 modifier = Modifier.weight(1f),
@@ -60,8 +60,7 @@ fun MakeStartScreenFrame(
                     }
                 )
             }
-        },
-        onClickNavigation = {}
+        }
     ) {
         uiState.run {
             if (config != null) {
@@ -92,7 +91,7 @@ fun MakeStartScreenPreview() {
         MakeStartScreenFrame(
             loadState = LoadState.Idle,
             uiState = MakeStartContract.State(
-                config = Sample.book.config.toEditable(),
+                config = Sample.book.config,
                 coverImage = null,
                 emptyMessage = null
             ),

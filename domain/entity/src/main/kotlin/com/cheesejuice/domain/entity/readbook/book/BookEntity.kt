@@ -1,5 +1,7 @@
 package com.cheesejuice.domain.entity.readbook.book
 
+import com.cheesejuice.domain.entity.book.ConfigEntity
+
 /**
  * # [BookEntity]
  * ## 1. [ConfigEntity]

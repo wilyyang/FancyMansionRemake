@@ -2,7 +2,7 @@ package com.cheesejuice.domain.usecase.readBook
 
 import com.cheesejuice.core.common.NOT_ASSIGN_SAVE_PAGE
 import com.cheesejuice.core.common.di.DispatcherIO
-import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
+import com.cheesejuice.domain.entity.book.ConfigEntity
 import com.cheesejuice.domain.interfaceRepository.ReadBookRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
