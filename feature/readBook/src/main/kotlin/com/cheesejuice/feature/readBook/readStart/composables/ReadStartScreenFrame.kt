@@ -3,8 +3,14 @@ package com.cheesejuice.feature.readBook.readStart.composables
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.cheesejuice.core.common.resource.StringResource
 import com.cheesejuice.core.ui.R
 import com.cheesejuice.core.ui.base.BaseScreen
@@ -26,6 +32,15 @@ fun ReadStartScreenFrame(
     onEventSent : (event : ReadStartContract.Event) -> Unit,
     onNavigationRequested: (ReadStartContract.Effect.Navigation) -> Unit
 ) {
+    OnLifecycleEvent { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_CREATE -> {
+                onEventSent(ReadStartContract.Event.OnCreateScreen)
+            }
+            else -> { }
+        }
+    }
+
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effectFlow?.onEach { effect ->
             when (effect) {
@@ -70,6 +85,24 @@ fun ReadStartScreenFrame(
             }else{
                 ReadStartScreenEmpty(message = emptyMessage ?: StringResource.empty_message_no_data)
             }
+        }
+    }
+}
+
+@Composable
+fun OnLifecycleEvent(onEvent : (owner : LifecycleOwner, event : Lifecycle.Event) -> Unit) {
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+    val eventHandler = rememberUpdatedState(onEvent)
+
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { owner, event ->
+            eventHandler.value(owner, event)
+        }
+
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
         }
     }
 }

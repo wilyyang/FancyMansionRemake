@@ -5,7 +5,6 @@ import com.cheesejuice.core.ui.base.ViewEvent
 import com.cheesejuice.core.ui.base.ViewSideEffect
 import com.cheesejuice.core.ui.base.ViewState
 import com.cheesejuice.domain.entity.readbook.book.ConfigEntity
-import com.cheesejuice.feature.readBook.readPage.ReadPageContract
 import java.io.File
 
 class ReadStartContract {
@@ -21,6 +20,7 @@ class ReadStartContract {
     sealed class Event : ViewEvent {
         object ReadPageFirstClicked : Event()
         object ReadPageSavePointClicked : Event()
+        object OnCreateScreen : Event()
         object BackButtonClicked : Event()
     }
 

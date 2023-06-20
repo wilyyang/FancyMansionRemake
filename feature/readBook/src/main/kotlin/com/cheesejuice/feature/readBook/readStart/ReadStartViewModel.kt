@@ -15,7 +15,6 @@ import com.cheesejuice.domain.usecase.readBook.UseCaseGetBookPageImageFromFile
 import com.cheesejuice.domain.usecase.readBook.UseCaseGetReadRecord
 import com.cheesejuice.domain.usecase.readBook.UseCaseInitReadRecord
 import com.cheesejuice.feature.readBook.readPage.Navigation
-import com.cheesejuice.feature.readBook.readPage.ReadPageContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
@@ -35,6 +34,8 @@ class ReadStartViewModel @Inject constructor(
     private lateinit var userId : String
     private lateinit var readMode : ReadMode
     private lateinit var bookId : String
+    private var isPopBackStack : Boolean = false
+
     override fun setInitialState() = ReadStartContract.State(
         config = null, coverImage = null,
         savePageId = NOT_ASSIGN_SAVE_PAGE, savePageTitle = null, savePageImage = null,
@@ -69,6 +70,16 @@ class ReadStartViewModel @Inject constructor(
                 }
             }
 
+            is ReadStartContract.Event.OnCreateScreen -> {
+                if(isPopBackStack){
+                    launchWithLoading {
+                        updateSavePageInfo()
+                    }
+                }else{
+                    isPopBackStack = true
+                }
+            }
+
             is ReadStartContract.Event.BackButtonClicked -> {
                 setEffect { ReadStartContract.Effect.Navigation.Back }
             }
@@ -85,36 +96,47 @@ class ReadStartViewModel @Inject constructor(
             val coverImage = configLocal?.let {
                 useCaseGetBookCoverImageFromFile(userId = userId, readMode = readMode, bookId = bookId, configLocal.coverImage)
             }
-            val savePageId = configLocal?.let {
-                useCaseGetReadRecord(userId = userId, config = configLocal).savePage
-            }
 
-            val pageContent = if (savePageId != null && savePageId != NOT_ASSIGN_SAVE_PAGE) {
-                useCaseGetBookPageContentFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = savePageId)
-            } else null
-
-            val savePageImage = pageContent?.let {
-                useCaseGetBookPageImageFromFile(userId = userId, readMode = readMode, bookId = bookId, image = pageContent.pageImage)
-            }
-
-            if (configLocal != null && coverImage != null && savePageId != null) {
-                setState {
-                    copy(
-                        config = configLocal, coverImage = coverImage,
-                        savePageId = savePageId, savePageTitle = pageContent?.pageTitle, savePageImage = savePageImage,
-                        emptyMessage = null
-                    )
-                }
+            if (configLocal != null && coverImage != null) {
+                setState { copy(config = configLocal, coverImage = coverImage, emptyMessage = null) }
+                updateSavePageInfo()
             } else {
                 cancel(
                     cause = FileNotFoundCancellationException(
                         message = "[$bookId Book] Data not found, " +
                             (if (configLocal == null) "Config is null, " else "") +
-                            (if (coverImage == null) "CoverImage is null, " else "") +
-                            (if (savePageId == null) "SavePageId is null" else "")
+                            (if (coverImage == null) "CoverImage is null, " else "")
                     )
                 )
             }
+        }
+    }
+
+    private suspend fun updateSavePageInfo() {
+        val savePageId = uiState.value.config?.let {
+            useCaseGetReadRecord(userId = userId, config = it).savePage
+        }
+
+        val pageContent = if (savePageId != null && savePageId != NOT_ASSIGN_SAVE_PAGE) {
+            useCaseGetBookPageContentFromFile(userId = userId, readMode = readMode, bookId = bookId, pageId = savePageId)
+        } else null
+
+        val savePageImage = pageContent?.let {
+            useCaseGetBookPageImageFromFile(userId = userId, readMode = readMode, bookId = bookId, image = pageContent.pageImage)
+        }
+
+        if (savePageId != null) {
+            setState {
+                copy(
+                    savePageId = savePageId, savePageTitle = pageContent?.pageTitle, savePageImage = savePageImage
+                )
+            }
+        } else {
+            cancel(
+                cause = FileNotFoundCancellationException(
+                    message = "[$bookId Book] Data not found, SavePageId is null"
+                )
+            )
         }
     }
 
